@@ -129,16 +129,120 @@
 <script>
 
 const state = {
+
   genre:"",
   character:"",
-  drive:""
+  age:"",
+  gender:"",
+  drive:"",
+
+  descriptionPlan:[]
+
 };
 
-const genreEl = document.getElementById("genre");
-const characterEl = document.getElementById("character");
-const driveEl = document.getElementById("drive");
-const stateView = document.getElementById("state-view");
-const promptOutput = document.getElementById("prompt-output");
+const genreEl =
+document.getElementById("genre");
+
+const characterEl =
+document.getElementById("character");
+
+const driveEl =
+document.getElementById("drive");
+
+const stateView =
+document.getElementById("state-view");
+
+const promptOutput =
+document.getElementById("prompt-output");
+
+const descriptionTypes = [
+
+  "action",
+  "scenery",
+  "psychology",
+  "dialogue",
+  "object"
+
+];
+
+function weightedRandom(section){
+
+  if(section === "jo"){
+
+    return randomPick([
+      "scenery",
+      "scenery",
+      "object",
+      "psychology",
+      "action"
+    ]);
+
+  }
+
+  if(section === "ha"){
+
+    return randomPick([
+      "action",
+      "action",
+      "psychology",
+      "dialogue",
+      "object"
+    ]);
+
+  }
+
+  return randomPick([
+    "psychology",
+    "action",
+    "action",
+    "dialogue",
+    "scenery"
+  ]);
+
+}
+
+function randomPick(arr){
+
+  return arr[
+    Math.floor(
+      Math.random() * arr.length
+    )
+  ];
+
+}
+
+function generateDescriptionPlan(){
+
+  const lines = 16;
+
+  state.descriptionPlan = [];
+
+  for(let i = 1; i <= lines; i++){
+
+    let section = "jo";
+
+    if(i >= 6 && i <= 11){
+
+      section = "ha";
+
+    }
+
+    if(i >= 12){
+
+      section = "kyu";
+
+    }
+
+    state.descriptionPlan.push({
+
+      line:i,
+      type:weightedRandom(section)
+
+    });
+
+  }
+
+}
 
 function buildPrompt(){
 
@@ -151,24 +255,36 @@ function buildPrompt(){
   const drive =
   state.drive || "未設定";
 
+  let descriptionText = "";
+
+  state.descriptionPlan.forEach(item=>{
+
+    descriptionText +=
+    `${item.line}: ${item.type}\n`;
+
+  });
+
   return `あなたは日本語の物語生成エンジンです。
 
-以下の条件に従って、物語性のある日本語テキストを生成してください。
+以下の条件に従って、
+16行の物語テキストを生成してください。
 
 【基本設定】
 GENRE: ${genre}
 CHARACTER: ${character}
 DRIVE: ${drive}
 
-【生成方針】
-・単なる説明文ではなく、情景、行動、感情の推移を持つ文章にする。
-・抽象語だけで進めず、具体的な物・場所・動作を必ず入れる。
-・主人公の動機が読者に伝わるようにする。
-・雰囲気はジャンル設定に合わせる。
-・文体は硬すぎず、映像的で余韻のあるものにする。
+【出力ルール】
+・必ず1行ごとに改行する
+・全16行で出力する
+・具体描写を優先する
+・抽象語だけで進めない
+・情景、感情、行動を含める
 
-【出力形式】
-16行前後の日本語テキストとして出力してください。`;
+【描写割当】
+${descriptionText}
+
+`;
 
 }
 
@@ -183,19 +299,35 @@ function render(){
 }
 
 genreEl.addEventListener("change",()=>{
-  state.genre = genreEl.value;
+
+  state.genre =
+  genreEl.value;
+
+  generateDescriptionPlan();
+
   render();
+
 });
 
 characterEl.addEventListener("input",()=>{
-  state.character = characterEl.value;
+
+  state.character =
+  characterEl.value;
+
   render();
+
 });
 
 driveEl.addEventListener("input",()=>{
-  state.drive = driveEl.value;
+
+  state.drive =
+  driveEl.value;
+
   render();
+
 });
+
+generateDescriptionPlan();
 
 render();
 
