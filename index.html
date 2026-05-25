@@ -1,8 +1,13 @@
-<!DOCTYPE html><html lang="ja">
+<!DOCTYPE html>
+<html lang="ja">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport"
-        content="width=device-width, initial-scale=1.0"/>  <title>Ghorse Noir Engine</title>  <style>
+        content="width=device-width, initial-scale=1.0"/>
+
+  <title>Ghorse Noir Engine</title>
+
+  <style>
     body{
       margin:0;
       background:#050505;
@@ -12,17 +17,11 @@
 
     .hero{
       min-height:100vh;
-
       background-image:
-      linear-gradient(
-      rgba(0,0,0,0.4),
-      rgba(0,0,0,0.9)
-      ),
+      linear-gradient(rgba(0,0,0,0.45),rgba(0,0,0,0.92)),
       url("./ghorse-hero.png");
-
       background-size:cover;
       background-position:center;
-
       padding:40px;
       box-sizing:border-box;
     }
@@ -34,130 +33,18 @@
 
     .panel{
       margin-top:32px;
-      background:rgba(0,0,0,0.65);
+      background:rgba(0,0,0,0.68);
       padding:24px;
       border-radius:16px;
-      max-width:520px;
+      max-width:720px;
       backdrop-filter:blur(6px);
     }
 
     .section{
-      margin-bottom:24px;
+      margin-bottom:22px;
     }
 
     label{
       display:block;
       margin-bottom:8px;
       font-weight:bold;
-    }
-
-    select,
-    input{
-      width:100%;
-      padding:12px;
-      border:none;
-      border-radius:10px;
-      background:#1c1c1c;
-      color:white;
-      font-size:16px;
-      box-sizing:border-box;
-    }
-
-    pre{
-      background:#111;
-      padding:16px;
-      border-radius:12px;
-      overflow:auto;
-      color:#8de38d;
-    }
-  </style></head><body><div class="hero">  <h1>Ghorse</h1>
-  <p>Ghost Writer / Noir Story Engine</p>  <div class="panel"><div class="section">
-  <label>GENRE</label>
-
-  <select id="genre">
-    <option value="">選択してください</option>
-    <option value="noir">Noir</option>
-    <option value="cyberpunk">Cyberpunk</option>
-    <option value="melancholy">Melancholy</option>
-  </select>
-</div>
-
-<div class="section">
-  <label>CHARACTER</label>
-
-  <input
-  id="character"
-  type="text"
-  placeholder="Ghorse">
-</div>
-
-<div class="section">
-  <label>DRIVE</label>
-
-  <input
-  id="drive"
-  type="text"
-  placeholder="revenge">
-</div>
-
-<h3>STATE</h3>
-
-<pre id="state-view"></pre>
-
-  </div></div><script>
-
-const state = {
-  genre:"",
-  character:"",
-  drive:""
-};
-
-const genreEl =
-document.getElementById("genre");
-
-const characterEl =
-document.getElementById("character");
-
-const driveEl =
-document.getElementById("drive");
-
-const stateView =
-document.getElementById("state-view");
-
-function renderState(){
-
-  stateView.textContent =
-  JSON.stringify(state,null,2);
-
-}
-
-genreEl.addEventListener("change",()=>{
-
-  state.genre = genreEl.value;
-
-  renderState();
-
-});
-
-characterEl.addEventListener("input",()=>{
-
-  state.character =
-  characterEl.value;
-
-  renderState();
-
-});
-
-driveEl.addEventListener("input",()=>{
-
-  state.drive =
-  driveEl.value;
-
-  renderState();
-
-});
-
-renderState();
-
-</script></body>
-</html>
