@@ -2,157 +2,149 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
   <title>Ghorse Noir Engine</title>
 
   <style>
+    *{
+      box-sizing:border-box;
+    }
 
     body{
       margin:0;
       background:#050505;
       color:#f1e7d4;
-      font-family:sans-serif;
+      font-family:system-ui, sans-serif;
     }
 
     .hero{
       min-height:100vh;
-
       background-image:
-      linear-gradient(
-      rgba(0,0,0,0.45),
-      rgba(0,0,0,0.92)
-      ),
-      url("./ghorse-hero.png");
-
+        linear-gradient(rgba(0,0,0,0.50),rgba(0,0,0,0.94)),
+        url("./ghorse-hero.png");
       background-size:cover;
       background-position:center;
-
-      padding:40px;
-      box-sizing:border-box;
+      padding:clamp(18px, 5vw, 40px);
     }
 
     h1{
-      font-size:48px;
-      margin-bottom:8px;
+      font-size:clamp(38px, 12vw, 64px);
+      margin:0 0 8px;
+      letter-spacing:0.04em;
+    }
+
+    .subtitle{
+      margin:0;
+      color:#d8c6aa;
+      font-size:clamp(14px, 4vw, 18px);
     }
 
     .panel{
-      margin-top:32px;
-
-      background:
-      rgba(0,0,0,0.68);
-
-      padding:24px;
-
-      border-radius:16px;
-
-      max-width:720px;
-
+      margin-top:28px;
+      background:rgba(0,0,0,0.72);
+      padding:clamp(18px, 5vw, 28px);
+      border-radius:18px;
+      width:min(100%, 760px);
       backdrop-filter:blur(6px);
     }
 
     .section{
-      margin-bottom:22px;
+      margin-bottom:20px;
     }
 
     label{
       display:block;
-
       margin-bottom:8px;
-
       font-weight:bold;
-
       color:#e5c48a;
+      font-size:14px;
+      letter-spacing:0.06em;
     }
 
     select,
     input,
     textarea,
     button{
-
       width:100%;
-
-      padding:12px;
-
+      padding:14px;
       border:none;
-
-      border-radius:10px;
-
+      border-radius:12px;
       background:#1c1c1c;
-
       color:white;
-
       font-size:16px;
+    }
 
-      box-sizing:border-box;
-
+    select,
+    input,
+    button{
+      min-height:48px;
     }
 
     textarea{
-
-      min-height:320px;
-
-      line-height:1.6;
-
+      min-height:360px;
+      line-height:1.7;
       resize:vertical;
-
       white-space:pre-wrap;
-
     }
 
     pre{
-
-      background:#111;
-
-      padding:16px;
-
+      background:#101010;
+      padding:14px;
       border-radius:12px;
-
       overflow:auto;
-
       color:#8de38d;
-
-      font-size:13px;
-
+      font-size:12px;
+      line-height:1.5;
+      max-height:240px;
     }
 
     .output-title{
-
-      margin-top:32px;
-
+      margin-top:30px;
       color:#e5c48a;
-
     }
 
     button{
-
       cursor:pointer;
-
       background:#3a2a1d;
-
-      transition:0.2s;
+      font-weight:bold;
+      letter-spacing:0.08em;
     }
 
-    button:hover{
-
+    button:active{
+      transform:scale(0.98);
       background:#5a402c;
-
     }
 
     #copy-status{
-
       margin-top:12px;
-
       color:#8de38d;
-
       font-size:14px;
-
+      min-height:20px;
     }
 
-  </style>
+    @media (max-width: 600px){
 
+      .hero{
+        background-position:center top;
+      }
+
+      .panel{
+        margin-top:22px;
+        border-radius:16px;
+      }
+
+      textarea{
+        min-height:420px;
+        font-size:15px;
+      }
+
+      pre{
+        font-size:11px;
+      }
+
+    }
+  </style>
 </head>
 
 <body>
@@ -160,146 +152,61 @@
 <div class="hero">
 
   <h1>Ghorse</h1>
-
-  <p>
-  Ghost Writer / Noir Story Engine
-  </p>
+  <p class="subtitle">Ghost Writer / Noir Story Engine</p>
 
   <div class="panel">
 
     <div class="section">
-
       <label>GENRE</label>
-
       <select id="genre">
-
-        <option value="">
-        選択してください
-        </option>
-
-        <option value="noir">
-        Noir
-        </option>
-
-        <option value="cyberpunk">
-        Cyberpunk
-        </option>
-
-        <option value="melancholy">
-        Melancholy
-        </option>
-
-        <option value="crime">
-        Crime
-        </option>
-
-        <option value="mystery">
-        Mystery
-        </option>
-
-        <option value="postapocalypse">
-        Post Apocalypse
-        </option>
-
-        <option value="urbanfantasy">
-        Urban Fantasy
-        </option>
-
-        <option value="scifi">
-        Sci-Fi
-        </option>
-
-        <option value="tragedy">
-        Tragedy
-        </option>
-
-        <option value="dreamcore">
-        Dreamcore
-        </option>
-
+        <option value="">選択してください</option>
+        <option value="noir">Noir</option>
+        <option value="cyberpunk">Cyberpunk</option>
+        <option value="melancholy">Melancholy</option>
+        <option value="crime">Crime</option>
+        <option value="mystery">Mystery</option>
+        <option value="postapocalypse">Post Apocalypse</option>
+        <option value="urbanfantasy">Urban Fantasy</option>
+        <option value="scifi">Sci-Fi</option>
+        <option value="tragedy">Tragedy</option>
+        <option value="dreamcore">Dreamcore</option>
       </select>
-
     </div>
 
     <div class="section">
-
       <label>CHARACTER</label>
-
-      <input
-      id="character"
-      type="text"
-      placeholder="Ghorse">
-
+      <input id="character" type="text" placeholder="Ghorse">
     </div>
 
     <div class="section">
-
       <label>AGE</label>
-
-      <input
-      id="age"
-      type="number"
-      placeholder="24">
-
+      <input id="age" type="number" placeholder="24">
     </div>
 
     <div class="section">
-
       <label>GENDER</label>
-
       <select id="gender">
-
-        <option value="">
-        選択してください
-        </option>
-
-        <option value="female">
-        Female
-        </option>
-
-        <option value="male">
-        Male
-        </option>
-
-        <option value="other">
-        Other
-        </option>
-
+        <option value="">選択してください</option>
+        <option value="female">Female</option>
+        <option value="male">Male</option>
+        <option value="other">Other</option>
       </select>
-
     </div>
 
     <div class="section">
-
       <label>DRIVE</label>
-
-      <input
-      id="drive"
-      type="text"
-      placeholder="revenge / escape / salvation">
-
+      <input id="drive" type="text" placeholder="revenge / escape / salvation">
     </div>
 
     <h3>STATE</h3>
-
     <pre id="state-view"></pre>
 
-    <h3 class="output-title">
-    PROMPT OUTPUT
-    </h3>
-
-    <textarea
-    id="prompt-output"
-    readonly></textarea>
+    <h3 class="output-title">PROMPT OUTPUT</h3>
+    <textarea id="prompt-output" readonly></textarea>
 
     <div class="section">
-
-      <button id="copy-button">
-      COPY PROMPT
-      </button>
-
+      <button id="copy-button">COPY PROMPT</button>
       <div id="copy-status"></div>
-
     </div>
 
   </div>
@@ -309,217 +216,99 @@
 <script>
 
 const state = {
-
   genre:"",
   character:"",
   age:"",
   gender:"",
   drive:"",
-
   descriptionPlan:[],
   syntaxPlan:[]
-
 };
 
-const genreEl =
-document.getElementById("genre");
-
-const characterEl =
-document.getElementById("character");
-
-const ageEl =
-document.getElementById("age");
-
-const genderEl =
-document.getElementById("gender");
-
-const driveEl =
-document.getElementById("drive");
-
-const stateView =
-document.getElementById("state-view");
-
-const promptOutput =
-document.getElementById("prompt-output");
-
-const copyButton =
-document.getElementById("copy-button");
-
-const copyStatus =
-document.getElementById("copy-status");
+const genreEl = document.getElementById("genre");
+const characterEl = document.getElementById("character");
+const ageEl = document.getElementById("age");
+const genderEl = document.getElementById("gender");
+const driveEl = document.getElementById("drive");
+const stateView = document.getElementById("state-view");
+const promptOutput = document.getElementById("prompt-output");
+const copyButton = document.getElementById("copy-button");
+const copyStatus = document.getElementById("copy-status");
 
 function randomPick(arr){
-
-  return arr[
-    Math.floor(
-      Math.random() * arr.length
-    )
-  ];
-
+  return arr[Math.floor(Math.random() * arr.length)];
 }
 
 function weightedDescriptionRandom(section){
-
   if(section === "jo"){
-
-    return randomPick([
-      "scenery",
-      "scenery",
-      "object",
-      "psychology",
-      "action"
-    ]);
-
+    return randomPick(["scenery","scenery","object","psychology","action"]);
   }
 
   if(section === "ha"){
-
-    return randomPick([
-      "action",
-      "action",
-      "psychology",
-      "dialogue",
-      "object"
-    ]);
-
+    return randomPick(["action","action","psychology","dialogue","object"]);
   }
 
-  return randomPick([
-    "psychology",
-    "action",
-    "action",
-    "dialogue",
-    "scenery"
-  ]);
-
+  return randomPick(["psychology","action","action","dialogue","scenery"]);
 }
 
 function weightedSyntaxRandom(section){
-
   if(section === "jo"){
-
-    return randomPick([
-      "sov",
-      "sov",
-      "nounlead",
-      "nounlead",
-      "simple"
-    ]);
-
+    return randomPick(["sov","sov","nounlead","nounlead","simple"]);
   }
 
   if(section === "ha"){
-
-    return randomPick([
-      "delayed",
-      "delayed",
-      "dialogue",
-      "sov",
-      "simple"
-    ]);
-
+    return randomPick(["delayed","delayed","dialogue","sov","simple"]);
   }
 
-  return randomPick([
-    "simple",
-    "simple",
-    "delayed",
-    "sov",
-    "nounlead"
-  ]);
-
+  return randomPick(["simple","simple","delayed","sov","nounlead"]);
 }
 
 function getSectionByLine(line){
-
-  if(line <= 5){
-    return "jo";
-  }
-
-  if(line <= 11){
-    return "ha";
-  }
-
+  if(line <= 5) return "jo";
+  if(line <= 11) return "ha";
   return "kyu";
-
 }
 
 function generateDescriptionPlan(){
-
   state.descriptionPlan = [];
 
   for(let i = 1; i <= 16; i++){
-
-    const section =
-    getSectionByLine(i);
+    const section = getSectionByLine(i);
 
     state.descriptionPlan.push({
-
       line:i,
-
-      type:
-      weightedDescriptionRandom(section)
-
+      type:weightedDescriptionRandom(section)
     });
-
   }
-
 }
 
 function generateSyntaxPlan(){
-
   state.syntaxPlan = [];
 
   for(let i = 1; i <= 16; i++){
-
-    const section =
-    getSectionByLine(i);
+    const section = getSectionByLine(i);
 
     state.syntaxPlan.push({
-
       line:i,
-
-      type:
-      weightedSyntaxRandom(section)
-
+      type:weightedSyntaxRandom(section)
     });
-
   }
-
 }
 
 function buildPrompt(){
-
-  const genre =
-  state.genre || "未設定";
-
-  const character =
-  state.character || "未設定";
-
-  const age =
-  state.age || "未設定";
-
-  const gender =
-  state.gender || "未設定";
-
-  const drive =
-  state.drive || "未設定";
+  const genre = state.genre || "未設定";
+  const character = state.character || "未設定";
+  const age = state.age || "未設定";
+  const gender = state.gender || "未設定";
+  const drive = state.drive || "未設定";
 
   let linePlanText = "";
 
   for(let i = 0; i < 16; i++){
+    const description = state.descriptionPlan[i]?.type || "未設定";
+    const syntax = state.syntaxPlan[i]?.type || "未設定";
 
-    const description =
-    state.descriptionPlan[i]?.type
-    || "未設定";
-
-    const syntax =
-    state.syntaxPlan[i]?.type
-    || "未設定";
-
-    linePlanText +=
-    `${i + 1}: ${description} / ${syntax}\n`;
-
+    linePlanText += `${i + 1}: ${description} / ${syntax}\n`;
   }
 
   return `あなたは日本語の物語生成エンジンです。
@@ -543,87 +332,56 @@ DRIVE: ${drive}
 
 【行別設計】
 ${linePlanText}`;
-
 }
 
 function render(){
-
-  stateView.textContent =
-  JSON.stringify(state,null,2);
-
-  promptOutput.value =
-  buildPrompt();
-
+  stateView.textContent = JSON.stringify(state,null,2);
+  promptOutput.value = buildPrompt();
 }
 
 genreEl.addEventListener("change",()=>{
-
-  state.genre =
-  genreEl.value;
-
+  state.genre = genreEl.value;
   generateDescriptionPlan();
   generateSyntaxPlan();
-
   render();
-
 });
 
 characterEl.addEventListener("input",()=>{
-
-  state.character =
-  characterEl.value;
-
+  state.character = characterEl.value;
   render();
-
 });
 
 ageEl.addEventListener("input",()=>{
-
-  state.age =
-  ageEl.value;
-
+  state.age = ageEl.value;
   render();
-
 });
 
 genderEl.addEventListener("change",()=>{
-
-  state.gender =
-  genderEl.value;
-
+  state.gender = genderEl.value;
   render();
-
 });
 
 driveEl.addEventListener("input",()=>{
-
-  state.drive =
-  driveEl.value;
-
+  state.drive = driveEl.value;
   render();
-
 });
 
-copyButton.addEventListener("click",()=>{
-
-  navigator.clipboard.writeText(
-    promptOutput.value
-  );
-
-  copyStatus.textContent =
-  "PROMPT COPIED";
+copyButton.addEventListener("click",async()=>{
+  try{
+    await navigator.clipboard.writeText(promptOutput.value);
+    copyStatus.textContent = "PROMPT COPIED";
+  }catch(error){
+    promptOutput.select();
+    copyStatus.textContent = "コピーできない場合は手動で選択してください";
+  }
 
   setTimeout(()=>{
-
     copyStatus.textContent = "";
-
-  },1500);
-
+  },1600);
 });
 
 generateDescriptionPlan();
 generateSyntaxPlan();
-
 render();
 
 </script>
