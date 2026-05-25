@@ -103,6 +103,14 @@
         <option value="noir">Noir</option>
         <option value="cyberpunk">Cyberpunk</option>
         <option value="melancholy">Melancholy</option>
+        <option value="noir">Noir</option>
+<option value="crime">Crime</option>
+<option value="mystery">Mystery</option>
+<option value="postapocalypse">Post Apocalypse</option>
+<option value="urbanfantasy">Urban Fantasy</option>
+<option value="scifi">Sci-Fi</option>
+<option value="tragedy">Tragedy</option>
+<option value="dreamcore">Dreamcore</option>
       </select>
     </div>
 
@@ -112,6 +120,38 @@
     </div>
 
     <div class="section">
+      <div class="section">
+  <label>AGE</label>
+
+  <input
+  id="age"
+  type="number"
+  placeholder="24">
+</div>
+
+<div class="section">
+  <label>GENDER</label>
+
+  <select id="gender">
+
+    <option value="">
+    選択してください
+    </option>
+
+    <option value="female">
+    Female
+    </option>
+
+    <option value="male">
+    Male
+    </option>
+
+    <option value="other">
+    Other
+    </option>
+
+  </select>
+</div>
       <label>DRIVE</label>
       <input id="drive" type="text" placeholder="revenge / escape / salvation">
     </div>
@@ -252,6 +292,12 @@ function buildPrompt(){
   const character =
   state.character || "未設定";
 
+  const ageEl =
+  document.getElementById("age");
+
+  const genderEl =
+  document.getElementById("gender");
+
   const drive =
   state.drive || "未設定";
 
@@ -272,6 +318,8 @@ function buildPrompt(){
 【基本設定】
 GENRE: ${genre}
 CHARACTER: ${character}
+AGE: ${state.age || "未設定"}
+GENDER: ${state.gender || "未設定"}
 DRIVE: ${drive}
 
 【出力ルール】
@@ -313,6 +361,24 @@ characterEl.addEventListener("input",()=>{
 
   state.character =
   characterEl.value;
+
+  render();
+
+});
+
+  ageEl.addEventListener("input",()=>{
+
+  state.age =
+  ageEl.value;
+
+  render();
+
+});
+
+genderEl.addEventListener("change",()=>{
+
+  state.gender =
+  genderEl.value;
 
   render();
 
