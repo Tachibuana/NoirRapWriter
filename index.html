@@ -176,7 +176,8 @@ const state = {
   gender:"",
   drive:"",
 
-  descriptionPlan:[]
+  descriptionPlan:[],
+  syntaxPlan:[]
 
 };
 
@@ -202,6 +203,16 @@ const descriptionTypes = [
   "psychology",
   "dialogue",
   "object"
+
+];
+
+const syntaxTypes = [
+
+  "sov",
+  "nounlead",
+  "delayed",
+  "dialogue",
+  "simple"
 
 ];
 
@@ -301,14 +312,20 @@ function buildPrompt(){
   const drive =
   state.drive || "未設定";
 
-  let descriptionText = "";
+  let linePlanText = "";
 
-  state.descriptionPlan.forEach(item=>{
+for(let i = 0; i < 16; i++){
 
-    descriptionText +=
-    `${item.line}: ${item.type}\n`;
+  const description =
+  state.descriptionPlan[i]?.type || "未設定";
 
-  });
+  const syntax =
+  state.syntaxPlan[i]?.type || "未設定";
+
+  linePlanText +=
+  `${i + 1}: ${description} / ${syntax}\n`;
+
+}
 
   return `あなたは日本語の物語生成エンジンです。
 
@@ -329,8 +346,8 @@ DRIVE: ${drive}
 ・抽象語だけで進めない
 ・情景、感情、行動を含める
 
-【描写割当】
-${descriptionText}
+【行別設計】
+${linePlanText}
 
 `;
 
@@ -375,10 +392,12 @@ characterEl.addEventListener("input",()=>{
 
 });
 
-genderEl.addEventListener("change",()=>{
+genreEl.addEventListener("change",()=>{
 
-  state.gender =
-  genderEl.value;
+  state.genre =
+  genreEl.value;
+
+  generateDescriptionPlan();
 
   render();
 
@@ -394,6 +413,72 @@ driveEl.addEventListener("input",()=>{
 });
 
 generateDescriptionPlan();
+generateSyntaxPlan();
+
+render();
+
+function weightedSyntaxRandom(section){
+
+  if(section === "jo"){
+
+    return randomPick([
+      "sov",
+      "sov",
+      "nounlead",
+      "nounlead",
+      "simple"
+    ]);
+
+  }
+
+  if(section === "ha"){
+
+    return randomPick([
+      "delayed",
+      "delayed",
+      "dialogue",
+      "sov",
+      "simple"
+    ]);
+
+  }
+
+  return randomPick([
+    "simple",
+    "simple",
+    "delayed",
+    "sov",
+    "nounlead"
+  ]);
+
+}
+
+function generateSyntaxPlan(){
+
+  const lines = 16;
+
+  state.syntaxPlan = [];
+
+  for(let i = 1; i <= lines; i++){
+
+    let section = "jo";
+
+    if(i >= 6 && i <= 11){
+      section = "ha";
+    }
+
+    if(i >= 12){
+      section = "kyu";
+    }
+
+    state.syntaxPlan.push({
+      line:i,
+      type:weightedSyntaxRandom(section)
+    });
+
+  }
+
+}
 
 render();
 
