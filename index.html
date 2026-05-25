@@ -166,166 +166,103 @@
 
 </div>
 
+
+
 <script>
 
 const state = {
-
   genre:"",
   character:"",
   age:"",
   gender:"",
   drive:"",
-
   descriptionPlan:[],
   syntaxPlan:[]
-
 };
 
-const genreEl =
-document.getElementById("genre");
+const genreEl = document.getElementById("genre");
+const characterEl = document.getElementById("character");
+const ageEl = document.getElementById("age");
+const genderEl = document.getElementById("gender");
+const driveEl = document.getElementById("drive");
+const stateView = document.getElementById("state-view");
+const promptOutput = document.getElementById("prompt-output");
 
-const characterEl =
-document.getElementById("character");
+function randomPick(arr){
+  return arr[Math.floor(Math.random() * arr.length)];
+}
 
-const driveEl =
-document.getElementById("drive");
-
-const stateView =
-document.getElementById("state-view");
-
-const promptOutput =
-document.getElementById("prompt-output");
-
-const descriptionTypes = [
-
-  "action",
-  "scenery",
-  "psychology",
-  "dialogue",
-  "object"
-
-];
-
-const syntaxTypes = [
-
-  "sov",
-  "nounlead",
-  "delayed",
-  "dialogue",
-  "simple"
-
-];
-
-function weightedRandom(section){
-
+function weightedDescriptionRandom(section){
   if(section === "jo"){
-
-    return randomPick([
-      "scenery",
-      "scenery",
-      "object",
-      "psychology",
-      "action"
-    ]);
-
+    return randomPick(["scenery","scenery","object","psychology","action"]);
   }
 
   if(section === "ha"){
-
-    return randomPick([
-      "action",
-      "action",
-      "psychology",
-      "dialogue",
-      "object"
-    ]);
-
+    return randomPick(["action","action","psychology","dialogue","object"]);
   }
 
-  return randomPick([
-    "psychology",
-    "action",
-    "action",
-    "dialogue",
-    "scenery"
-  ]);
-
+  return randomPick(["psychology","action","action","dialogue","scenery"]);
 }
 
-function randomPick(arr){
+function weightedSyntaxRandom(section){
+  if(section === "jo"){
+    return randomPick(["sov","sov","nounlead","nounlead","simple"]);
+  }
 
-  return arr[
-    Math.floor(
-      Math.random() * arr.length
-    )
-  ];
+  if(section === "ha"){
+    return randomPick(["delayed","delayed","dialogue","sov","simple"]);
+  }
 
+  return randomPick(["simple","simple","delayed","sov","nounlead"]);
+}
+
+function getSectionByLine(line){
+  if(line <= 5) return "jo";
+  if(line <= 11) return "ha";
+  return "kyu";
 }
 
 function generateDescriptionPlan(){
-
-  const lines = 16;
-
   state.descriptionPlan = [];
 
-  for(let i = 1; i <= lines; i++){
-
-    let section = "jo";
-
-    if(i >= 6 && i <= 11){
-
-      section = "ha";
-
-    }
-
-    if(i >= 12){
-
-      section = "kyu";
-
-    }
+  for(let i = 1; i <= 16; i++){
+    const section = getSectionByLine(i);
 
     state.descriptionPlan.push({
-
       line:i,
-      type:weightedRandom(section)
-
+      type:weightedDescriptionRandom(section)
     });
-
   }
+}
 
+function generateSyntaxPlan(){
+  state.syntaxPlan = [];
+
+  for(let i = 1; i <= 16; i++){
+    const section = getSectionByLine(i);
+
+    state.syntaxPlan.push({
+      line:i,
+      type:weightedSyntaxRandom(section)
+    });
+  }
 }
 
 function buildPrompt(){
-
-  const genre =
-  state.genre || "未設定";
-
-  const character =
-  state.character || "未設定";
-
-  const ageEl =
-  document.getElementById("age");
-
-  const genderEl =
-  document.getElementById("gender");
-
-  const drive =
-  state.drive || "未設定";
+  const genre = state.genre || "未設定";
+  const character = state.character || "未設定";
+  const age = state.age || "未設定";
+  const gender = state.gender || "未設定";
+  const drive = state.drive || "未設定";
 
   let linePlanText = "";
 
-for(let i = 0; i < 16; i++){
+  for(let i = 0; i < 16; i++){
+    const description = state.descriptionPlan[i]?.type || "未設定";
+    const syntax = state.syntaxPlan[i]?.type || "未設定";
 
-  const description =
-  state.descriptionPlan[i]?.type || "未設定";
-
-  const syntax =
-  state.syntaxPlan[i]?.type || "未設定";
-
-  linePlanText +=
-  `${i + 1}: ${description} / ${syntax}\n`;
-
-}
+    linePlanText += `${i + 1}: ${description} / ${syntax}\n`;
+  }
 
   return `あなたは日本語の物語生成エンジンです。
 
@@ -335,8 +272,8 @@ for(let i = 0; i < 16; i++){
 【基本設定】
 GENRE: ${genre}
 CHARACTER: ${character}
-AGE: ${state.age || "未設定"}
-GENDER: ${state.gender || "未設定"}
+AGE: ${age}
+GENDER: ${gender}
 DRIVE: ${drive}
 
 【出力ルール】
@@ -347,140 +284,43 @@ DRIVE: ${drive}
 ・情景、感情、行動を含める
 
 【行別設計】
-${linePlanText}
-
-`;
-
+${linePlanText}`;
 }
 
 function render(){
-
-  stateView.textContent =
-  JSON.stringify(state,null,2);
-
-  promptOutput.value =
-  buildPrompt();
-
+  stateView.textContent = JSON.stringify(state,null,2);
+  promptOutput.value = buildPrompt();
 }
 
 genreEl.addEventListener("change",()=>{
-
-  state.genre =
-  genreEl.value;
-
+  state.genre = genreEl.value;
   generateDescriptionPlan();
-
+  generateSyntaxPlan();
   render();
-
 });
 
 characterEl.addEventListener("input",()=>{
-
-  state.character =
-  characterEl.value;
-
+  state.character = characterEl.value;
   render();
-
 });
 
-  ageEl.addEventListener("input",()=>{
-
-  state.age =
-  ageEl.value;
-
+ageEl.addEventListener("input",()=>{
+  state.age = ageEl.value;
   render();
-
 });
 
-genreEl.addEventListener("change",()=>{
-
-  state.genre =
-  genreEl.value;
-
-  generateDescriptionPlan();
-  generateSyntaxPlan();
-
+genderEl.addEventListener("change",()=>{
+  state.gender = genderEl.value;
   render();
-
 });
 
 driveEl.addEventListener("input",()=>{
-
-  state.drive =
-  driveEl.value;
-
+  state.drive = driveEl.value;
   render();
-
 });
 
 generateDescriptionPlan();
 generateSyntaxPlan();
-
-render();
-
-function weightedSyntaxRandom(section){
-
-  if(section === "jo"){
-
-    return randomPick([
-      "sov",
-      "sov",
-      "nounlead",
-      "nounlead",
-      "simple"
-    ]);
-
-  }
-
-  if(section === "ha"){
-
-    return randomPick([
-      "delayed",
-      "delayed",
-      "dialogue",
-      "sov",
-      "simple"
-    ]);
-
-  }
-
-  return randomPick([
-    "simple",
-    "simple",
-    "delayed",
-    "sov",
-    "nounlead"
-  ]);
-
-}
-
-function generateSyntaxPlan(){
-
-  const lines = 16;
-
-  state.syntaxPlan = [];
-
-  for(let i = 1; i <= lines; i++){
-
-    let section = "jo";
-
-    if(i >= 6 && i <= 11){
-      section = "ha";
-    }
-
-    if(i >= 12){
-      section = "kyu";
-    }
-
-    state.syntaxPlan.push({
-      line:i,
-      type:weightedSyntaxRandom(section)
-    });
-
-  }
-
-}
-
 render();
 
 </script>
