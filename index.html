@@ -34,20 +34,36 @@ BACKGROUND LAYERS
 ========================= */
 
 .hero-stage{
+
   position:fixed;
+
   inset:0;
+
+  min-height:100dvh;
+
   z-index:0;
+
   background:#050505;
+
   overflow:hidden;
+
 }
 
 .hero-layer{
+
   position:absolute;
+
   inset:0;
+
   background-size:cover;
-  background-position:center;
+
+  background-position:center top;
+
   opacity:0;
-  transition:opacity 1.2s ease;
+
+  transition:
+  opacity 0.85s ease;
+
 }
 
 .hero-layer.show{
@@ -402,7 +418,7 @@ const slideTimer = setInterval(()=>{
 
   crossFadeTo(currentSlide);
 
-},1000);
+},1500);
 
 /* =========================
 STATE
