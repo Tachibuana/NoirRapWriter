@@ -1,376 +1,821 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <title>Ghorse Noir Engine</title>
+<title>Ghorse Noir Engine</title>
 
-  <style>
-    *{ box-sizing:border-box; }
+<style>
 
-    :root{
-      --bg:#050505;
-      --panel:rgba(8,7,6,0.92);
-      --text:#f1e7d4;
-      --muted:#c9b99d;
-      --gold:#e5c48a;
-      --green:#8de38d;
-      --line:rgba(229,196,138,0.22);
-    }
+*{
+  box-sizing:border-box;
+}
 
-    body{
-      margin:0;
-      background:var(--bg);
-      color:var(--text);
-      font-family:system-ui, sans-serif;
-    }
+:root{
+  --bg:#050505;
+  --panel:rgba(8,7,6,0.92);
+  --text:#f1e7d4;
+  --gold:#e5c48a;
+  --muted:#c9b99d;
+  --green:#8de38d;
+  --line:rgba(229,196,138,0.22);
+}
 
-    .hero-image{
-      position:fixed;
-      top:0;
-      left:0;
-      width:100%;
-      height:56vh;
-      background-image:url("./ghorse-hero-pc.webp");
-      background-size:cover;
-      background-position:center;
-      z-index:0;
-    }
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui,sans-serif;
+  overflow-x:hidden;
+}
 
-    .gradient-separator{
-      position:fixed;
-      top:38vh;
-      left:0;
-      width:100%;
-      height:24vh;
-      background:linear-gradient(
-        to bottom,
-        rgba(5,5,5,0),
-        rgba(5,5,5,0.55),
-        rgba(5,5,5,1)
-      );
-      z-index:1;
-      pointer-events:none;
-    }
+/* =========================
+BACKGROUND
+========================= */
 
-    .content{
-      position:relative;
-      z-index:2;
-      padding:42vh clamp(18px, 5vw, 48px) 48px;
-      min-height:100vh;
-    }
+.hero-image{
 
-    .brand{
-      margin-bottom:24px;
-      text-shadow:0 6px 24px rgba(0,0,0,0.85);
-    }
+  position:fixed;
 
-    h1{
-      font-size:clamp(42px, 10vw, 82px);
-      margin:0 0 8px;
-      letter-spacing:0.09em;
-      font-weight:800;
-      line-height:1;
-    }
+  inset:0;
 
-    .subtitle{
-      margin:0;
-      color:var(--muted);
-      font-size:clamp(14px, 3.4vw, 18px);
-      letter-spacing:0.08em;
-    }
+  z-index:0;
 
-    .panel{
-      background:var(--panel);
-      padding:clamp(18px, 5vw, 30px);
-      border-radius:22px;
-      width:min(100%, 780px);
-      border:1px solid var(--line);
-      box-shadow:0 24px 80px rgba(0,0,0,0.65);
-      backdrop-filter:blur(10px);
-    }
+  background-size:cover;
+  background-position:center;
 
-    .section{ margin-bottom:20px; }
+  transition:
+  opacity 0.8s ease,
+  background-image 0.4s ease;
 
-    label{
-      display:block;
-      margin-bottom:8px;
-      font-weight:bold;
-      color:var(--gold);
-      font-size:13px;
-      letter-spacing:0.12em;
-    }
+}
 
-    select,
-    input,
-    textarea,
-    button{
-      width:100%;
-      padding:14px;
-      border:1px solid rgba(229,196,138,0.14);
-      border-radius:13px;
-      background:rgba(16,14,13,0.95);
-      color:white;
-      font-size:16px;
-      outline:none;
-    }
+.hero-image::after{
 
-    select:focus,
-    input:focus,
-    textarea:focus{
-      border-color:rgba(229,196,138,0.65);
-      box-shadow:0 0 0 3px rgba(229,196,138,0.10);
-    }
+  content:"";
 
-    select,
-    input,
-    button{ min-height:50px; }
+  position:absolute;
 
-    textarea{
-      min-height:380px;
-      line-height:1.7;
-      resize:vertical;
-      white-space:pre-wrap;
-    }
+  left:0;
+  right:0;
+  bottom:0;
 
-    h3{
-      color:var(--gold);
-      letter-spacing:0.08em;
-      margin-top:28px;
-      border-bottom:1px solid var(--line);
-      padding-bottom:8px;
-    }
+  height:42vh;
 
-    pre{
-      background:rgba(0,0,0,0.86);
-      padding:14px;
-      border-radius:14px;
-      overflow:auto;
-      color:var(--green);
-      font-size:12px;
-      line-height:1.5;
-      max-height:240px;
-      border:1px solid rgba(141,227,141,0.14);
-    }
+  background:
+  linear-gradient(
+    to bottom,
+    rgba(5,5,5,0),
+    rgba(5,5,5,1)
+  );
 
-    button{
-      cursor:pointer;
-      background:linear-gradient(180deg, #4b321f, #24150d);
-      color:#f8e9cc;
-      font-weight:bold;
-      letter-spacing:0.12em;
-      border:1px solid rgba(229,196,138,0.34);
-    }
+}
 
-    button:active{
-      transform:scale(0.985);
-      background:linear-gradient(180deg, #6a4529, #2d1b11);
-    }
+/* =========================
+INTRO MESSAGE
+========================= */
 
-    #copy-status{
-      margin-top:12px;
-      color:var(--green);
-      font-size:14px;
-      min-height:20px;
-      letter-spacing:0.06em;
-    }
+.intro-message{
 
-    @media (max-width: 768px){
-      .hero-image{
-        height:54vh;
-        background-image:url("./ghorse-hero-mobile.webp");
-        background-position:center top;
-      }
+  position:fixed;
 
-      .gradient-separator{
-        top:34vh;
-        height:26vh;
-      }
+  left:50%;
+  top:46%;
 
-      .content{
-        padding-top:40vh;
-      }
+  transform:
+  translate(-50%,-50%);
 
-      .panel{
-        border-radius:18px;
-      }
+  z-index:10;
 
-      textarea{
-        min-height:430px;
-        font-size:15px;
-      }
+  color:white;
 
-      pre{
-        font-size:11px;
-      }
-    }
-  </style>
+  font-size:
+  clamp(20px,4vw,34px);
+
+  letter-spacing:0.08em;
+
+  opacity:0;
+
+  transition:opacity 1.2s ease;
+
+  text-shadow:
+  0 4px 24px rgba(0,0,0,0.9);
+
+  pointer-events:none;
+
+}
+
+.intro-message.show{
+
+  opacity:1;
+
+}
+
+.intro-message.hide{
+
+  opacity:0;
+
+}
+
+/* =========================
+CONTENT
+========================= */
+
+.content{
+
+  position:relative;
+
+  z-index:5;
+
+  min-height:100vh;
+
+  padding:
+  44vh
+  clamp(18px,5vw,48px)
+  48px;
+
+  opacity:0;
+
+  transform:
+  translateY(20px);
+
+  transition:
+  opacity 1.2s ease,
+  transform 1.2s ease;
+
+}
+
+.content.show{
+
+  opacity:1;
+
+  transform:
+  translateY(0);
+
+}
+
+/* =========================
+BRAND
+========================= */
+
+.brand{
+
+  margin-bottom:24px;
+
+  text-shadow:
+  0 6px 24px rgba(0,0,0,0.9);
+
+}
+
+h1{
+
+  margin:0 0 8px;
+
+  font-size:
+  clamp(42px,10vw,82px);
+
+  line-height:1;
+
+  letter-spacing:0.08em;
+
+}
+
+.subtitle{
+
+  margin:0;
+
+  color:var(--muted);
+
+  font-size:
+  clamp(14px,3vw,18px);
+
+  letter-spacing:0.08em;
+
+}
+
+/* =========================
+PANEL
+========================= */
+
+.panel{
+
+  width:min(100%,780px);
+
+  padding:
+  clamp(18px,5vw,30px);
+
+  border-radius:22px;
+
+  background:var(--panel);
+
+  border:
+  1px solid var(--line);
+
+  backdrop-filter:blur(10px);
+
+  box-shadow:
+  0 24px 80px rgba(0,0,0,0.65);
+
+}
+
+.section{
+
+  margin-bottom:20px;
+
+}
+
+label{
+
+  display:block;
+
+  margin-bottom:8px;
+
+  color:var(--gold);
+
+  font-size:13px;
+
+  font-weight:bold;
+
+  letter-spacing:0.12em;
+
+}
+
+select,
+input,
+textarea,
+button{
+
+  width:100%;
+
+  padding:14px;
+
+  border-radius:13px;
+
+  border:
+  1px solid rgba(229,196,138,0.14);
+
+  background:
+  rgba(16,14,13,0.95);
+
+  color:white;
+
+  font-size:16px;
+
+  outline:none;
+
+}
+
+select:focus,
+input:focus,
+textarea:focus{
+
+  border-color:
+  rgba(229,196,138,0.6);
+
+  box-shadow:
+  0 0 0 3px rgba(229,196,138,0.1);
+
+}
+
+textarea{
+
+  min-height:380px;
+
+  resize:vertical;
+
+  line-height:1.7;
+
+  white-space:pre-wrap;
+
+}
+
+h3{
+
+  margin-top:28px;
+
+  padding-bottom:8px;
+
+  border-bottom:
+  1px solid var(--line);
+
+  color:var(--gold);
+
+}
+
+pre{
+
+  max-height:240px;
+
+  overflow:auto;
+
+  padding:14px;
+
+  border-radius:14px;
+
+  background:
+  rgba(0,0,0,0.86);
+
+  color:var(--green);
+
+  font-size:12px;
+
+}
+
+button{
+
+  cursor:pointer;
+
+  background:
+  linear-gradient(
+    180deg,
+    #4b321f,
+    #24150d
+  );
+
+  color:#f8e9cc;
+
+  font-weight:bold;
+
+  letter-spacing:0.12em;
+
+}
+
+#copy-status{
+
+  margin-top:12px;
+
+  min-height:20px;
+
+  color:var(--green);
+
+}
+
+/* =========================
+MOBILE
+========================= */
+
+@media (max-width:768px){
+
+  .content{
+
+    padding-top:42vh;
+
+  }
+
+}
+
+</style>
 </head>
 
 <body>
 
-<div class="hero-image"></div>
-<div class="gradient-separator"></div>
+<div class="hero-image" id="hero-image"></div>
 
-<main class="content">
+<div class="intro-message"
+id="intro-message">
 
-  <div class="brand">
-    <h1>Ghorse</h1>
-    <p class="subtitle">Ghost Writer / Noir Story Engine</p>
-  </div>
+――で、今日はどんな脚本を？
 
-  <div class="panel">
+</div>
 
-    <div class="section">
-      <label>GENRE</label>
-      <select id="genre">
-        <option value="">選択してください</option>
-        <option value="noir">Noir</option>
-        <option value="cyberpunk">Cyberpunk</option>
-        <option value="melancholy">Melancholy</option>
-        <option value="crime">Crime</option>
-        <option value="mystery">Mystery</option>
-        <option value="postapocalypse">Post Apocalypse</option>
-        <option value="urbanfantasy">Urban Fantasy</option>
-        <option value="scifi">Sci-Fi</option>
-        <option value="tragedy">Tragedy</option>
-        <option value="dreamcore">Dreamcore</option>
-      </select>
-    </div>
+<main class="content"
+id="content">
 
-    <div class="section">
-      <label>CHARACTER</label>
-      <input id="character" type="text" placeholder="Ghorse">
-    </div>
+<div class="brand">
 
-    <div class="section">
-      <label>AGE</label>
-      <input id="age" type="number" placeholder="24">
-    </div>
+<h1>Ghorse</h1>
 
-    <div class="section">
-      <label>GENDER</label>
-      <select id="gender">
-        <option value="">選択してください</option>
-        <option value="female">Female</option>
-        <option value="male">Male</option>
-        <option value="other">Other</option>
-      </select>
-    </div>
+<p class="subtitle">
+Ghost Writer / Noir Story Engine
+</p>
 
-    <div class="section">
-      <label>DRIVE</label>
-      <input id="drive" type="text" placeholder="revenge / escape / salvation">
-    </div>
+</div>
 
-    <h3>STATE</h3>
-    <pre id="state-view"></pre>
+<div class="panel">
 
-    <h3>PROMPT OUTPUT</h3>
-    <textarea id="prompt-output" readonly></textarea>
+<div class="section">
+<label>GENRE</label>
 
-    <div class="section">
-      <button id="copy-button">COPY PROMPT</button>
-      <div id="copy-status"></div>
-    </div>
+<select id="genre">
 
-  </div>
+<option value="">
+選択してください
+</option>
+
+<option value="noir">
+Noir
+</option>
+
+<option value="cyberpunk">
+Cyberpunk
+</option>
+
+<option value="melancholy">
+Melancholy
+</option>
+
+<option value="crime">
+Crime
+</option>
+
+<option value="mystery">
+Mystery
+</option>
+
+<option value="postapocalypse">
+Post Apocalypse
+</option>
+
+<option value="urbanfantasy">
+Urban Fantasy
+</option>
+
+<option value="scifi">
+Sci-Fi
+</option>
+
+<option value="tragedy">
+Tragedy
+</option>
+
+<option value="dreamcore">
+Dreamcore
+</option>
+
+</select>
+</div>
+
+<div class="section">
+<label>CHARACTER</label>
+<input id="character"
+type="text"
+placeholder="Ghorse">
+</div>
+
+<div class="section">
+<label>AGE</label>
+<input id="age"
+type="number"
+placeholder="24">
+</div>
+
+<div class="section">
+<label>GENDER</label>
+
+<select id="gender">
+
+<option value="">
+選択してください
+</option>
+
+<option value="female">
+Female
+</option>
+
+<option value="male">
+Male
+</option>
+
+<option value="other">
+Other
+</option>
+
+</select>
+</div>
+
+<div class="section">
+<label>DRIVE</label>
+
+<input id="drive"
+type="text"
+placeholder="revenge / escape / salvation">
+</div>
+
+<h3>STATE</h3>
+
+<pre id="state-view"></pre>
+
+<h3>PROMPT OUTPUT</h3>
+
+<textarea id="prompt-output"
+readonly></textarea>
+
+<div class="section">
+
+<button id="copy-button">
+COPY PROMPT
+</button>
+
+<div id="copy-status"></div>
+
+</div>
+
+</div>
 
 </main>
 
 <script>
+
+/* =========================
+INTRO SLIDE
+========================= */
+
+const heroImage =
+document.getElementById("hero-image");
+
+const introMessage =
+document.getElementById("intro-message");
+
+const content =
+document.getElementById("content");
+
+const isMobile =
+window.innerWidth <= 768;
+
+const slides = isMobile
+? [
+"./intro-mobile-1.webp",
+"./intro-mobile-2.webp",
+"./intro-mobile-3.webp"
+]
+: [
+"./intro-pc-1.webp",
+"./intro-pc-2.webp",
+"./intro-pc-3.webp"
+];
+
+let currentSlide = 0;
+
+function setSlide(index){
+
+  heroImage.style.backgroundImage =
+  `url("${slides[index]}")`;
+
+}
+
+setSlide(0);
+
+const slideInterval = setInterval(()=>{
+
+  currentSlide++;
+
+  if(currentSlide >= slides.length){
+
+    clearInterval(slideInterval);
+
+    setTimeout(()=>{
+
+      introMessage.classList.add("show");
+
+    },500);
+
+    setTimeout(()=>{
+
+      introMessage.classList.remove("show");
+
+      introMessage.classList.add("hide");
+
+    },3200);
+
+    setTimeout(()=>{
+
+      content.classList.add("show");
+
+    },4300);
+
+    return;
+
+  }
+
+  setSlide(currentSlide);
+
+},1000);
+
+/* =========================
+STATE
+========================= */
+
 const state = {
+
   genre:"",
   character:"",
   age:"",
   gender:"",
   drive:"",
+
   descriptionPlan:[],
   syntaxPlan:[]
+
 };
 
-const genreEl = document.getElementById("genre");
-const characterEl = document.getElementById("character");
-const ageEl = document.getElementById("age");
-const genderEl = document.getElementById("gender");
-const driveEl = document.getElementById("drive");
-const stateView = document.getElementById("state-view");
-const promptOutput = document.getElementById("prompt-output");
-const copyButton = document.getElementById("copy-button");
-const copyStatus = document.getElementById("copy-status");
+const genreEl =
+document.getElementById("genre");
+
+const characterEl =
+document.getElementById("character");
+
+const ageEl =
+document.getElementById("age");
+
+const genderEl =
+document.getElementById("gender");
+
+const driveEl =
+document.getElementById("drive");
+
+const stateView =
+document.getElementById("state-view");
+
+const promptOutput =
+document.getElementById("prompt-output");
+
+const copyButton =
+document.getElementById("copy-button");
+
+const copyStatus =
+document.getElementById("copy-status");
+
+/* =========================
+UTIL
+========================= */
 
 function randomPick(arr){
-  return arr[Math.floor(Math.random() * arr.length)];
+
+  return arr[
+    Math.floor(
+      Math.random() * arr.length
+    )
+  ];
+
 }
 
 function weightedDescriptionRandom(section){
+
   if(section === "jo"){
-    return randomPick(["scenery","scenery","object","psychology","action"]);
+
+    return randomPick([
+      "scenery",
+      "scenery",
+      "object",
+      "psychology",
+      "action"
+    ]);
+
   }
 
   if(section === "ha"){
-    return randomPick(["action","action","psychology","dialogue","object"]);
+
+    return randomPick([
+      "action",
+      "action",
+      "psychology",
+      "dialogue",
+      "object"
+    ]);
+
   }
 
-  return randomPick(["psychology","action","action","dialogue","scenery"]);
+  return randomPick([
+    "psychology",
+    "action",
+    "action",
+    "dialogue",
+    "scenery"
+  ]);
+
 }
 
 function weightedSyntaxRandom(section){
+
   if(section === "jo"){
-    return randomPick(["sov","sov","nounlead","nounlead","simple"]);
+
+    return randomPick([
+      "sov",
+      "sov",
+      "nounlead",
+      "nounlead",
+      "simple"
+    ]);
+
   }
 
   if(section === "ha"){
-    return randomPick(["delayed","delayed","dialogue","sov","simple"]);
+
+    return randomPick([
+      "delayed",
+      "delayed",
+      "dialogue",
+      "sov",
+      "simple"
+    ]);
+
   }
 
-  return randomPick(["simple","simple","delayed","sov","nounlead"]);
+  return randomPick([
+    "simple",
+    "simple",
+    "delayed",
+    "sov",
+    "nounlead"
+  ]);
+
 }
 
 function getSectionByLine(line){
+
   if(line <= 5) return "jo";
+
   if(line <= 11) return "ha";
+
   return "kyu";
+
 }
 
+/* =========================
+PLAN
+========================= */
+
 function generateDescriptionPlan(){
+
   state.descriptionPlan = [];
 
   for(let i = 1; i <= 16; i++){
-    const section = getSectionByLine(i);
+
+    const section =
+    getSectionByLine(i);
+
     state.descriptionPlan.push({
+
       line:i,
-      type:weightedDescriptionRandom(section)
+
+      type:
+      weightedDescriptionRandom(section)
+
     });
+
   }
+
 }
 
 function generateSyntaxPlan(){
+
   state.syntaxPlan = [];
 
   for(let i = 1; i <= 16; i++){
-    const section = getSectionByLine(i);
+
+    const section =
+    getSectionByLine(i);
+
     state.syntaxPlan.push({
+
       line:i,
-      type:weightedSyntaxRandom(section)
+
+      type:
+      weightedSyntaxRandom(section)
+
     });
+
   }
+
 }
 
+/* =========================
+PROMPT
+========================= */
+
 function buildPrompt(){
-  const genre = state.genre || "未設定";
-  const character = state.character || "未設定";
-  const age = state.age || "未設定";
-  const gender = state.gender || "未設定";
-  const drive = state.drive || "未設定";
+
+  const genre =
+  state.genre || "未設定";
+
+  const character =
+  state.character || "未設定";
+
+  const age =
+  state.age || "未設定";
+
+  const gender =
+  state.gender || "未設定";
+
+  const drive =
+  state.drive || "未設定";
 
   let linePlanText = "";
 
   for(let i = 0; i < 16; i++){
-    const description = state.descriptionPlan[i]?.type || "未設定";
-    const syntax = state.syntaxPlan[i]?.type || "未設定";
-    linePlanText += `${i + 1}: ${description} / ${syntax}\n`;
+
+    const description =
+    state.descriptionPlan[i]?.type
+    || "未設定";
+
+    const syntax =
+    state.syntaxPlan[i]?.type
+    || "未設定";
+
+    linePlanText +=
+    `${i + 1}: ${description} / ${syntax}\n`;
+
   }
 
   return `あなたは日本語の物語生成エンジンです。
@@ -394,57 +839,111 @@ DRIVE: ${drive}
 
 【行別設計】
 ${linePlanText}`;
+
 }
+
+/* =========================
+RENDER
+========================= */
 
 function render(){
-  stateView.textContent = JSON.stringify(state,null,2);
-  promptOutput.value = buildPrompt();
+
+  stateView.textContent =
+  JSON.stringify(state,null,2);
+
+  promptOutput.value =
+  buildPrompt();
+
 }
 
+/* =========================
+EVENT
+========================= */
+
 genreEl.addEventListener("change",()=>{
-  state.genre = genreEl.value;
+
+  state.genre =
+  genreEl.value;
+
   generateDescriptionPlan();
   generateSyntaxPlan();
+
   render();
+
 });
 
 characterEl.addEventListener("input",()=>{
-  state.character = characterEl.value;
+
+  state.character =
+  characterEl.value;
+
   render();
+
 });
 
 ageEl.addEventListener("input",()=>{
-  state.age = ageEl.value;
+
+  state.age =
+  ageEl.value;
+
   render();
+
 });
 
 genderEl.addEventListener("change",()=>{
-  state.gender = genderEl.value;
+
+  state.gender =
+  genderEl.value;
+
   render();
+
 });
 
 driveEl.addEventListener("input",()=>{
-  state.drive = driveEl.value;
+
+  state.drive =
+  driveEl.value;
+
   render();
+
 });
 
 copyButton.addEventListener("click",async()=>{
+
   try{
-    await navigator.clipboard.writeText(promptOutput.value);
-    copyStatus.textContent = "PROMPT COPIED";
+
+    await navigator.clipboard
+    .writeText(promptOutput.value);
+
+    copyStatus.textContent =
+    "PROMPT COPIED";
+
   }catch(error){
+
     promptOutput.select();
-    copyStatus.textContent = "コピーできない場合は手動で選択してください";
+
+    copyStatus.textContent =
+    "コピーできませんでした";
+
   }
 
   setTimeout(()=>{
+
     copyStatus.textContent = "";
+
   },1600);
+
 });
+
+/* =========================
+INIT
+========================= */
 
 generateDescriptionPlan();
 generateSyntaxPlan();
+
 render();
+
 </script>
 
 </body>
