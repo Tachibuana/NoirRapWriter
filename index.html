@@ -562,6 +562,11 @@ function crossFadeTo(index){
   inactiveLayer = temp;
 }
 
+
+setTimeout(()=>{
+  content.classList.add("show");
+},1000);
+  
 const slideTimer = setInterval(()=>{
   currentSlide++;
 
