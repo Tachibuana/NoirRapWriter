@@ -75,16 +75,18 @@ body{
   bottom:5vh;
   transform:translateX(-50%);
   z-index:10;
+  width:min(92vw,760px);
   color:rgba(255,255,255,0.88);
   font-size:clamp(12px,1.8vw,18px);
   font-weight:300;
   letter-spacing:0.12em;
   line-height:1.7;
+  text-align:center;
   opacity:0;
   transition:opacity 1.4s ease;
   text-shadow:0 2px 12px rgba(0,0,0,0.9);
   pointer-events:none;
-  white-space:nowrap;
+  white-space:normal;
 }
 
 .intro-message.show{
@@ -96,8 +98,8 @@ body{
   z-index:5;
   min-height:100vh;
   padding:44vh clamp(18px,5vw,48px) 48px;
-  opacity:1;
-  transform:translateY(0);
+  opacity:0;
+  transform:translateY(20px);
   transition:
     opacity 1.2s ease,
     transform 1.2s ease;
@@ -243,7 +245,23 @@ button:disabled{
   min-height:100%;
   display:flex;
   flex-direction:column;
-  justify-content:center;
+  justify-content:flex-start;
+  padding-top:18px;
+  padding-bottom:24px;
+}
+
+.tarot-header{
+  position:sticky;
+  top:0;
+  z-index:50;
+  padding:10px 0 12px;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(2,6,10,0.98),
+      rgba(2,6,10,0.92)
+    );
+  backdrop-filter:blur(8px);
 }
 
 .tarot-title{
@@ -269,7 +287,7 @@ button:disabled{
   padding:12px 14px;
   border-radius:14px;
   border:1px solid rgba(190,220,245,0.22);
-  background:rgba(4,10,16,0.72);
+  background:rgba(4,10,16,0.84);
   color:#dce7f1;
   font-size:12px;
   line-height:1.7;
@@ -280,6 +298,7 @@ button:disabled{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:8px;
+  padding-top:12px;
 }
 
 .tarot-card{
@@ -403,15 +422,18 @@ button:disabled{
 .processing-message{
   position:absolute;
   left:50%;
-  bottom:5vh;
+  bottom:calc(5vh - 3px);
   transform:translateX(-50%);
   z-index:5;
+  width:min(92vw,760px);
   color:rgba(255,255,255,0.92);
   text-shadow:0 2px 14px rgba(0,0,0,0.95);
   letter-spacing:0.1em;
+  line-height:1.8;
+  text-align:center;
   opacity:0;
   transition:opacity 1s ease;
-  white-space:nowrap;
+  white-space:normal;
 }
 
 .processing-message.show{
@@ -459,6 +481,24 @@ button:disabled{
   pre{
     font-size:11px;
   }
+
+  .tarot-inner{
+    min-height:auto;
+    display:block;
+  }
+
+  .tarot-header{
+    top:0;
+  }
+
+  .tarot-grid{
+    padding-bottom:16px;
+  }
+
+  .processing-message{
+    bottom:calc(5vh - 3px);
+    font-size:13px;
+  }
 }
 </style>
 </head>
@@ -467,23 +507,29 @@ button:disabled{
 
 <div class="hero-stage">
 
-  <div class="hero-layer"
-       id="hero-layer-a"></div>
+  <div
+    class="hero-layer"
+    id="hero-layer-a"
+  ></div>
 
-  <div class="hero-layer"
-       id="hero-layer-b"></div>
+  <div
+    class="hero-layer"
+    id="hero-layer-b"
+  ></div>
 
 </div>
 
-<div class="intro-message"
-     id="intro-message">
-
+<div
+  class="intro-message"
+  id="intro-message"
+>
 ――で、今日はどんな脚本を？
-
 </div>
 
-<main class="content"
-      id="content">
+<main
+  class="content"
+  id="content"
+>
 
 <div class="brand">
 
@@ -653,6 +699,8 @@ button:disabled{
 
 <div class="tarot-inner">
 
+<div class="tarot-header">
+
 <h2 class="tarot-title">
   駆動要素を4つ選択
 </h2>
@@ -666,6 +714,8 @@ button:disabled{
   id="tarot-desc-box"
 >
   カードに触れると説明が表示されます
+</div>
+
 </div>
 
 <div
@@ -738,12 +788,20 @@ button:disabled{
 </section>
 
 <script>
-const layerA = document.getElementById("hero-layer-a");
-const layerB = document.getElementById("hero-layer-b");
-const introMessage = document.getElementById("intro-message");
-const content = document.getElementById("content");
+const layerA =
+document.getElementById("hero-layer-a");
 
-const isMobile = window.innerWidth <= 768;
+const layerB =
+document.getElementById("hero-layer-b");
+
+const introMessage =
+document.getElementById("intro-message");
+
+const content =
+document.getElementById("content");
+
+const isMobile =
+window.innerWidth <= 768;
 
 const slides = isMobile
   ? [
@@ -762,13 +820,17 @@ let inactiveLayer = layerB;
 let currentSlide = 0;
 
 function setLayerImage(layer,src){
-  layer.style.backgroundImage = `url("${src}")`;
+
+  layer.style.backgroundImage =
+  `url("${src}")`;
 }
 
 setLayerImage(activeLayer,slides[0]);
 
 setTimeout(()=>{
+
   activeLayer.classList.add("show");
+
 },300);
 
 function crossFadeTo(index){
@@ -779,9 +841,11 @@ function crossFadeTo(index){
   );
 
   inactiveLayer.classList.add("show");
+
   activeLayer.classList.remove("show");
 
   const temp = activeLayer;
+
   activeLayer = inactiveLayer;
   inactiveLayer = temp;
 }
@@ -795,12 +859,16 @@ const slideTimer = setInterval(()=>{
     clearInterval(slideTimer);
 
     setTimeout(()=>{
+
       content.classList.add("show");
       introMessage.classList.add("show");
-    },900);
+
+    },300);
 
     setTimeout(()=>{
+
       introMessage.classList.remove("show");
+
     },5200);
 
     return;
@@ -811,17 +879,21 @@ const slideTimer = setInterval(()=>{
 },1500);
 
 const state = {
+
   genre:"",
   character:"",
   age:"",
   gender:"",
   drive:"",
+
   selectedDrives:[],
+
   descriptionPlan:[],
   syntaxPlan:[]
 };
 
 const driveCards = [
+
   {
     id:"quest",
     jp:"探求",
@@ -829,6 +901,7 @@ const driveCards = [
     icon:"🔍",
     desc:"何かを求めて進む"
   },
+
   {
     id:"escape",
     jp:"逃避",
@@ -836,6 +909,7 @@ const driveCards = [
     icon:"🏃",
     desc:"何かから逃げる"
   },
+
   {
     id:"survival",
     jp:"生存",
@@ -843,6 +917,7 @@ const driveCards = [
     icon:"〽",
     desc:"生き延びる"
   },
+
   {
     id:"revenge",
     jp:"復讐",
@@ -850,6 +925,7 @@ const driveCards = [
     icon:"✊",
     desc:"失われたものを取り戻す"
   },
+
   {
     id:"system",
     jp:"組織",
@@ -857,6 +933,7 @@ const driveCards = [
     icon:"▥",
     desc:"巨大な力に抗う"
   },
+
   {
     id:"belonging",
     jp:"所属",
@@ -864,6 +941,7 @@ const driveCards = [
     icon:"●●●",
     desc:"居場所を求める"
   },
+
   {
     id:"transform",
     jp:"変容",
@@ -871,6 +949,7 @@ const driveCards = [
     icon:"🦋",
     desc:"自分自身が変わる"
   },
+
   {
     id:"truth",
     jp:"真実",
@@ -878,6 +957,7 @@ const driveCards = [
     icon:"◉",
     desc:"隠された事実を知る"
   },
+
   {
     id:"memory",
     jp:"記憶",
@@ -885,6 +965,7 @@ const driveCards = [
     icon:"◌",
     desc:"過去を取り戻す"
   },
+
   {
     id:"journey",
     jp:"巡礼",
@@ -892,6 +973,7 @@ const driveCards = [
     icon:"⌁",
     desc:"旅そのものが目的になる"
   },
+
   {
     id:"desire",
     jp:"禁忌",
@@ -899,6 +981,7 @@ const driveCards = [
     icon:"♡",
     desc:"許されない願望を求める"
   },
+
   {
     id:"sacrifice",
     jp:"犠牲",
@@ -906,6 +989,7 @@ const driveCards = [
     icon:"✝",
     desc:"何かを捨てて守る"
   },
+
   {
     id:"redemption",
     jp:"贖罪",
@@ -913,6 +997,7 @@ const driveCards = [
     icon:"♢",
     desc:"過去の罪を償う"
   },
+
   {
     id:"corruption",
     jp:"堕落",
@@ -920,6 +1005,7 @@ const driveCards = [
     icon:"◑",
     desc:"良いものが壊れていく"
   },
+
   {
     id:"break",
     jp:"断絶",
@@ -999,14 +1085,18 @@ const finalCopyButton =
 document.getElementById("final-copy-button");
 
 function randomPick(arr){
+
   return arr[
-    Math.floor(Math.random() * arr.length)
+    Math.floor(
+      Math.random() * arr.length
+    )
   ];
 }
 
 function weightedDescriptionRandom(section){
 
   if(section === "jo"){
+
     return randomPick([
       "scenery",
       "scenery",
@@ -1017,6 +1107,7 @@ function weightedDescriptionRandom(section){
   }
 
   if(section === "ha"){
+
     return randomPick([
       "action",
       "action",
@@ -1038,6 +1129,7 @@ function weightedDescriptionRandom(section){
 function weightedSyntaxRandom(section){
 
   if(section === "jo"){
+
     return randomPick([
       "sov",
       "sov",
@@ -1048,6 +1140,7 @@ function weightedSyntaxRandom(section){
   }
 
   if(section === "ha"){
+
     return randomPick([
       "delayed",
       "delayed",
@@ -1089,8 +1182,11 @@ function generateDescriptionPlan(){
     getSectionByLine(i);
 
     state.descriptionPlan.push({
+
       line:i,
-      type:weightedDescriptionRandom(section)
+
+      type:
+      weightedDescriptionRandom(section)
     });
   }
 }
@@ -1105,8 +1201,11 @@ function generateSyntaxPlan(){
     getSectionByLine(i);
 
     state.syntaxPlan.push({
+
       line:i,
-      type:weightedSyntaxRandom(section)
+
+      type:
+      weightedSyntaxRandom(section)
     });
   }
 }
@@ -1129,25 +1228,36 @@ function buildPrompt(){
   state.drive || "未設定";
 
   const selectedText =
+
   state.selectedDrives
+
     .map(id =>
-      driveCards.find(card => card.id === id)
+      driveCards.find(
+        card => card.id === id
+      )
     )
+
     .filter(Boolean)
+
     .map(card =>
       `${card.jp} / ${card.en}: ${card.desc}`
     )
-    .join("\n") || "未設定";
+
+    .join("\n")
+
+    || "未設定";
 
   let linePlanText = "";
 
   for(let i=0;i<16;i++){
 
     const description =
-    state.descriptionPlan[i]?.type || "未設定";
+    state.descriptionPlan[i]?.type
+    || "未設定";
 
     const syntax =
-    state.syntaxPlan[i]?.type || "未設定";
+    state.syntaxPlan[i]?.type
+    || "未設定";
 
     linePlanText +=
     `${i+1}: ${description} / ${syntax}\n`;
@@ -1198,13 +1308,18 @@ function renderTarot(){
     document.createElement("button");
 
     button.type = "button";
-    button.className = "tarot-card";
 
-    if(state.selectedDrives.includes(card.id)){
+    button.className =
+    "tarot-card";
+
+    if(
+      state.selectedDrives.includes(card.id)
+    ){
       button.classList.add("active");
     }
 
     button.innerHTML = `
+
       <div class="tarot-icon">
         ${card.icon}
       </div>
@@ -1216,116 +1331,174 @@ function renderTarot(){
       <div class="tarot-en">
         ${card.en}
       </div>
+
     `;
 
-    button.addEventListener("mouseenter",()=>{
+    button.addEventListener(
+      "mouseenter",
+      ()=>{
 
-      tarotDescBox.textContent =
-      `${card.jp} / ${card.en}：${card.desc}`;
-    });
+        tarotDescBox.textContent =
+        `${card.jp} / ${card.en}：${card.desc}`;
+      }
+    );
 
-    button.addEventListener("focus",()=>{
+    button.addEventListener(
+      "focus",
+      ()=>{
 
-      tarotDescBox.textContent =
-      `${card.jp} / ${card.en}：${card.desc}`;
-    });
+        tarotDescBox.textContent =
+        `${card.jp} / ${card.en}：${card.desc}`;
+      }
+    );
 
-    button.addEventListener("touchstart",()=>{
+    button.addEventListener(
+      "touchstart",
+      ()=>{
 
-      tarotDescBox.textContent =
-      `${card.jp} / ${card.en}：${card.desc}`;
+        tarotDescBox.textContent =
+        `${card.jp} / ${card.en}：${card.desc}`;
 
-    },{passive:true});
+      },
+      {passive:true}
+    );
 
-    button.addEventListener("click",()=>{
+    button.addEventListener(
+      "click",
+      ()=>{
 
-      const exists =
-      state.selectedDrives.includes(card.id);
+        const exists =
+        state.selectedDrives.includes(card.id);
 
-      if(exists){
+        if(exists){
 
-        state.selectedDrives =
-        state.selectedDrives.filter(
-          id => id !== card.id
-        );
+          state.selectedDrives =
+          state.selectedDrives.filter(
+            id => id !== card.id
+          );
 
-      }else{
+        }else{
 
-        if(state.selectedDrives.length >= 4){
-          return;
+          if(
+            state.selectedDrives.length >= 4
+          ){
+            return;
+          }
+
+          state.selectedDrives.push(card.id);
         }
 
-        state.selectedDrives.push(card.id);
+        renderTarot();
+        render();
       }
-
-      renderTarot();
-      render();
-    });
+    );
 
     tarotGrid.appendChild(button);
   });
 
   const selectedNames =
+
   state.selectedDrives
+
     .map(id =>
-      driveCards.find(card => card.id === id)
+      driveCards.find(
+        card => card.id === id
+      )
     )
+
     .filter(Boolean)
+
     .map(card => card.jp)
+
     .join(" / ");
 
   tarotInfo.textContent =
+
   selectedNames
+
     ? `${state.selectedDrives.length} / 4 SELECTED：${selectedNames}`
+
     : "0 / 4 SELECTED";
 
   tarotNext.disabled =
   state.selectedDrives.length !== 4;
 }
 
-genreEl.addEventListener("change",()=>{
+genreEl.addEventListener(
+  "change",
+  ()=>{
 
-  state.genre = genreEl.value;
+    state.genre =
+    genreEl.value;
 
-  generateDescriptionPlan();
-  generateSyntaxPlan();
-  render();
-});
+    generateDescriptionPlan();
+    generateSyntaxPlan();
 
-characterEl.addEventListener("input",()=>{
+    render();
+  }
+);
 
-  state.character = characterEl.value;
-  render();
-});
+characterEl.addEventListener(
+  "input",
+  ()=>{
 
-ageEl.addEventListener("input",()=>{
+    state.character =
+    characterEl.value;
 
-  state.age = ageEl.value;
-  render();
-});
+    render();
+  }
+);
 
-genderEl.addEventListener("change",()=>{
+ageEl.addEventListener(
+  "input",
+  ()=>{
 
-  state.gender = genderEl.value;
-  render();
-});
+    state.age =
+    ageEl.value;
 
-driveEl.addEventListener("input",()=>{
+    render();
+  }
+);
 
-  state.drive = driveEl.value;
-  render();
-});
+genderEl.addEventListener(
+  "change",
+  ()=>{
 
-openTarotButton.addEventListener("click",()=>{
+    state.gender =
+    genderEl.value;
 
-  tarotScreen.classList.add("show");
-  renderTarot();
-});
+    render();
+  }
+);
 
-tarotClose.addEventListener("click",()=>{
+driveEl.addEventListener(
+  "input",
+  ()=>{
 
-  tarotScreen.classList.remove("show");
-});
+    state.drive =
+    driveEl.value;
+
+    render();
+  }
+);
+
+openTarotButton.addEventListener(
+  "click",
+  ()=>{
+
+    tarotScreen.classList.add("show");
+
+    renderTarot();
+  }
+);
+
+tarotClose.addEventListener(
+  "click",
+  ()=>{
+
+    tarotScreen.classList.remove("show");
+  }
+);
 
 let processingActive =
 processingLayerA;
@@ -1339,11 +1512,16 @@ function processingSwap(src){
   `url("${src}")`;
 
   processingInactive.classList.add("show");
+
   processingActive.classList.remove("show");
 
   const temp = processingActive;
-  processingActive = processingInactive;
-  processingInactive = temp;
+
+  processingActive =
+  processingInactive;
+
+  processingInactive =
+  temp;
 }
 
 function runProcessingSequence(){
@@ -1353,6 +1531,7 @@ function runProcessingSequence(){
   processingScreen.classList.add("show");
 
   const processingSlides = isMobile
+
     ? [
         "./scene-mobile-a.webp",
         "./scene-mobile-b.webp",
@@ -1360,6 +1539,7 @@ function runProcessingSequence(){
         "./scene-mobile-d.webp",
         "./scene-mobile-e.webp"
       ]
+
     : [
         "./scene-pc-a.webp",
         "./scene-pc-b.webp",
@@ -1369,7 +1549,9 @@ function runProcessingSequence(){
       ];
 
   const finalScene = isMobile
+
     ? "./scene-mobile-f.webp"
+
     : "./scene-pc-f.webp";
 
   processingActive.style.backgroundImage =
@@ -1383,6 +1565,7 @@ function runProcessingSequence(){
   processingMessage.classList.add("show");
 
   finalCopy.classList.remove("show");
+
   processingFade.classList.remove("show");
 
   let index = 0;
@@ -1410,8 +1593,8 @@ function runProcessingSequence(){
 
         processingFade.classList.remove("show");
 
-        processingMessage.textContent =
-        "はいよ。いつも通り、アタシのことは言うんじゃないよ。";
+        processingMessage.innerHTML =
+        `はいよ。<br>いつも通り、<br>アタシのことは言うんじゃないよ。`;
 
         finalCopy.classList.add("show");
 
@@ -1420,7 +1603,9 @@ function runProcessingSequence(){
       return;
     }
 
-    processingSwap(processingSlides[index]);
+    processingSwap(
+      processingSlides[index]
+    );
 
     if(index >= 1 && index <= 3){
 
@@ -1431,55 +1616,77 @@ function runProcessingSequence(){
   },1000);
 }
 
-tarotNext.addEventListener("click",()=>{
+tarotNext.addEventListener(
+  "click",
+  ()=>{
 
-  runProcessingSequence();
-});
-
-copyButton.addEventListener("click",async()=>{
-
-  try{
-
-    await navigator.clipboard.writeText(
-      promptOutput.value
-    );
-
-    copyStatus.textContent =
-    "PROMPT COPIED";
-
-  }catch(error){
-
-    promptOutput.select();
-
-    copyStatus.textContent =
-    "コピーできませんでした";
+    runProcessingSequence();
   }
+);
 
-  setTimeout(()=>{
+copyButton.addEventListener(
+  "click",
+  async()=>{
 
-    copyStatus.textContent = "";
+    try{
 
-  },1600);
-});
+      await navigator.clipboard.writeText(
+        promptOutput.value
+      );
 
-finalCopyButton.addEventListener("click",async()=>{
+      copyStatus.textContent =
+      "PROMPT COPIED";
 
-  try{
+    }catch(error){
 
-    await navigator.clipboard.writeText(
-      promptOutput.value
-    );
+      promptOutput.select();
 
-    alert("PROMPT COPIED");
+      copyStatus.textContent =
+      "コピーできませんでした";
+    }
 
-  }catch(error){
+    setTimeout(()=>{
 
-    alert("コピー失敗");
+      copyStatus.textContent = "";
+
+    },1600);
   }
-});
+);
+
+finalCopyButton.addEventListener(
+  "click",
+  async()=>{
+
+    try{
+
+      await navigator.clipboard.writeText(
+        promptOutput.value
+      );
+
+    }catch(error){
+      return;
+    }
+
+    finalCopy.classList.remove("show");
+
+    processingScreen.classList.remove("show");
+
+    content.classList.add("show");
+
+    processingActive.style.backgroundImage =
+    `url("${
+      isMobile
+        ? "./scene-mobile-f.webp"
+        : "./scene-pc-f.webp"
+    }")`;
+
+    processingActive.classList.add("show");
+  }
+);
 
 generateDescriptionPlan();
 generateSyntaxPlan();
+
 render();
 </script>
 
