@@ -347,6 +347,40 @@ MOBILE
 
 </main>
 
+<div class="tarot-screen" id="tarot-screen">
+
+  <div class="tarot-inner">
+
+    <h2 class="tarot-title">
+      駆動要素を4つ選択
+    </h2>
+
+    <div
+    class="tarot-grid"
+    id="tarot-grid">
+    </div>
+
+    <div
+    class="tarot-selected"
+    id="tarot-selected">
+
+      0 / 4 SELECTED
+
+    </div>
+
+    <button
+    class="tarot-next"
+    id="tarot-next"
+    disabled>
+
+      NEXT
+
+    </button>
+
+  </div>
+
+</div>
+
 <script>
 /* =========================
 INTRO CROSSFADE SLIDE
@@ -431,9 +465,55 @@ const state = {
   gender:"",
   drive:"",
   descriptionPlan:[],
-  syntaxPlan:[]
+  syntaxPlan:[],
+  selectedDrives:[]
+  
 };
 
+const tarotScreen =
+document.getElementById("tarot-screen");
+
+const tarotGrid =
+document.getElementById("tarot-grid");
+
+const tarotSelected =
+document.getElementById("tarot-selected");
+
+const tarotNext =
+document.getElementById("tarot-next");
+
+const driveCards = [
+
+{
+  id:"quest",
+  jp:"探求",
+  en:"QUEST",
+  image:"./icons/quest.webp"
+},
+
+{
+  id:"escape",
+  jp:"逃避",
+  en:"ESCAPE",
+  image:"./icons/escape.webp"
+},
+
+{
+  id:"survival",
+  jp:"生存",
+  en:"SURVIVAL",
+  image:"./icons/survival.webp"
+},
+
+{
+  id:"revenge",
+  jp:"復讐",
+  en:"REVENGE",
+  image:"./icons/revenge.webp"
+}
+
+];
+  
 const genreEl = document.getElementById("genre");
 const characterEl = document.getElementById("character");
 const ageEl = document.getElementById("age");
@@ -520,6 +600,82 @@ function buildPrompt(){
     linePlanText += `${i + 1}: ${description} / ${syntax}\n`;
   }
 
+  function renderTarotCards(){
+
+  tarotGrid.innerHTML = "";
+
+  driveCards.forEach(card=>{
+
+    const div =
+    document.createElement("div");
+
+    div.className =
+    "tarot-card";
+
+    if(
+      state.selectedDrives.includes(card.id)
+    ){
+      div.classList.add("active");
+    }
+
+    div.innerHTML = `
+
+      <img src="${card.image}">
+
+      <div class="tarot-label">
+
+        <div class="tarot-jp">
+          ${card.jp}
+        </div>
+
+        <div class="tarot-en">
+          ${card.en}
+        </div>
+
+      </div>
+
+    `;
+
+    div.addEventListener("click",()=>{
+
+      const exists =
+      state.selectedDrives.includes(card.id);
+
+      if(exists){
+
+        state.selectedDrives =
+        state.selectedDrives.filter(
+          id => id !== card.id
+        );
+
+      }else{
+
+        if(
+          state.selectedDrives.length >= 4
+        ){
+          return;
+        }
+
+        state.selectedDrives.push(card.id);
+
+      }
+
+      renderTarotCards();
+
+    });
+
+    tarotGrid.appendChild(div);
+
+  });
+
+  tarotSelected.textContent =
+  `${state.selectedDrives.length} / 4 SELECTED`;
+
+  tarotNext.disabled =
+  state.selectedDrives.length !== 4;
+
+}
+  
   return `あなたは日本語の物語生成エンジンです。
 
 以下の条件に従って、
@@ -570,6 +726,14 @@ genderEl.addEventListener("change",()=>{
   render();
 });
 
+content.addEventListener("dblclick",()=>{
+
+  tarotScreen.classList.add("show");
+
+  renderTarotCards();
+
+});
+
 driveEl.addEventListener("input",()=>{
   state.drive = driveEl.value;
   render();
@@ -588,6 +752,187 @@ copyButton.addEventListener("click",async()=>{
     copyStatus.textContent = "";
   },1600);
 });
+
+/* =========================
+TAROT SCREEN
+========================= */
+
+.tarot-screen{
+
+  position:fixed;
+
+  inset:0;
+
+  z-index:30;
+
+  background:
+  rgba(3,5,8,0.94);
+
+  display:none;
+
+  overflow:auto;
+
+}
+
+.tarot-screen.show{
+
+  display:block;
+
+}
+
+.tarot-inner{
+
+  width:min(100%,900px);
+
+  margin:auto;
+
+  padding:
+  48px 18px 80px;
+
+}
+
+.tarot-title{
+
+  text-align:center;
+
+  font-size:18px;
+
+  font-weight:400;
+
+  letter-spacing:0.18em;
+
+  margin-bottom:28px;
+
+  color:#d9e6f2;
+
+}
+
+.tarot-grid{
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(3,1fr);
+
+  gap:10px;
+
+}
+
+.tarot-card{
+
+  position:relative;
+
+  aspect-ratio:0.72;
+
+  border-radius:14px;
+
+  border:
+  1px solid
+  rgba(170,210,255,0.18);
+
+  background:
+  rgba(15,18,24,0.92);
+
+  overflow:hidden;
+
+  cursor:pointer;
+
+  transition:
+  transform 0.2s ease,
+  border-color 0.25s ease,
+  box-shadow 0.25s ease;
+
+}
+
+.tarot-card:active{
+
+  transform:scale(0.98);
+
+}
+
+.tarot-card.active{
+
+  border-color:
+  rgba(220,240,255,0.9);
+
+  box-shadow:
+  0 0 18px
+  rgba(180,220,255,0.28);
+
+}
+
+.tarot-card img{
+
+  width:100%;
+
+  height:100%;
+
+  object-fit:cover;
+
+  opacity:0.72;
+
+}
+
+.tarot-label{
+
+  position:absolute;
+
+  left:0;
+  right:0;
+  bottom:12px;
+
+  text-align:center;
+
+}
+
+.tarot-jp{
+
+  font-size:11px;
+
+  letter-spacing:0.04em;
+
+  color:#dce7f1;
+
+}
+
+.tarot-en{
+
+  margin-top:2px;
+
+  font-size:10px;
+
+  letter-spacing:0.14em;
+
+  color:
+  rgba(220,230,240,0.7);
+
+}
+
+.tarot-selected{
+
+  margin-top:24px;
+
+  text-align:center;
+
+  color:#cfdcea;
+
+  letter-spacing:0.14em;
+
+  font-size:12px;
+
+}
+
+.tarot-next{
+
+  margin-top:18px;
+
+}
+
+.tarot-next:disabled{
+
+  opacity:0.3;
+
+}
 
 generateDescriptionPlan();
 generateSyntaxPlan();
