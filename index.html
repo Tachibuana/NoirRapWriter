@@ -2,153 +2,267 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0"/>
 
 <title>Ghorse Noir Engine</title>
 
 <style>
-*{box-sizing:border-box}
+
+*{
+  box-sizing:border-box;
+}
 
 :root{
+
   --bg:#050505;
-  --panel:rgba(8,7,6,0.92);
+
+  --panel:
+  rgba(8,7,6,0.92);
+
   --text:#f1e7d4;
+
   --gold:#e5c48a;
+
   --muted:#c9b99d;
+
   --green:#8de38d;
-  --line:rgba(229,196,138,0.22);
+
+  --line:
+  rgba(229,196,138,0.22);
+
   --blue:#9eb8d2;
 }
 
 body{
+
   margin:0;
+
   background:var(--bg);
+
   color:var(--text);
-  font-family:system-ui,sans-serif;
+
+  font-family:
+  system-ui,
+  sans-serif;
+
   overflow-x:hidden;
 }
 
 .hero-stage{
+
   position:fixed;
+
   inset:0;
+
   min-height:100dvh;
+
   z-index:0;
+
   background:#050505;
+
   overflow:hidden;
 }
 
 .hero-layer{
+
   position:absolute;
+
   inset:0;
+
   background-size:cover;
+
   background-position:center top;
+
   opacity:0;
-  transition:opacity 0.85s ease;
+
+  transition:
+  opacity 0.85s ease;
 }
 
 .hero-layer.show{
+
   opacity:1;
 }
 
 .hero-stage::after{
+
   content:"";
+
   position:absolute;
+
   left:0;
   right:0;
   bottom:0;
+
   height:43vh;
+
   background:
-    linear-gradient(
-      to bottom,
-      rgba(5,5,5,0),
-      rgba(5,5,5,0.25),
-      rgba(5,5,5,0.72),
-      rgba(5,5,5,1)
-    );
+
+  linear-gradient(
+    to bottom,
+
+    rgba(5,5,5,0),
+
+    rgba(5,5,5,0.25),
+
+    rgba(5,5,5,0.72),
+
+    rgba(5,5,5,1)
+  );
+
   z-index:3;
+
   pointer-events:none;
 }
 
 .intro-message{
+
   position:fixed;
+
   left:50%;
+
   bottom:5vh;
-  transform:translateX(-50%);
+
+  transform:
+  translateX(-50%);
+
   z-index:10;
+
   width:min(92vw,760px);
-  color:rgba(255,255,255,0.88);
-  font-size:clamp(12px,1.8vw,18px);
+
+  color:
+  rgba(255,255,255,0.88);
+
+  font-size:
+  clamp(12px,1.8vw,18px);
+
   font-weight:300;
+
   letter-spacing:0.12em;
+
   line-height:1.7;
+
   text-align:center;
+
   opacity:0;
-  transition:opacity 1.4s ease;
-  text-shadow:0 2px 12px rgba(0,0,0,0.9);
+
+  transition:
+  opacity 1.4s ease;
+
+  text-shadow:
+  0 2px 12px rgba(0,0,0,0.9);
+
   pointer-events:none;
+
   white-space:normal;
 }
 
 .intro-message.show{
+
   opacity:1;
 }
 
 .content{
+
   position:relative;
+
   z-index:5;
+
   min-height:100vh;
-  padding:44vh clamp(18px,5vw,48px) 48px;
+
+  padding:
+  44vh clamp(18px,5vw,48px)
+  48px;
+
   opacity:0;
-  transform:translateY(20px);
+
+  transform:
+  translateY(20px);
+
   transition:
-    opacity 1.2s ease,
-    transform 1.2s ease;
+  opacity 1.2s ease,
+  transform 1.2s ease;
 }
 
 .content.show{
+
   opacity:1;
-  transform:translateY(0);
+
+  transform:
+  translateY(0);
 }
 
 .brand{
+
   margin-bottom:24px;
-  text-shadow:0 6px 24px rgba(0,0,0,0.9);
+
+  text-shadow:
+  0 6px 24px rgba(0,0,0,0.9);
 }
 
 h1{
+
   margin:0 0 8px;
-  font-size:clamp(42px,10vw,82px);
+
+  font-size:
+  clamp(42px,10vw,82px);
+
   line-height:1;
+
   letter-spacing:0.08em;
 }
 
 .subtitle{
+
   margin:0;
+
   color:var(--muted);
-  font-size:clamp(14px,3vw,18px);
+
+  font-size:
+  clamp(14px,3vw,18px);
+
   letter-spacing:0.08em;
 }
 
 .panel{
+
   width:min(100%,780px);
-  padding:clamp(18px,5vw,30px);
+
+  padding:
+  clamp(18px,5vw,30px);
+
   border-radius:22px;
+
   background:var(--panel);
-  border:1px solid var(--line);
-  backdrop-filter:blur(10px);
-  box-shadow:0 24px 80px rgba(0,0,0,0.65);
+
+  border:
+  1px solid var(--line);
+
+  backdrop-filter:
+  blur(10px);
+
+  box-shadow:
+  0 24px 80px rgba(0,0,0,0.65);
 }
 
 .section{
+
   margin-bottom:20px;
 }
 
 label{
+
   display:block;
+
   margin-bottom:8px;
+
   color:var(--gold);
+
   font-size:13px;
+
   font-weight:bold;
+
   letter-spacing:0.12em;
 }
 
@@ -156,313 +270,534 @@ select,
 input,
 textarea,
 button{
+
   width:100%;
+
   padding:14px;
+
   border-radius:13px;
-  border:1px solid rgba(229,196,138,0.14);
-  background:rgba(16,14,13,0.95);
+
+  border:
+  1px solid
+  rgba(229,196,138,0.14);
+
+  background:
+  rgba(16,14,13,0.95);
+
   color:white;
+
   font-size:16px;
+
   outline:none;
 }
 
 select:focus,
 input:focus,
 textarea:focus{
-  border-color:rgba(229,196,138,0.6);
-  box-shadow:0 0 0 3px rgba(229,196,138,0.1);
+
+  border-color:
+  rgba(229,196,138,0.6);
+
+  box-shadow:
+  0 0 0 3px
+  rgba(229,196,138,0.1);
 }
 
 textarea{
+
   min-height:380px;
+
   resize:vertical;
+
   line-height:1.7;
+
   white-space:pre-wrap;
 }
 
 h3{
+
   margin-top:28px;
+
   padding-bottom:8px;
-  border-bottom:1px solid var(--line);
+
+  border-bottom:
+  1px solid var(--line);
+
   color:var(--gold);
 }
 
 pre{
+
   max-height:240px;
+
   overflow:auto;
+
   padding:14px;
+
   border-radius:14px;
-  background:rgba(0,0,0,0.86);
+
+  background:
+  rgba(0,0,0,0.86);
+
   color:var(--green);
+
   font-size:12px;
 }
 
 button{
+
   cursor:pointer;
+
   background:
-    linear-gradient(
-      180deg,
-      #4b321f,
-      #24150d
-    );
+
+  linear-gradient(
+    180deg,
+    #4b321f,
+    #24150d
+  );
+
   color:#f8e9cc;
+
   font-weight:bold;
+
   letter-spacing:0.12em;
 }
 
 button:active{
+
   transform:scale(0.985);
 }
 
 button:disabled{
+
   opacity:0.35;
+
   cursor:not-allowed;
 }
 
 #copy-status{
+
   margin-top:12px;
+
   min-height:20px;
+
   color:var(--green);
 }
 
 .tarot-screen{
+
   position:fixed;
+
   inset:0;
+
   z-index:40;
+
   display:none;
-  background:rgba(2,6,10,0.94);
+
+  background:
+  rgba(2,6,10,0.94);
+
   padding:18px;
+
   overflow:auto;
 }
 
 .tarot-screen.show{
+
   display:block;
 }
 
 .tarot-inner{
+
   width:min(100%,920px);
+
   margin:0 auto;
+
   min-height:100%;
+
   display:flex;
+
   flex-direction:column;
+
   justify-content:flex-start;
+
   padding-top:18px;
+
   padding-bottom:24px;
 }
 
 .tarot-header{
+
   position:sticky;
+
   top:0;
+
   z-index:50;
+
   padding:10px 0 12px;
+
   background:
-    linear-gradient(
-      to bottom,
-      rgba(2,6,10,0.98),
-      rgba(2,6,10,0.92)
-    );
-  backdrop-filter:blur(8px);
+
+  linear-gradient(
+    to bottom,
+
+    rgba(2,6,10,0.98),
+
+    rgba(2,6,10,0.92)
+  );
+
+  backdrop-filter:
+  blur(8px);
 }
 
 .tarot-title{
+
   text-align:center;
+
   font-size:15px;
+
   font-weight:400;
+
   letter-spacing:0.18em;
+
   color:#dce7f1;
+
   margin:0 0 14px;
 }
 
 .tarot-subtitle{
+
   text-align:center;
+
   font-size:11px;
-  color:rgba(220,230,240,0.72);
+
+  color:
+  rgba(220,230,240,0.72);
+
   letter-spacing:0.08em;
+
   margin-bottom:14px;
 }
 
 .tarot-desc-box{
+
   margin-top:12px;
+
   min-height:48px;
+
   padding:12px 14px;
+
   border-radius:14px;
-  border:1px solid rgba(190,220,245,0.22);
-  background:rgba(4,10,16,0.84);
+
+  border:
+  1px solid
+  rgba(190,220,245,0.22);
+
+  background:
+  rgba(4,10,16,0.84);
+
   color:#dce7f1;
+
   font-size:12px;
+
   line-height:1.7;
+
   text-align:center;
 }
 
 .tarot-grid{
+
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+
+  grid-template-columns:
+  repeat(3,1fr);
+
   gap:8px;
+
   padding-top:12px;
 }
 
 .tarot-card{
+
   aspect-ratio:0.72;
+
   border-radius:14px;
-  border:1px solid rgba(190,220,245,0.32);
+
+  border:
+  1px solid
+  rgba(190,220,245,0.32);
 
   background:
-    radial-gradient(
-      circle at 50% 20%,
-      rgba(130,170,205,0.14),
-      transparent 36%
-    ),
-    rgba(8,18,28,0.94);
+
+  radial-gradient(
+    circle at 50% 20%,
+    rgba(130,170,205,0.14),
+    transparent 36%
+  ),
+
+  rgba(8,18,28,0.94);
 
   color:#dce7f1;
 
   display:flex;
+
   flex-direction:column;
+
   align-items:center;
+
   justify-content:center;
+
   gap:7px;
 
   position:relative;
+
   overflow:hidden;
+
   cursor:pointer;
 
   box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,0.04);
+  inset 0 0 0 1px
+  rgba(255,255,255,0.04);
 }
 
 .tarot-card::before{
+
   content:"";
+
   position:absolute;
+
   inset:8px;
-  border:1px solid rgba(210,230,245,0.24);
+
+  border:
+  1px solid
+  rgba(210,230,245,0.24);
+
   border-radius:10px;
+
   pointer-events:none;
 }
 
 .tarot-card.active{
-  border-color:rgba(230,245,255,0.95);
+
+  border-color:
+  rgba(230,245,255,0.95);
 
   box-shadow:
-    0 0 20px rgba(160,210,255,0.35),
-    inset 0 0 0 1px rgba(255,255,255,0.12);
+
+  0 0 20px
+  rgba(160,210,255,0.35),
+
+  inset 0 0 0 1px
+  rgba(255,255,255,0.12);
 }
 
 .tarot-icon{
-  font-size:clamp(22px,6vw,38px);
+
+  font-size:
+  clamp(22px,6vw,38px);
+
   opacity:0.72;
+
   filter:grayscale(1);
 }
 
 .tarot-jp{
+
   font-size:11px;
+
   letter-spacing:0.02em;
+
   color:#d9e1e8;
 }
 
 .tarot-en{
+
   font-size:10px;
+
   letter-spacing:0.08em;
-  color:rgba(190,215,235,0.78);
+
+  color:
+  rgba(190,215,235,0.78);
 }
 
 .tarot-info{
+
   margin-top:14px;
+
   text-align:center;
+
   color:#cfdcea;
+
   font-size:12px;
+
   line-height:1.7;
 }
 
 .tarot-actions{
+
   margin-top:14px;
+
   display:grid;
-  grid-template-columns:1fr 1fr;
+
+  grid-template-columns:
+  1fr 1fr;
+
   gap:10px;
 }
 
 .processing-screen{
+
   position:fixed;
+
   inset:0;
+
   z-index:80;
+
   display:none;
+
   background:#000;
+
   overflow:hidden;
 }
 
 .processing-screen.show{
+
   display:block;
 }
 
 .processing-layer{
+
   position:absolute;
+
   inset:0;
+
   background-size:cover;
+
   background-position:center center;
+
   opacity:0;
-  transition:opacity 1s ease;
+
+  transition:
+  opacity 1s ease;
 }
 
 .processing-layer.show{
+
   opacity:1;
 }
 
 .processing-fade{
+
   position:absolute;
+
   inset:0;
+
   background:#000;
+
   opacity:0;
-  transition:opacity 3s ease;
+
+  transition:
+  opacity 3s ease;
+
   z-index:3;
 }
 
 .processing-fade.show{
+
   opacity:1;
 }
 
 .processing-message{
+
   position:absolute;
+
   left:50%;
-  bottom:calc(5vh - 3px);
-  transform:translateX(-50%);
+
+  bottom:3vh;
+
+  transform:
+  translateX(-50%);
+
   z-index:5;
+
   width:min(92vw,760px);
-  color:rgba(255,255,255,0.92);
-  text-shadow:0 2px 14px rgba(0,0,0,0.95);
+
+  color:
+  rgba(255,255,255,0.92);
+
+  text-shadow:
+  0 2px 14px rgba(0,0,0,0.95);
+
   letter-spacing:0.1em;
+
   line-height:1.8;
+
   text-align:center;
+
   opacity:0;
-  transition:opacity 1s ease;
+
+  transition:
+  opacity 1s ease;
+
   white-space:normal;
 }
 
 .processing-message.show{
+
   opacity:1;
 }
 
 .final-copy{
+
   position:absolute;
+
   left:50%;
-  transform:translateX(-50%);
-  bottom:10vh;
+
+  transform:
+  translateX(-50%);
+
+  bottom:6vh;
+
   width:min(92vw,700px);
+
   z-index:6;
+
   opacity:0;
-  transition:opacity 1s ease;
+
+  transition:
+  opacity 1s ease;
 }
 
 .final-copy.show{
+
   opacity:1;
+}
+
+.final-copy button{
+
+  background:
+  rgba(20,16,14,0.72);
+
+  backdrop-filter:
+  blur(6px);
+
+  border:
+  1px solid
+  rgba(255,255,255,0.12);
 }
 
 @media (min-width:769px){
 
   .tarot-grid{
-    grid-template-columns:repeat(5,1fr);
+
+    grid-template-columns:
+    repeat(5,1fr);
+
     gap:14px;
   }
 
   .tarot-card{
+
     max-height:180px;
   }
 }
@@ -470,36 +805,47 @@ button:disabled{
 @media (max-width:768px){
 
   .content{
+
     padding-top:42vh;
   }
 
   textarea{
+
     min-height:430px;
+
     font-size:15px;
   }
 
   pre{
+
     font-size:11px;
   }
 
   .tarot-inner{
+
     min-height:auto;
+
     display:block;
   }
 
   .tarot-header{
+
     top:0;
   }
 
   .tarot-grid{
+
     padding-bottom:16px;
   }
 
   .processing-message{
-    bottom:calc(5vh - 3px);
+
+    bottom:2vh;
+
     font-size:13px;
   }
 }
+
 </style>
 </head>
 
@@ -553,44 +899,52 @@ button:disabled{
   選択してください
 </option>
 
-<option value="noir">
-  Noir
+<option value="ノワール">
+  ノワール
 </option>
 
-<option value="cyberpunk">
-  Cyberpunk
+<option value="スチームパンク">
+  スチームパンク
 </option>
 
-<option value="melancholy">
-  Melancholy
+<option value="ミステリー">
+  ミステリー
 </option>
 
-<option value="crime">
-  Crime
+<option value="ポストアポカリプス">
+  ポストアポカリプス
 </option>
 
-<option value="mystery">
-  Mystery
+<option value="ファンタジー">
+  ファンタジー
 </option>
 
-<option value="postapocalypse">
-  Post Apocalypse
+<option value="SF">
+  SF
 </option>
 
-<option value="urbanfantasy">
-  Urban Fantasy
+<option value="日本時代劇">
+  日本時代劇
 </option>
 
-<option value="scifi">
-  Sci-Fi
+<option value="中世ヨーロッパ">
+  中世ヨーロッパ
 </option>
 
-<option value="tragedy">
-  Tragedy
+<option value="怪物">
+  怪物
 </option>
 
-<option value="dreamcore">
-  Dreamcore
+<option value="ロードムービー">
+  ロードムービー
+</option>
+
+<option value="学園">
+  学園
+</option>
+
+<option value="現代社会">
+  現代社会
 </option>
 
 </select>
@@ -599,13 +953,27 @@ button:disabled{
 
 <div class="section">
 
-<label>CHARACTER</label>
+<label>DRAMA</label>
 
-<input
-  id="character"
-  type="text"
-  placeholder="Ghorse"
->
+<select id="drama">
+
+<option value="">
+  選択してください
+</option>
+
+<option value="喜劇">
+  喜劇
+</option>
+
+<option value="悲劇">
+  悲劇
+</option>
+
+<option value="中立">
+  中立
+</option>
+
+</select>
 
 </div>
 
@@ -649,12 +1017,24 @@ button:disabled{
 
 <div class="section">
 
-<label>DRIVE</label>
+<label>JOB</label>
 
 <input
-  id="drive"
+  id="job"
   type="text"
-  placeholder="revenge / escape / salvation"
+  placeholder="探偵 / 傭兵 / 学生"
+>
+
+</div>
+
+<div class="section">
+
+<label>SHUMI</label>
+
+<input
+  id="shumi"
+  type="text"
+  placeholder="煙草 / 写真 / 機械いじり"
 >
 
 </div>
@@ -702,11 +1082,11 @@ button:disabled{
 <div class="tarot-header">
 
 <h2 class="tarot-title">
-  駆動要素を4つ選択
+  駆動要素を2〜4つ選択
 </h2>
 
 <div class="tarot-subtitle">
-  DRIVE CARDS / SELECT 4
+  DRIVE CARDS / SELECT 2-4
 </div>
 
 <div
@@ -788,27 +1168,38 @@ button:disabled{
 </section>
 
 <script>
+
 const layerA =
-document.getElementById("hero-layer-a");
+document.getElementById(
+  "hero-layer-a"
+);
 
 const layerB =
-document.getElementById("hero-layer-b");
+document.getElementById(
+  "hero-layer-b"
+);
 
 const introMessage =
-document.getElementById("intro-message");
+document.getElementById(
+  "intro-message"
+);
 
 const content =
-document.getElementById("content");
+document.getElementById(
+  "content"
+);
 
 const isMobile =
 window.innerWidth <= 768;
 
 const slides = isMobile
+
   ? [
       "./intro-mobile-1.webp",
       "./intro-mobile-2.webp",
       "./intro-mobile-3.webp"
     ]
+
   : [
       "./intro-pc-1.webp",
       "./intro-pc-2.webp",
@@ -816,20 +1207,30 @@ const slides = isMobile
     ];
 
 let activeLayer = layerA;
+
 let inactiveLayer = layerB;
+
 let currentSlide = 0;
 
-function setLayerImage(layer,src){
+function setLayerImage(
+  layer,
+  src
+){
 
   layer.style.backgroundImage =
   `url("${src}")`;
 }
 
-setLayerImage(activeLayer,slides[0]);
+setLayerImage(
+  activeLayer,
+  slides[0]
+);
 
 setTimeout(()=>{
 
-  activeLayer.classList.add("show");
+  activeLayer.classList.add(
+    "show"
+  );
 
 },300);
 
@@ -840,14 +1241,22 @@ function crossFadeTo(index){
     slides[index]
   );
 
-  inactiveLayer.classList.add("show");
+  inactiveLayer.classList.add(
+    "show"
+  );
 
-  activeLayer.classList.remove("show");
+  activeLayer.classList.remove(
+    "show"
+  );
 
-  const temp = activeLayer;
+  const temp =
+  activeLayer;
 
-  activeLayer = inactiveLayer;
-  inactiveLayer = temp;
+  activeLayer =
+  inactiveLayer;
+
+  inactiveLayer =
+  temp;
 }
 
 const slideTimer = setInterval(()=>{
@@ -860,14 +1269,21 @@ const slideTimer = setInterval(()=>{
 
     setTimeout(()=>{
 
-      content.classList.add("show");
-      introMessage.classList.add("show");
+      content.classList.add(
+        "show"
+      );
+
+      introMessage.classList.add(
+        "show"
+      );
 
     },300);
 
     setTimeout(()=>{
 
-      introMessage.classList.remove("show");
+      introMessage.classList.remove(
+        "show"
+      );
 
     },5200);
 
@@ -881,10 +1297,11 @@ const slideTimer = setInterval(()=>{
 const state = {
 
   genre:"",
-  character:"",
+  drama:"",
   age:"",
   gender:"",
-  drive:"",
+  job:"",
+  shumi:"",
 
   selectedDrives:[],
 
@@ -1016,73 +1433,124 @@ const driveCards = [
 ];
 
 const genreEl =
-document.getElementById("genre");
+document.getElementById(
+  "genre"
+);
 
-const characterEl =
-document.getElementById("character");
+const dramaEl =
+document.getElementById(
+  "drama"
+);
 
 const ageEl =
-document.getElementById("age");
+document.getElementById(
+  "age"
+);
 
 const genderEl =
-document.getElementById("gender");
+document.getElementById(
+  "gender"
+);
 
-const driveEl =
-document.getElementById("drive");
+const jobEl =
+document.getElementById(
+  "job"
+);
+
+const shumiEl =
+document.getElementById(
+  "shumi"
+);
 
 const stateView =
-document.getElementById("state-view");
+document.getElementById(
+  "state-view"
+);
 
 const promptOutput =
-document.getElementById("prompt-output");
+document.getElementById(
+  "prompt-output"
+);
 
 const copyButton =
-document.getElementById("copy-button");
+document.getElementById(
+  "copy-button"
+);
 
 const copyStatus =
-document.getElementById("copy-status");
+document.getElementById(
+  "copy-status"
+);
 
 const openTarotButton =
-document.getElementById("open-tarot-button");
+document.getElementById(
+  "open-tarot-button"
+);
 
 const tarotScreen =
-document.getElementById("tarot-screen");
+document.getElementById(
+  "tarot-screen"
+);
 
 const tarotGrid =
-document.getElementById("tarot-grid");
+document.getElementById(
+  "tarot-grid"
+);
 
 const tarotInfo =
-document.getElementById("tarot-info");
+document.getElementById(
+  "tarot-info"
+);
 
 const tarotClose =
-document.getElementById("tarot-close");
+document.getElementById(
+  "tarot-close"
+);
 
 const tarotNext =
-document.getElementById("tarot-next");
+document.getElementById(
+  "tarot-next"
+);
 
 const tarotDescBox =
-document.getElementById("tarot-desc-box");
+document.getElementById(
+  "tarot-desc-box"
+);
 
 const processingScreen =
-document.getElementById("processing-screen");
+document.getElementById(
+  "processing-screen"
+);
 
 const processingLayerA =
-document.getElementById("processing-layer-a");
+document.getElementById(
+  "processing-layer-a"
+);
 
 const processingLayerB =
-document.getElementById("processing-layer-b");
+document.getElementById(
+  "processing-layer-b"
+);
 
 const processingFade =
-document.getElementById("processing-fade");
+document.getElementById(
+  "processing-fade"
+);
 
 const processingMessage =
-document.getElementById("processing-message");
+document.getElementById(
+  "processing-message"
+);
 
 const finalCopy =
-document.getElementById("final-copy");
+document.getElementById(
+  "final-copy"
+);
 
 const finalCopyButton =
-document.getElementById("final-copy-button");
+document.getElementById(
+  "final-copy-button"
+);
 
 function randomPick(arr){
 
@@ -1093,15 +1561,22 @@ function randomPick(arr){
   ];
 }
 
-function weightedDescriptionRandom(section){
+function weightedDescriptionRandom(
+  section
+){
 
   if(section === "jo"){
 
     return randomPick([
+
       "scenery",
+
       "scenery",
+
       "object",
+
       "psychology",
+
       "action"
     ]);
   }
@@ -1109,32 +1584,49 @@ function weightedDescriptionRandom(section){
   if(section === "ha"){
 
     return randomPick([
+
       "action",
+
       "action",
+
       "psychology",
+
       "dialogue",
+
       "object"
     ]);
   }
 
   return randomPick([
+
     "psychology",
+
     "action",
+
     "action",
+
     "dialogue",
+
     "scenery"
   ]);
 }
 
-function weightedSyntaxRandom(section){
+function weightedSyntaxRandom(
+  section
+){
 
   if(section === "jo"){
 
     return randomPick([
+
       "sov",
+
       "sov",
+
       "nounlead",
+
       "nounlead",
+
       "simple"
     ]);
   }
@@ -1142,19 +1634,29 @@ function weightedSyntaxRandom(section){
   if(section === "ha"){
 
     return randomPick([
+
       "delayed",
+
       "delayed",
+
       "dialogue",
+
       "sov",
+
       "simple"
     ]);
   }
 
   return randomPick([
+
     "simple",
+
     "simple",
+
     "delayed",
+
     "sov",
+
     "nounlead"
   ]);
 }
@@ -1186,7 +1688,9 @@ function generateDescriptionPlan(){
       line:i,
 
       type:
-      weightedDescriptionRandom(section)
+      weightedDescriptionRandom(
+        section
+      )
     });
   }
 }
@@ -1205,7 +1709,9 @@ function generateSyntaxPlan(){
       line:i,
 
       type:
-      weightedSyntaxRandom(section)
+      weightedSyntaxRandom(
+        section
+      )
     });
   }
 }
@@ -1215,8 +1721,8 @@ function buildPrompt(){
   const genre =
   state.genre || "未設定";
 
-  const character =
-  state.character || "未設定";
+  const drama =
+  state.drama || "未設定";
 
   const age =
   state.age || "未設定";
@@ -1224,14 +1730,18 @@ function buildPrompt(){
   const gender =
   state.gender || "未設定";
 
-  const drive =
-  state.drive || "未設定";
+  const job =
+  state.job || "未設定";
+
+  const shumi =
+  state.shumi || "未設定";
 
   const selectedText =
 
   state.selectedDrives
 
     .map(id =>
+
       driveCards.find(
         card => card.id === id
       )
@@ -1240,6 +1750,7 @@ function buildPrompt(){
     .filter(Boolean)
 
     .map(card =>
+
       `${card.jp} / ${card.en}: ${card.desc}`
     )
 
@@ -1252,14 +1763,19 @@ function buildPrompt(){
   for(let i=0;i<16;i++){
 
     const description =
+
     state.descriptionPlan[i]?.type
+
     || "未設定";
 
     const syntax =
+
     state.syntaxPlan[i]?.type
+
     || "未設定";
 
     linePlanText +=
+
     `${i+1}: ${description} / ${syntax}\n`;
   }
 
@@ -1270,10 +1786,11 @@ function buildPrompt(){
 
 【基本設定】
 GENRE: ${genre}
-CHARACTER: ${character}
+DRAMA: ${drama}
 AGE: ${age}
 GENDER: ${gender}
-DRIVE: ${drive}
+JOB: ${job}
+SHUMI: ${shumi}
 
 【選択された駆動要素】
 ${selectedText}
@@ -1292,7 +1809,12 @@ ${linePlanText}`;
 function render(){
 
   stateView.textContent =
-  JSON.stringify(state,null,2);
+
+  JSON.stringify(
+    state,
+    null,
+    2
+  );
 
   promptOutput.value =
   buildPrompt();
@@ -1305,7 +1827,9 @@ function renderTarot(){
   driveCards.forEach(card=>{
 
     const button =
-    document.createElement("button");
+    document.createElement(
+      "button"
+    );
 
     button.type = "button";
 
@@ -1313,9 +1837,13 @@ function renderTarot(){
     "tarot-card";
 
     if(
-      state.selectedDrives.includes(card.id)
+      state.selectedDrives.includes(
+        card.id
+      )
     ){
-      button.classList.add("active");
+      button.classList.add(
+        "active"
+      );
     }
 
     button.innerHTML = `
@@ -1339,6 +1867,7 @@ function renderTarot(){
       ()=>{
 
         tarotDescBox.textContent =
+
         `${card.jp} / ${card.en}：${card.desc}`;
       }
     );
@@ -1348,6 +1877,7 @@ function renderTarot(){
       ()=>{
 
         tarotDescBox.textContent =
+
         `${card.jp} / ${card.en}：${card.desc}`;
       }
     );
@@ -1357,6 +1887,7 @@ function renderTarot(){
       ()=>{
 
         tarotDescBox.textContent =
+
         `${card.jp} / ${card.en}：${card.desc}`;
 
       },
@@ -1368,11 +1899,15 @@ function renderTarot(){
       ()=>{
 
         const exists =
-        state.selectedDrives.includes(card.id);
+
+        state.selectedDrives.includes(
+          card.id
+        );
 
         if(exists){
 
           state.selectedDrives =
+
           state.selectedDrives.filter(
             id => id !== card.id
           );
@@ -1385,7 +1920,9 @@ function renderTarot(){
             return;
           }
 
-          state.selectedDrives.push(card.id);
+          state.selectedDrives.push(
+            card.id
+          );
         }
 
         renderTarot();
@@ -1393,7 +1930,9 @@ function renderTarot(){
       }
     );
 
-    tarotGrid.appendChild(button);
+    tarotGrid.appendChild(
+      button
+    );
   });
 
   const selectedNames =
@@ -1401,6 +1940,7 @@ function renderTarot(){
   state.selectedDrives
 
     .map(id =>
+
       driveCards.find(
         card => card.id === id
       )
@@ -1421,7 +1961,8 @@ function renderTarot(){
     : "0 / 4 SELECTED";
 
   tarotNext.disabled =
-  state.selectedDrives.length !== 4;
+
+    state.selectedDrives.length < 2;
 }
 
 genreEl.addEventListener(
@@ -1438,12 +1979,12 @@ genreEl.addEventListener(
   }
 );
 
-characterEl.addEventListener(
-  "input",
+dramaEl.addEventListener(
+  "change",
   ()=>{
 
-    state.character =
-    characterEl.value;
+    state.drama =
+    dramaEl.value;
 
     render();
   }
@@ -1471,12 +2012,23 @@ genderEl.addEventListener(
   }
 );
 
-driveEl.addEventListener(
+jobEl.addEventListener(
   "input",
   ()=>{
 
-    state.drive =
-    driveEl.value;
+    state.job =
+    jobEl.value;
+
+    render();
+  }
+);
+
+shumiEl.addEventListener(
+  "input",
+  ()=>{
+
+    state.shumi =
+    shumiEl.value;
 
     render();
   }
@@ -1486,7 +2038,9 @@ openTarotButton.addEventListener(
   "click",
   ()=>{
 
-    tarotScreen.classList.add("show");
+    tarotScreen.classList.add(
+      "show"
+    );
 
     renderTarot();
   }
@@ -1496,7 +2050,9 @@ tarotClose.addEventListener(
   "click",
   ()=>{
 
-    tarotScreen.classList.remove("show");
+    tarotScreen.classList.remove(
+      "show"
+    );
   }
 );
 
@@ -1509,13 +2065,19 @@ processingLayerB;
 function processingSwap(src){
 
   processingInactive.style.backgroundImage =
+
   `url("${src}")`;
 
-  processingInactive.classList.add("show");
+  processingInactive.classList.add(
+    "show"
+  );
 
-  processingActive.classList.remove("show");
+  processingActive.classList.remove(
+    "show"
+  );
 
-  const temp = processingActive;
+  const temp =
+  processingActive;
 
   processingActive =
   processingInactive;
@@ -1526,54 +2088,85 @@ function processingSwap(src){
 
 function runProcessingSequence(){
 
-  tarotScreen.classList.remove("show");
+  tarotScreen.classList.remove(
+    "show"
+  );
 
-  processingScreen.classList.add("show");
+  processingScreen.classList.add(
+    "show"
+  );
 
-  const processingSlides = isMobile
+  const processingSlides =
+
+  isMobile
 
     ? [
+
         "./scene-mobile-a.webp",
+
         "./scene-mobile-b.webp",
+
         "./scene-mobile-c.webp",
+
         "./scene-mobile-d.webp",
+
         "./scene-mobile-e.webp"
       ]
 
     : [
+
         "./scene-pc-a.webp",
+
         "./scene-pc-b.webp",
+
         "./scene-pc-c.webp",
+
         "./scene-pc-d.webp",
+
         "./scene-pc-e.webp"
       ];
 
-  const finalScene = isMobile
+  const finalScene =
+
+  isMobile
 
     ? "./scene-mobile-f.webp"
 
     : "./scene-pc-f.webp";
 
   processingActive.style.backgroundImage =
+
   `url("${processingSlides[0]}")`;
 
-  processingActive.classList.add("show");
+  processingActive.classList.add(
+    "show"
+  );
 
   processingMessage.textContent =
   "ちょっと待ってな";
 
-  processingMessage.classList.add("show");
+  processingMessage.classList.add(
+    "show"
+  );
 
-  finalCopy.classList.remove("show");
+  finalCopy.classList.remove(
+    "show"
+  );
 
-  processingFade.classList.remove("show");
+  processingFade.classList.remove(
+    "show"
+  );
 
   let index = 0;
 
   const dots = [
+
     "",
+
     ".",
+
     "..",
+
     "..."
   ];
 
@@ -1585,18 +2178,26 @@ function runProcessingSequence(){
 
       clearInterval(timer);
 
-      processingFade.classList.add("show");
+      processingFade.classList.add(
+        "show"
+      );
 
       setTimeout(()=>{
 
         processingSwap(finalScene);
 
-        processingFade.classList.remove("show");
+        processingFade.classList.remove(
+          "show"
+        );
 
         processingMessage.innerHTML =
-        `はいよ。<br>いつも通り、<br>アタシのことは言うんじゃないよ。`;
 
-        finalCopy.classList.add("show");
+        `はいよ。いつも通り、<br>
+        アタシのことは言うんじゃないよ。`;
+
+        finalCopy.classList.add(
+          "show"
+        );
 
       },3000);
 
@@ -1610,7 +2211,10 @@ function runProcessingSequence(){
     if(index >= 1 && index <= 3){
 
       processingMessage.textContent =
-      "ちょっと待ってな" + dots[index];
+
+      "ちょっと待ってな"
+
+      + dots[index];
     }
 
   },1000);
@@ -1631,10 +2235,12 @@ copyButton.addEventListener(
     try{
 
       await navigator.clipboard.writeText(
+
         promptOutput.value
       );
 
       copyStatus.textContent =
+
       "PROMPT COPIED";
 
     }catch(error){
@@ -1642,6 +2248,7 @@ copyButton.addEventListener(
       promptOutput.select();
 
       copyStatus.textContent =
+
       "コピーできませんでした";
     }
 
@@ -1660,34 +2267,53 @@ finalCopyButton.addEventListener(
     try{
 
       await navigator.clipboard.writeText(
+
         promptOutput.value
       );
 
     }catch(error){
+
       return;
     }
 
-    finalCopy.classList.remove("show");
+    finalCopy.classList.remove(
+      "show"
+    );
 
-    processingScreen.classList.remove("show");
+    processingScreen.classList.remove(
+      "show"
+    );
 
-    content.classList.add("show");
+    content.classList.add(
+      "show"
+    );
+
+    introMessage.classList.remove(
+      "show"
+    );
 
     processingActive.style.backgroundImage =
+
     `url("${
       isMobile
+
         ? "./scene-mobile-f.webp"
+
         : "./scene-pc-f.webp"
     }")`;
 
-    processingActive.classList.add("show");
+    processingActive.classList.add(
+      "show"
+    );
   }
 );
 
 generateDescriptionPlan();
+
 generateSyntaxPlan();
 
 render();
+
 </script>
 
 </body>
