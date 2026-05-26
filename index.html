@@ -7,7 +7,6 @@
 <title>Ghorse Noir Engine</title>
 
 <style>
-
 *{
   box-sizing:border-box;
 }
@@ -31,49 +30,47 @@ body{
 }
 
 /* =========================
-BACKGROUND
+BACKGROUND LAYERS
 ========================= */
 
-.hero-image{
-
+.hero-stage{
   position:fixed;
-
   inset:0;
-
   z-index:0;
+  background:#050505;
+  overflow:hidden;
+}
 
+.hero-layer{
+  position:absolute;
+  inset:0;
   background-size:cover;
   background-position:center;
-
-  transition:
-  opacity 0.8s ease,
-  background-image 0.4s ease;
-
   opacity:0;
-
+  transition:opacity 1.2s ease;
 }
-  
-.hero-image::after{
 
+.hero-layer.show{
+  opacity:1;
+}
+
+.hero-stage::after{
   content:"";
-
   position:absolute;
-
   left:0;
   right:0;
   bottom:0;
-
   height:43vh;
-
   background:
-  linear-gradient(
-    to bottom,
-    rgba(5,5,5,0),
-    rgba(5,5,5,0.25),
-    rgba(5,5,5,0.72),
-    rgba(5,5,5,1)
-  );
-
+    linear-gradient(
+      to bottom,
+      rgba(5,5,5,0),
+      rgba(5,5,5,0.25),
+      rgba(5,5,5,0.72),
+      rgba(5,5,5,1)
+    );
+  z-index:3;
+  pointer-events:none;
 }
 
 /* =========================
@@ -81,53 +78,25 @@ INTRO MESSAGE
 ========================= */
 
 .intro-message{
-
   position:fixed;
-
   left:50%;
-
   bottom:5vh;
-
   transform:translateX(-50%);
-
   z-index:10;
-
-  color:
-  rgba(255,255,255,0.88);
-
-  font-size:
-  clamp(12px,1.8vw,18px);
-
+  color:rgba(255,255,255,0.88);
+  font-size:clamp(12px,1.8vw,18px);
   font-weight:300;
-
   letter-spacing:0.12em;
-
   line-height:1.7;
-
   opacity:0;
-
-  transition:
-  opacity 1.4s ease;
-
-  text-shadow:
-  0 2px 12px rgba(0,0,0,0.9);
-
+  transition:opacity 1.4s ease;
+  text-shadow:0 2px 12px rgba(0,0,0,0.9);
   pointer-events:none;
-
   white-space:nowrap;
-
 }
 
 .intro-message.show{
-
   opacity:1;
-
-}
-
-.intro-message.hide{
-
-  opacity:0;
-
 }
 
 /* =========================
@@ -135,75 +104,39 @@ CONTENT
 ========================= */
 
 .content{
-
   position:relative;
-
   z-index:5;
-
   min-height:100vh;
-
-  padding:
-  44vh
-  clamp(18px,5vw,48px)
-  48px;
-
+  padding:44vh clamp(18px,5vw,48px) 48px;
   opacity:0;
-
-  transform:
-  translateY(20px);
-
+  transform:translateY(20px);
   transition:
-  opacity 1.2s ease,
-  transform 1.2s ease;
-
+    opacity 1.2s ease,
+    transform 1.2s ease;
 }
 
 .content.show{
-
   opacity:1;
-
-  transform:
-  translateY(0);
-
+  transform:translateY(0);
 }
 
-/* =========================
-BRAND
-========================= */
-
 .brand{
-
   margin-bottom:24px;
-
-  text-shadow:
-  0 6px 24px rgba(0,0,0,0.9);
-
+  text-shadow:0 6px 24px rgba(0,0,0,0.9);
 }
 
 h1{
-
   margin:0 0 8px;
-
-  font-size:
-  clamp(42px,10vw,82px);
-
+  font-size:clamp(42px,10vw,82px);
   line-height:1;
-
   letter-spacing:0.08em;
-
 }
 
 .subtitle{
-
   margin:0;
-
   color:var(--muted);
-
-  font-size:
-  clamp(14px,3vw,18px);
-
+  font-size:clamp(14px,3vw,18px);
   letter-spacing:0.08em;
-
 }
 
 /* =========================
@@ -211,156 +144,89 @@ PANEL
 ========================= */
 
 .panel{
-
   width:min(100%,780px);
-
-  padding:
-  clamp(18px,5vw,30px);
-
+  padding:clamp(18px,5vw,30px);
   border-radius:22px;
-
   background:var(--panel);
-
-  border:
-  1px solid var(--line);
-
+  border:1px solid var(--line);
   backdrop-filter:blur(10px);
-
-  box-shadow:
-  0 24px 80px rgba(0,0,0,0.65);
-
+  box-shadow:0 24px 80px rgba(0,0,0,0.65);
 }
 
 .section{
-
   margin-bottom:20px;
-
 }
 
 label{
-
   display:block;
-
   margin-bottom:8px;
-
   color:var(--gold);
-
   font-size:13px;
-
   font-weight:bold;
-
   letter-spacing:0.12em;
-
 }
 
 select,
 input,
 textarea,
 button{
-
   width:100%;
-
   padding:14px;
-
   border-radius:13px;
-
-  border:
-  1px solid rgba(229,196,138,0.14);
-
-  background:
-  rgba(16,14,13,0.95);
-
+  border:1px solid rgba(229,196,138,0.14);
+  background:rgba(16,14,13,0.95);
   color:white;
-
   font-size:16px;
-
   outline:none;
-
 }
 
 select:focus,
 input:focus,
 textarea:focus{
-
-  border-color:
-  rgba(229,196,138,0.6);
-
-  box-shadow:
-  0 0 0 3px rgba(229,196,138,0.1);
-
+  border-color:rgba(229,196,138,0.6);
+  box-shadow:0 0 0 3px rgba(229,196,138,0.1);
 }
 
 textarea{
-
   min-height:380px;
-
   resize:vertical;
-
   line-height:1.7;
-
   white-space:pre-wrap;
-
 }
 
 h3{
-
   margin-top:28px;
-
   padding-bottom:8px;
-
-  border-bottom:
-  1px solid var(--line);
-
+  border-bottom:1px solid var(--line);
   color:var(--gold);
-
 }
 
 pre{
-
   max-height:240px;
-
   overflow:auto;
-
   padding:14px;
-
   border-radius:14px;
-
-  background:
-  rgba(0,0,0,0.86);
-
+  background:rgba(0,0,0,0.86);
   color:var(--green);
-
   font-size:12px;
-
 }
 
 button{
-
   cursor:pointer;
-
-  background:
-  linear-gradient(
-    180deg,
-    #4b321f,
-    #24150d
-  );
-
+  background:linear-gradient(180deg,#4b321f,#24150d);
   color:#f8e9cc;
-
   font-weight:bold;
-
   letter-spacing:0.12em;
+}
 
+button:active{
+  transform:scale(0.985);
 }
 
 #copy-status{
-
   margin-top:12px;
-
   min-height:20px;
-
   color:var(--green);
-
 }
 
 /* =========================
@@ -368,159 +234,97 @@ MOBILE
 ========================= */
 
 @media (max-width:768px){
-
   .content{
-
     padding-top:42vh;
-
   }
 
-}
+  .hero-layer{
+    background-position:center top;
+  }
 
+  textarea{
+    min-height:430px;
+    font-size:15px;
+  }
+
+  pre{
+    font-size:11px;
+  }
+}
 </style>
 </head>
 
 <body>
 
-<div class="hero-image" id="hero-image"></div>
-
-<div class="intro-message"
-id="intro-message">
-
-――で、今日はどんな脚本を？
-
+<div class="hero-stage">
+  <div class="hero-layer" id="hero-layer-a"></div>
+  <div class="hero-layer" id="hero-layer-b"></div>
 </div>
 
-<main class="content"
-id="content">
+<div class="intro-message" id="intro-message">
+――で、今日はどんな脚本を？
+</div>
+
+<main class="content" id="content">
 
 <div class="brand">
-
-<h1>Ghorse</h1>
-
-<p class="subtitle">
-Ghost Writer / Noir Story Engine
-</p>
-
+  <h1>Ghorse</h1>
+  <p class="subtitle">Ghost Writer / Noir Story Engine</p>
 </div>
 
 <div class="panel">
 
 <div class="section">
 <label>GENRE</label>
-
 <select id="genre">
-
-<option value="">
-選択してください
-</option>
-
-<option value="noir">
-Noir
-</option>
-
-<option value="cyberpunk">
-Cyberpunk
-</option>
-
-<option value="melancholy">
-Melancholy
-</option>
-
-<option value="crime">
-Crime
-</option>
-
-<option value="mystery">
-Mystery
-</option>
-
-<option value="postapocalypse">
-Post Apocalypse
-</option>
-
-<option value="urbanfantasy">
-Urban Fantasy
-</option>
-
-<option value="scifi">
-Sci-Fi
-</option>
-
-<option value="tragedy">
-Tragedy
-</option>
-
-<option value="dreamcore">
-Dreamcore
-</option>
-
+<option value="">選択してください</option>
+<option value="noir">Noir</option>
+<option value="cyberpunk">Cyberpunk</option>
+<option value="melancholy">Melancholy</option>
+<option value="crime">Crime</option>
+<option value="mystery">Mystery</option>
+<option value="postapocalypse">Post Apocalypse</option>
+<option value="urbanfantasy">Urban Fantasy</option>
+<option value="scifi">Sci-Fi</option>
+<option value="tragedy">Tragedy</option>
+<option value="dreamcore">Dreamcore</option>
 </select>
 </div>
 
 <div class="section">
 <label>CHARACTER</label>
-<input id="character"
-type="text"
-placeholder="Ghorse">
+<input id="character" type="text" placeholder="Ghorse">
 </div>
 
 <div class="section">
 <label>AGE</label>
-<input id="age"
-type="number"
-placeholder="24">
+<input id="age" type="number" placeholder="24">
 </div>
 
 <div class="section">
 <label>GENDER</label>
-
 <select id="gender">
-
-<option value="">
-選択してください
-</option>
-
-<option value="female">
-Female
-</option>
-
-<option value="male">
-Male
-</option>
-
-<option value="other">
-Other
-</option>
-
+<option value="">選択してください</option>
+<option value="female">Female</option>
+<option value="male">Male</option>
+<option value="other">Other</option>
 </select>
 </div>
 
 <div class="section">
 <label>DRIVE</label>
-
-<input id="drive"
-type="text"
-placeholder="revenge / escape / salvation">
+<input id="drive" type="text" placeholder="revenge / escape / salvation">
 </div>
 
 <h3>STATE</h3>
-
 <pre id="state-view"></pre>
 
 <h3>PROMPT OUTPUT</h3>
-
-<textarea id="prompt-output"
-readonly></textarea>
+<textarea id="prompt-output" readonly></textarea>
 
 <div class="section">
-
-<button id="copy-button">
-COPY PROMPT
-</button>
-
+<button id="copy-button">COPY PROMPT</button>
 <div id="copy-status"></div>
-
 </div>
 
 </div>
@@ -528,309 +332,176 @@ COPY PROMPT
 </main>
 
 <script>
-
 /* =========================
-INTRO SLIDE
+INTRO CROSSFADE SLIDE
 ========================= */
 
-const heroImage =
-document.getElementById("hero-image");
+const layerA = document.getElementById("hero-layer-a");
+const layerB = document.getElementById("hero-layer-b");
+const introMessage = document.getElementById("intro-message");
+const content = document.getElementById("content");
 
-const introMessage =
-document.getElementById("intro-message");
-
-const content =
-document.getElementById("content");
-
-const isMobile =
-window.innerWidth <= 768;
+const isMobile = window.innerWidth <= 768;
 
 const slides = isMobile
 ? [
-"./intro-mobile-1.webp",
-"./intro-mobile-2.webp",
-"./intro-mobile-3.webp"
+  "./intro-mobile-1.webp",
+  "./intro-mobile-2.webp",
+  "./intro-mobile-3.webp"
 ]
 : [
-"./intro-pc-1.webp",
-"./intro-pc-2.webp",
-"./intro-pc-3.webp"
+  "./intro-pc-1.webp",
+  "./intro-pc-2.webp",
+  "./intro-pc-3.webp"
 ];
 
+let activeLayer = layerA;
+let inactiveLayer = layerB;
 let currentSlide = 0;
 
-function setSlide(index){
-
-  heroImage.style.backgroundImage =
-  `url("${slides[index]}")`;
-
+function setLayerImage(layer, src){
+  layer.style.backgroundImage = `url("${src}")`;
 }
 
-setSlide(0);
+/* pc-1 / mobile-1 を最初に最前面表示 */
+setLayerImage(activeLayer, slides[0]);
 
 setTimeout(()=>{
-
-  heroImage.style.opacity = "1";
-
+  activeLayer.classList.add("show");
 },300);
 
-const slideInterval = setInterval(()=>{
+function crossFadeTo(index){
+  setLayerImage(inactiveLayer, slides[index]);
+
+  inactiveLayer.classList.add("show");
+  activeLayer.classList.remove("show");
+
+  const temp = activeLayer;
+  activeLayer = inactiveLayer;
+  inactiveLayer = temp;
+}
+
+const slideTimer = setInterval(()=>{
 
   currentSlide++;
 
   if(currentSlide >= slides.length){
-
-    clearInterval(slideInterval);
+    clearInterval(slideTimer);
 
     setTimeout(()=>{
-
       content.classList.add("show");
-
       introMessage.classList.add("show");
-
     },900);
 
     setTimeout(()=>{
-
       introMessage.classList.remove("show");
-
-      introMessage.classList.add("hide");
-
     },5200);
 
     return;
-
   }
 
-  setSlide(currentSlide);
+  crossFadeTo(currentSlide);
 
 },1000);
-
 
 /* =========================
 STATE
 ========================= */
 
 const state = {
-
   genre:"",
   character:"",
   age:"",
   gender:"",
   drive:"",
-
   descriptionPlan:[],
   syntaxPlan:[]
-
 };
 
-const genreEl =
-document.getElementById("genre");
-
-const characterEl =
-document.getElementById("character");
-
-const ageEl =
-document.getElementById("age");
-
-const genderEl =
-document.getElementById("gender");
-
-const driveEl =
-document.getElementById("drive");
-
-const stateView =
-document.getElementById("state-view");
-
-const promptOutput =
-document.getElementById("prompt-output");
-
-const copyButton =
-document.getElementById("copy-button");
-
-const copyStatus =
-document.getElementById("copy-status");
-
-/* =========================
-UTIL
-========================= */
+const genreEl = document.getElementById("genre");
+const characterEl = document.getElementById("character");
+const ageEl = document.getElementById("age");
+const genderEl = document.getElementById("gender");
+const driveEl = document.getElementById("drive");
+const stateView = document.getElementById("state-view");
+const promptOutput = document.getElementById("prompt-output");
+const copyButton = document.getElementById("copy-button");
+const copyStatus = document.getElementById("copy-status");
 
 function randomPick(arr){
-
-  return arr[
-    Math.floor(
-      Math.random() * arr.length
-    )
-  ];
-
+  return arr[Math.floor(Math.random() * arr.length)];
 }
 
 function weightedDescriptionRandom(section){
-
   if(section === "jo"){
-
-    return randomPick([
-      "scenery",
-      "scenery",
-      "object",
-      "psychology",
-      "action"
-    ]);
-
+    return randomPick(["scenery","scenery","object","psychology","action"]);
   }
 
   if(section === "ha"){
-
-    return randomPick([
-      "action",
-      "action",
-      "psychology",
-      "dialogue",
-      "object"
-    ]);
-
+    return randomPick(["action","action","psychology","dialogue","object"]);
   }
 
-  return randomPick([
-    "psychology",
-    "action",
-    "action",
-    "dialogue",
-    "scenery"
-  ]);
-
+  return randomPick(["psychology","action","action","dialogue","scenery"]);
 }
 
 function weightedSyntaxRandom(section){
-
   if(section === "jo"){
-
-    return randomPick([
-      "sov",
-      "sov",
-      "nounlead",
-      "nounlead",
-      "simple"
-    ]);
-
+    return randomPick(["sov","sov","nounlead","nounlead","simple"]);
   }
 
   if(section === "ha"){
-
-    return randomPick([
-      "delayed",
-      "delayed",
-      "dialogue",
-      "sov",
-      "simple"
-    ]);
-
+    return randomPick(["delayed","delayed","dialogue","sov","simple"]);
   }
 
-  return randomPick([
-    "simple",
-    "simple",
-    "delayed",
-    "sov",
-    "nounlead"
-  ]);
-
+  return randomPick(["simple","simple","delayed","sov","nounlead"]);
 }
 
 function getSectionByLine(line){
-
   if(line <= 5) return "jo";
-
   if(line <= 11) return "ha";
-
   return "kyu";
-
 }
 
-/* =========================
-PLAN
-========================= */
-
 function generateDescriptionPlan(){
-
   state.descriptionPlan = [];
 
   for(let i = 1; i <= 16; i++){
-
-    const section =
-    getSectionByLine(i);
+    const section = getSectionByLine(i);
 
     state.descriptionPlan.push({
-
       line:i,
-
-      type:
-      weightedDescriptionRandom(section)
-
+      type:weightedDescriptionRandom(section)
     });
-
   }
-
 }
 
 function generateSyntaxPlan(){
-
   state.syntaxPlan = [];
 
   for(let i = 1; i <= 16; i++){
-
-    const section =
-    getSectionByLine(i);
+    const section = getSectionByLine(i);
 
     state.syntaxPlan.push({
-
       line:i,
-
-      type:
-      weightedSyntaxRandom(section)
-
+      type:weightedSyntaxRandom(section)
     });
-
   }
-
 }
 
-/* =========================
-PROMPT
-========================= */
-
 function buildPrompt(){
-
-  const genre =
-  state.genre || "未設定";
-
-  const character =
-  state.character || "未設定";
-
-  const age =
-  state.age || "未設定";
-
-  const gender =
-  state.gender || "未設定";
-
-  const drive =
-  state.drive || "未設定";
+  const genre = state.genre || "未設定";
+  const character = state.character || "未設定";
+  const age = state.age || "未設定";
+  const gender = state.gender || "未設定";
+  const drive = state.drive || "未設定";
 
   let linePlanText = "";
 
   for(let i = 0; i < 16; i++){
+    const description = state.descriptionPlan[i]?.type || "未設定";
+    const syntax = state.syntaxPlan[i]?.type || "未設定";
 
-    const description =
-    state.descriptionPlan[i]?.type
-    || "未設定";
-
-    const syntax =
-    state.syntaxPlan[i]?.type
-    || "未設定";
-
-    linePlanText +=
-    `${i + 1}: ${description} / ${syntax}\n`;
-
+    linePlanText += `${i + 1}: ${description} / ${syntax}\n`;
   }
 
   return `あなたは日本語の物語生成エンジンです。
@@ -854,111 +525,57 @@ DRIVE: ${drive}
 
 【行別設計】
 ${linePlanText}`;
-
 }
-
-/* =========================
-RENDER
-========================= */
 
 function render(){
-
-  stateView.textContent =
-  JSON.stringify(state,null,2);
-
-  promptOutput.value =
-  buildPrompt();
-
+  stateView.textContent = JSON.stringify(state,null,2);
+  promptOutput.value = buildPrompt();
 }
 
-/* =========================
-EVENT
-========================= */
-
 genreEl.addEventListener("change",()=>{
-
-  state.genre =
-  genreEl.value;
-
+  state.genre = genreEl.value;
   generateDescriptionPlan();
   generateSyntaxPlan();
-
   render();
-
 });
 
 characterEl.addEventListener("input",()=>{
-
-  state.character =
-  characterEl.value;
-
+  state.character = characterEl.value;
   render();
-
 });
 
 ageEl.addEventListener("input",()=>{
-
-  state.age =
-  ageEl.value;
-
+  state.age = ageEl.value;
   render();
-
 });
 
 genderEl.addEventListener("change",()=>{
-
-  state.gender =
-  genderEl.value;
-
+  state.gender = genderEl.value;
   render();
-
 });
 
 driveEl.addEventListener("input",()=>{
-
-  state.drive =
-  driveEl.value;
-
+  state.drive = driveEl.value;
   render();
-
 });
 
 copyButton.addEventListener("click",async()=>{
-
   try{
-
-    await navigator.clipboard
-    .writeText(promptOutput.value);
-
-    copyStatus.textContent =
-    "PROMPT COPIED";
-
+    await navigator.clipboard.writeText(promptOutput.value);
+    copyStatus.textContent = "PROMPT COPIED";
   }catch(error){
-
     promptOutput.select();
-
-    copyStatus.textContent =
-    "コピーできませんでした";
-
+    copyStatus.textContent = "コピーできませんでした";
   }
 
   setTimeout(()=>{
-
     copyStatus.textContent = "";
-
   },1600);
-
 });
-
-/* =========================
-INIT
-========================= */
 
 generateDescriptionPlan();
 generateSyntaxPlan();
-
 render();
-
 </script>
 
 </body>
