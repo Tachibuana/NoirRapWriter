@@ -991,6 +991,29 @@ button:disabled{
   pointer-events:none;
 }
 
+
+.structure-slot.has-card.tone-improve .structure-card-face{
+
+  border-color:rgba(95,170,255,0.95);
+
+  box-shadow:
+  0 16px 38px rgba(0,0,0,0.52),
+  0 0 0 1px rgba(95,170,255,0.72),
+  0 0 22px rgba(95,170,255,0.42),
+  inset 0 0 0 1px rgba(255,255,255,0.06);
+}
+
+.structure-slot.has-card.tone-worsen .structure-card-face{
+
+  border-color:rgba(255,95,90,0.95);
+
+  box-shadow:
+  0 16px 38px rgba(0,0,0,0.52),
+  0 0 0 1px rgba(255,95,90,0.7),
+  0 0 22px rgba(255,95,90,0.38),
+  inset 0 0 0 1px rgba(255,255,255,0.06);
+}
+
 .structure-card-face.empty{
 
   border-style:dashed;
@@ -1169,7 +1192,7 @@ button:disabled{
   right:0;
   bottom:0;
 
-  z-index:95;
+  z-index:9999;
 
   padding:
   18px clamp(14px,4vw,28px)
@@ -1191,6 +1214,10 @@ button:disabled{
   transform:translateY(110%);
 
   transition:transform 0.35s ease;
+
+  max-height:min(58dvh,430px);
+
+  overflow-y:auto;
 }
 
 .structure-axis-drawer.show{
@@ -1246,7 +1273,9 @@ button:disabled{
 
 .axis-pick-card{
 
-  min-height:128px;
+  height:142px;
+
+  min-height:142px;
 
   padding:12px 10px;
 
@@ -1329,6 +1358,18 @@ button:disabled{
 .processing-screen.show{
 
   display:block;
+}
+
+.processing-screen.crossfade-in{
+
+  animation:processingCrossfade 0.45s ease both;
+}
+
+@keyframes processingCrossfade{
+
+  from{ opacity:0; }
+
+  to{ opacity:1; }
 }
 
 .processing-layer{
@@ -2272,16 +2313,16 @@ const structureCards = [
 
   {
     id:"world",
-    jp:"世界・環境",
+    jp:"世界環境",
     icon:"◎",
-    desc:"社会、土地、因習、自然、ルールから来る圧力を軸に章を動かす"
+    desc:"体制、因習、ルールから来る圧力を軸に章を動かす"
   },
 
   {
     id:"job",
     jp:"職業",
     icon:"⚒",
-    desc:"主人公の仕事、役割、任務、依頼を軸に章を動かす"
+    desc:"主人公の仕事、役割、任務、依頼を軸に章を動かしていく"
   },
 
   {
@@ -2451,6 +2492,10 @@ const axisDrawerClose =
 document.getElementById(
   "axis-drawer-close"
 );
+
+if(structureAxisDrawer && structureAxisDrawer.parentElement !== document.body){
+  document.body.appendChild(structureAxisDrawer);
+}
 
 const processingScreen =
 document.getElementById(
@@ -3146,7 +3191,7 @@ function renderStructure(){
     document.createElement("div");
 
     slot.className =
-    `structure-slot ${card ? "has-card" : ""}`;
+    `structure-slot ${card ? "has-card" : ""} ${card && chapter.tone ? `tone-${chapter.tone}` : ""}`;
 
     slot.dataset.index = String(chapter.index);
 
@@ -3243,12 +3288,20 @@ function drawStructureLines(){
       const startY = a.bottom - wrapRect.top;
       const endX = b.left + b.width / 2 - wrapRect.left;
       const endY = b.top - wrapRect.top;
-      const bridgeY = Math.min(
-        wrapRect.height - 8,
-        startY + 34
+      const rowGapY = Math.max(
+        startY + 30,
+        Math.min(endY - 24, startY + 44)
       );
+      const radius = 12;
 
-      d = `M ${startX} ${startY} L ${startX} ${bridgeY} L ${endX} ${bridgeY} L ${endX} ${endY}`;
+      d = [
+        `M ${startX} ${startY}`,
+        `L ${startX} ${rowGapY - radius}`,
+        `Q ${startX} ${rowGapY} ${startX - radius} ${rowGapY}`,
+        `L ${endX + radius} ${rowGapY}`,
+        `Q ${endX} ${rowGapY} ${endX} ${rowGapY + radius}`,
+        `L ${endX} ${endY}`
+      ].join(" ");
     }
 
     const path =
@@ -3505,23 +3558,36 @@ function processingSwap(src){
   temp;
 }
 
-function runProcessingSequence(){
+function runProcessingSequence(options = {}){
 
-  tarotScreen.classList.remove(
-    "show"
-  );
+  const useCrossfade = options.crossfade === true;
 
-  structureScreen.classList.remove(
-    "show"
-  );
+  if(!useCrossfade){
+    tarotScreen.classList.remove(
+      "show"
+    );
 
-  structureScreen.classList.remove(
-    "fade-in"
-  );
+    structureScreen.classList.remove(
+      "show"
+    );
+
+    structureScreen.classList.remove(
+      "fade-in"
+    );
+  }
 
   processingScreen.classList.add(
     "show"
   );
+
+  if(useCrossfade){
+    processingScreen.classList.add("crossfade-in");
+    setTimeout(()=>{
+      structureScreen.classList.remove("show");
+      structureScreen.classList.remove("fade-in");
+      processingScreen.classList.remove("crossfade-in");
+    },450);
+  }
 
   const processingSlides =
 
@@ -3700,11 +3766,8 @@ structureNext.addEventListener(
   "click",
   ()=>{
 
-    closeStructureScreen();
-
-    setTimeout(()=>{
-      runProcessingSequence();
-    },1000);
+    closeAxisDrawer();
+    runProcessingSequence({ crossfade:true });
   }
 );
 
