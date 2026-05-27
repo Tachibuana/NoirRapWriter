@@ -18,7 +18,7 @@
   --bg:#050505;
 
   --panel:
-  rgba(8,7,6,0.92);
+  rgba(8,7,6,0.82);
 
   --text:#f1e7d4;
 
@@ -266,6 +266,11 @@ h1{
   margin-bottom:0;
 }
 
+.form-grid + .section{
+
+  margin-top:24px;
+}
+
 .full-span{
 
   grid-column:1 / -1;
@@ -454,11 +459,17 @@ button:disabled{
   display:none;
 
   background:
-  rgba(2,6,10,0.94);
+  rgba(2,6,10,0.34);
 
-  padding:18px;
+  padding:
+  clamp(14px,3vw,26px);
 
   overflow:auto;
+
+  opacity:1;
+
+  transition:
+  opacity 1s ease;
 }
 
 .tarot-screen.show{
@@ -466,13 +477,22 @@ button:disabled{
   display:block;
 }
 
+.tarot-screen.fade-out{
+
+  opacity:0;
+
+  transition:
+  opacity 1s ease;
+}
+
 .tarot-inner{
 
-  width:min(100%,920px);
+  width:min(94vw,920px);
 
   margin:0 auto;
 
-  min-height:100%;
+  min-height:
+  calc(100dvh - 52px);
 
   display:flex;
 
@@ -480,9 +500,23 @@ button:disabled{
 
   justify-content:flex-start;
 
-  padding-top:18px;
+  padding:
+  clamp(14px,3vw,24px);
 
-  padding-bottom:24px;
+  border-radius:24px;
+
+  border:
+  1px solid
+  rgba(190,220,245,0.24);
+
+  background:
+  rgba(4,10,16,0.76);
+
+  backdrop-filter:
+  blur(12px);
+
+  box-shadow:
+  0 24px 80px rgba(0,0,0,0.72);
 }
 
 .tarot-header{
@@ -500,9 +534,9 @@ button:disabled{
   linear-gradient(
     to bottom,
 
-    rgba(2,6,10,0.98),
+    rgba(4,10,16,0.82),
 
-    rgba(2,6,10,0.92)
+    rgba(4,10,16,0.58)
   );
 
   backdrop-filter:
@@ -553,7 +587,7 @@ button:disabled{
   rgba(190,220,245,0.22);
 
   background:
-  rgba(4,10,16,0.84);
+  rgba(4,10,16,0.68);
 
   color:#dce7f1;
 
@@ -594,7 +628,7 @@ button:disabled{
     transparent 36%
   ),
 
-  rgba(8,18,28,0.94);
+  rgba(8,18,28,0.76);
 
   color:#dce7f1;
 
@@ -700,6 +734,336 @@ button:disabled{
 
   grid-template-columns:
   1fr 1fr;
+
+  gap:10px;
+}
+
+
+.structure-screen{
+
+  position:fixed;
+
+  inset:0;
+
+  z-index:60;
+
+  display:none;
+
+  background:
+  rgba(2,6,10,0.18);
+
+  padding:
+  clamp(14px,3vw,26px);
+
+  overflow:auto;
+
+  opacity:0;
+
+  transition:
+  opacity 1s ease;
+}
+
+.structure-screen.show{
+
+  display:block;
+}
+
+.structure-screen.fade-in{
+
+  opacity:1;
+}
+
+.structure-inner{
+
+  width:min(94vw,980px);
+
+  margin:0 auto;
+
+  min-height:
+  calc(100dvh - 52px);
+
+  padding:
+  clamp(14px,3vw,24px);
+
+  border-radius:24px;
+
+  border:
+  1px solid
+  rgba(190,220,245,0.24);
+
+  background:
+  rgba(4,10,16,0.76);
+
+  backdrop-filter:
+  blur(12px);
+
+  box-shadow:
+  0 24px 80px rgba(0,0,0,0.72);
+}
+
+.structure-header{
+
+  text-align:center;
+
+  margin-bottom:18px;
+}
+
+.structure-title{
+
+  margin:0 0 10px;
+
+  color:#dce7f1;
+
+  font-size:16px;
+
+  font-weight:400;
+
+  letter-spacing:0.18em;
+}
+
+.structure-subtitle,
+.structure-desc{
+
+  color:
+  rgba(210,225,240,0.78);
+
+  font-size:12px;
+
+  line-height:1.7;
+}
+
+.chapter-count-row{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  justify-content:center;
+
+  gap:8px;
+
+  margin-bottom:18px;
+}
+
+.chapter-count-button{
+
+  min-width:46px;
+
+  padding:10px 12px;
+
+  border-radius:999px;
+
+  border:1px solid rgba(210,230,245,0.22);
+
+  background:rgba(16,18,22,0.72);
+
+  color:#e7edf4;
+}
+
+.chapter-count-button.active{
+
+  border-color:rgba(230,245,255,0.9);
+
+  box-shadow:0 0 16px rgba(160,210,255,0.28);
+}
+
+.structure-board-wrap{
+
+  position:relative;
+
+  margin:0 auto 16px;
+}
+
+.structure-lines{
+
+  position:absolute;
+
+  inset:0;
+
+  width:100%;
+
+  height:100%;
+
+  pointer-events:none;
+
+  z-index:0;
+}
+
+.structure-lines path{
+
+  fill:none;
+
+  stroke:rgba(220,235,250,0.34);
+
+  stroke-width:2;
+
+  stroke-linecap:round;
+
+  stroke-dasharray:5 7;
+}
+
+.structure-board{
+
+  position:relative;
+
+  z-index:1;
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(3,minmax(0,1fr));
+
+  gap:18px 12px;
+}
+
+.structure-slot{
+
+  min-height:132px;
+
+  padding:10px;
+
+  border-radius:18px;
+
+  border:1px solid rgba(210,230,245,0.22);
+
+  background:rgba(8,10,14,0.72);
+
+  color:#e7edf4;
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:8px;
+
+  justify-content:space-between;
+
+  box-shadow:
+  inset 0 0 0 1px rgba(255,255,255,0.03);
+}
+
+.structure-slot.improve{
+
+  border-color:rgba(160,220,180,0.55);
+
+  background:rgba(10,28,18,0.66);
+}
+
+.structure-slot.worsen{
+
+  border-color:rgba(235,150,140,0.55);
+
+  background:rgba(34,12,12,0.66);
+}
+
+.structure-slot-index{
+
+  font-size:11px;
+
+  color:rgba(230,238,246,0.72);
+
+  letter-spacing:0.12em;
+}
+
+.structure-slot-card{
+
+  width:100%;
+
+  min-height:46px;
+
+  padding:8px;
+
+  border-radius:12px;
+
+  border:1px solid rgba(210,230,245,0.18);
+
+  background:rgba(255,255,255,0.06);
+
+  color:#f4ead8;
+
+  font-size:12px;
+
+  letter-spacing:0.04em;
+}
+
+.structure-tone-row{
+
+  display:grid;
+
+  grid-template-columns:1fr 1fr;
+
+  gap:6px;
+}
+
+.structure-tone-row button{
+
+  padding:8px 6px;
+
+  border-radius:10px;
+
+  font-size:11px;
+
+  letter-spacing:0.04em;
+}
+
+.structure-tone-row button.active{
+
+  outline:1px solid rgba(255,255,255,0.72);
+}
+
+.structure-card-palette{
+
+  margin:18px 0;
+
+  padding:12px;
+
+  border-radius:16px;
+
+  border:1px solid rgba(210,230,245,0.16);
+
+  background:rgba(0,0,0,0.22);
+}
+
+.palette-title{
+
+  color:rgba(230,238,246,0.76);
+
+  font-size:11px;
+
+  letter-spacing:0.14em;
+
+  margin-bottom:8px;
+}
+
+.palette-list{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:8px;
+}
+
+.palette-list span{
+
+  padding:7px 10px;
+
+  border-radius:999px;
+
+  border:1px solid rgba(210,230,245,0.18);
+
+  background:rgba(255,255,255,0.05);
+
+  color:#dce7f1;
+
+  font-size:12px;
+}
+
+.structure-actions{
+
+  display:grid;
+
+  grid-template-columns:1fr 1fr;
 
   gap:10px;
 }
@@ -847,6 +1211,19 @@ button:disabled{
 
 @media (min-width:769px){
 
+  .structure-board{
+
+    grid-template-columns:
+    repeat(5,minmax(0,1fr));
+
+    gap:20px 14px;
+  }
+
+  .structure-slot{
+
+    min-height:146px;
+  }
+
   .tarot-grid{
 
     grid-template-columns:
@@ -882,7 +1259,8 @@ button:disabled{
 
   .tarot-inner{
 
-    min-height:auto;
+    min-height:
+    calc(100dvh - 32px);
 
     display:block;
   }
@@ -1240,6 +1618,79 @@ button:disabled{
 
 </section>
 
+
+<section
+  class="structure-screen"
+  id="structure-screen"
+>
+
+<div class="structure-inner">
+
+<div class="structure-header">
+
+<h2 class="structure-title">
+  章構成を選択
+</h2>
+
+<div class="structure-subtitle" id="structure-subtitle">
+  STORY STRUCTURE / CHAPTER FLOW
+</div>
+
+<div class="structure-desc">
+  章数を選び、各章の軸カードと好転/悪化を大まかに指定してください。
+</div>
+
+</div>
+
+<div class="chapter-count-row" id="chapter-count-row"></div>
+
+<div class="structure-board-wrap">
+
+<svg
+  class="structure-lines"
+  id="structure-lines"
+></svg>
+
+<div
+  class="structure-board"
+  id="structure-board"
+></div>
+
+</div>
+
+<div class="structure-card-palette">
+
+<div class="palette-title">
+  CARD TYPES
+</div>
+
+<div class="palette-list">
+  <span>主人公</span>
+  <span>準主人公</span>
+  <span>脇役</span>
+  <span>世界・環境</span>
+  <span>職業</span>
+  <span>雰囲気</span>
+</div>
+
+</div>
+
+<div class="structure-actions">
+
+<button id="structure-back">
+  BACK
+</button>
+
+<button id="structure-next">
+  NEXT / PROMPT OUTPUT
+</button>
+
+</div>
+
+</div>
+
+</section>
+
 <section
   class="processing-screen"
   id="processing-screen"
@@ -1421,6 +1872,9 @@ const state = {
 
   selectedDrives:[],
 
+  chapterCount:4,
+  chapterFlow:[],
+
   descriptionPlan:[],
   syntaxPlan:[]
 };
@@ -1548,6 +2002,46 @@ const driveCards = [
   }
 ];
 
+
+const structureCards = [
+
+  {
+    id:"hero",
+    jp:"主人公",
+    desc:"主人公の内面、欲望、弱点、過去、選択を軸に章を動かす"
+  },
+
+  {
+    id:"deuteragonist",
+    jp:"準主人公",
+    desc:"相棒、ライバル、重要人物の変化や問題を軸に章を動かす"
+  },
+
+  {
+    id:"support",
+    jp:"脇役",
+    desc:"脇役の依頼、秘密、失敗、巻き込まれを軸に章を動かす"
+  },
+
+  {
+    id:"world",
+    jp:"世界・環境",
+    desc:"社会、土地、因習、自然、ルールから来る圧力を軸に章を動かす"
+  },
+
+  {
+    id:"job",
+    jp:"職業",
+    desc:"主人公の仕事、役割、任務、依頼を軸に章を動かす"
+  },
+
+  {
+    id:"mood",
+    jp:"雰囲気",
+    desc:"場所、季節、情緒、象徴的イメージが章の空気を支配する"
+  }
+];
+
 const lineCountEl =
 document.getElementById(
   "line-count"
@@ -1651,6 +2145,41 @@ document.getElementById(
 const tarotDescBox =
 document.getElementById(
   "tarot-desc-box"
+);
+
+const structureScreen =
+document.getElementById(
+  "structure-screen"
+);
+
+const chapterCountRow =
+document.getElementById(
+  "chapter-count-row"
+);
+
+const structureBoard =
+document.getElementById(
+  "structure-board"
+);
+
+const structureLines =
+document.getElementById(
+  "structure-lines"
+);
+
+const structureSubtitle =
+document.getElementById(
+  "structure-subtitle"
+);
+
+const structureBack =
+document.getElementById(
+  "structure-back"
+);
+
+const structureNext =
+document.getElementById(
+  "structure-next"
 );
 
 const processingScreen =
@@ -1961,6 +2490,38 @@ function buildPrompt(){
     `${i+1}: ${description} / ${syntax}\n`;
   }
 
+  const chapterFlowText =
+
+  state.chapterFlow.length
+
+    ? state.chapterFlow
+
+      .map(chapter=>{
+
+        const card =
+        structureCards.find(
+          item => item.id === chapter.card
+        );
+
+        const cardText =
+        card
+          ? `${card.jp}: ${card.desc}`
+          : "未設定";
+
+        const toneText =
+        chapter.tone === "improve"
+          ? "好転"
+          : chapter.tone === "worsen"
+            ? "悪化"
+            : "未設定";
+
+        return `第${chapter.index}章：${cardText} / ${toneText}`;
+      })
+
+      .join("\n")
+
+    : "未設定";
+
   return `あなたは日本語の物語生成エンジンです。
 
 以下の条件に従って、
@@ -1982,6 +2543,9 @@ SHUMI: ${shumi}
 
 【選択された駆動要素】
 ${selectedText}
+
+【中編/長編の章構成】
+${chapterFlowText}
 
 【出力ルール】
 ・必ず1行ごとに改行する
@@ -2155,6 +2719,231 @@ function renderTarot(){
     state.selectedDrives.length < 2;
 }
 
+
+function getChapterRange(){
+
+  if(state.lengthMode === "長編"){
+    return {min:7,max:14,defaultValue:7};
+  }
+
+  return {min:4,max:6,defaultValue:4};
+}
+
+function ensureChapterFlow(){
+
+  const range = getChapterRange();
+
+  if(
+    state.chapterCount < range.min ||
+    state.chapterCount > range.max
+  ){
+    state.chapterCount = range.defaultValue;
+  }
+
+  const current = state.chapterFlow || [];
+
+  state.chapterFlow = [];
+
+  for(let i=1;i<=state.chapterCount;i++){
+
+    const existing =
+    current.find(
+      item => item.index === i
+    );
+
+    state.chapterFlow.push({
+      index:i,
+      card:existing?.card || structureCards[(i-1) % structureCards.length].id,
+      tone:existing?.tone || "worsen"
+    });
+  }
+}
+
+function renderChapterCountButtons(){
+
+  const range = getChapterRange();
+
+  chapterCountRow.innerHTML = "";
+
+  for(let i=range.min;i<=range.max;i++){
+
+    const button =
+    document.createElement("button");
+
+    button.type = "button";
+
+    button.className = "chapter-count-button";
+
+    if(i === state.chapterCount){
+      button.classList.add("active");
+    }
+
+    button.textContent = `${i}章`;
+
+    button.addEventListener("click",()=>{
+
+      state.chapterCount = i;
+
+      ensureChapterFlow();
+      renderStructure();
+      render();
+    });
+
+    chapterCountRow.appendChild(button);
+  }
+}
+
+function renderStructure(){
+
+  ensureChapterFlow();
+
+  structureSubtitle.textContent =
+  state.lengthMode === "長編"
+    ? "LONG / 7-14 CHAPTERS"
+    : "MIDDLE / 4-6 CHAPTERS";
+
+  renderChapterCountButtons();
+
+  structureBoard.innerHTML = "";
+
+  state.chapterFlow.forEach(chapter=>{
+
+    const slot =
+    document.createElement("div");
+
+    slot.className =
+    `structure-slot ${chapter.tone || ""}`;
+
+    slot.dataset.index = String(chapter.index);
+
+    const cardOptions =
+    structureCards.map(card=>
+      `<option value="${card.id}" ${card.id === chapter.card ? "selected" : ""}>${card.jp}</option>`
+    ).join("");
+
+    slot.innerHTML = `
+      <div class="structure-slot-index">CHAPTER ${chapter.index}</div>
+      <select class="structure-slot-card" data-action="card">
+        ${cardOptions}
+      </select>
+      <div class="structure-tone-row">
+        <button type="button" data-tone="improve" class="${chapter.tone === "improve" ? "active" : ""}">好転</button>
+        <button type="button" data-tone="worsen" class="${chapter.tone === "worsen" ? "active" : ""}">悪化</button>
+      </div>
+    `;
+
+    const select =
+    slot.querySelector("select");
+
+    select.addEventListener("change",()=>{
+
+      chapter.card = select.value;
+
+      renderStructure();
+      render();
+    });
+
+    slot.querySelectorAll("button[data-tone]")
+      .forEach(button=>{
+
+        button.addEventListener("click",()=>{
+
+          chapter.tone = button.dataset.tone;
+
+          renderStructure();
+          render();
+        });
+      });
+
+    structureBoard.appendChild(slot);
+  });
+
+  requestAnimationFrame(drawStructureLines);
+}
+
+function drawStructureLines(){
+
+  const slots =
+  Array.from(
+    structureBoard.querySelectorAll(".structure-slot")
+  );
+
+  const wrap =
+  structureBoard.parentElement.getBoundingClientRect();
+
+  structureLines.setAttribute("viewBox",`0 0 ${wrap.width} ${wrap.height}`);
+  structureLines.setAttribute("width",wrap.width);
+  structureLines.setAttribute("height",wrap.height);
+
+  structureLines.innerHTML = "";
+
+  for(let i=0;i<slots.length-1;i++){
+
+    const a = slots[i].getBoundingClientRect();
+    const b = slots[i+1].getBoundingClientRect();
+
+    const startX = a.right - wrap.left;
+    const startY = a.top + a.height / 2 - wrap.top;
+    const endX = b.left - wrap.left;
+    const endY = b.top + b.height / 2 - wrap.top;
+
+    let d = "";
+
+    if(Math.abs(endY - startY) < 8){
+
+      const midX = (startX + endX) / 2;
+
+      d = `M ${startX} ${startY} C ${midX} ${startY}, ${midX} ${endY}, ${endX} ${endY}`;
+
+    }else{
+
+      const outward =
+      startX + Math.min(44, Math.max(24, wrap.width * 0.06));
+
+      const returnX =
+      endX - Math.min(44, Math.max(24, wrap.width * 0.06));
+
+      const midY =
+      (startY + endY) / 2;
+
+      d = `M ${startX} ${startY} C ${outward} ${startY}, ${outward} ${midY}, ${wrap.width - 10} ${midY} C ${returnX} ${midY}, ${returnX} ${endY}, ${endX} ${endY}`;
+    }
+
+    const path =
+    document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "path"
+    );
+
+    path.setAttribute("d",d);
+
+    structureLines.appendChild(path);
+  }
+}
+
+function openStructureScreen(){
+
+  tarotScreen.classList.remove("show");
+
+  renderStructure();
+
+  structureScreen.classList.add("show");
+
+  requestAnimationFrame(()=>{
+    structureScreen.classList.add("fade-in");
+    drawStructureLines();
+  });
+}
+
+function closeStructureScreen(){
+
+  structureScreen.classList.remove("fade-in");
+
+  setTimeout(()=>{
+    structureScreen.classList.remove("show");
+  },1000);
+}
+
 function handleScaleChange(){
 
   updateTotalLines();
@@ -2175,7 +2964,12 @@ verseCountEl.addEventListener(
 
 lengthModeEl.addEventListener(
   "change",
-  handleScaleChange
+  ()=>{
+    handleScaleChange();
+    state.chapterCount = getChapterRange().defaultValue;
+    ensureChapterFlow();
+    render();
+  }
 );
 
 genreEl.addEventListener(
@@ -2254,7 +3048,7 @@ function runTarotDealTransition(){
   );
 
   introMessage.textContent =
-  "まずは札を配ろう。運命は、だいたい後から辻褄を合わせるものさ。";
+  "さて、今日の主人公の運勢を占おうか？";
 
   introMessage.classList.add(
     "show"
@@ -2263,9 +3057,9 @@ function runTarotDealTransition(){
   const tarotDealBg =
   isMobile
 
-    ? "./ghorse-hero-mobile.webp"
+    ? "./Ghorse-tarot-mobile.webp"
 
-    : "./ghorse-hero-pc.webp";
+    : "./Ghorse-tarot-pc.webp";
 
   crossFadeToCustom(
     tarotDealBg
@@ -2283,7 +3077,7 @@ function runTarotDealTransition(){
 
     renderTarot();
 
-  },2000);
+  },3000);
 }
 
 function crossFadeToCustom(src){
@@ -2371,6 +3165,14 @@ function runProcessingSequence(){
 
   tarotScreen.classList.remove(
     "show"
+  );
+
+  structureScreen.classList.remove(
+    "show"
+  );
+
+  structureScreen.classList.remove(
+    "fade-in"
   );
 
   processingScreen.classList.add(
@@ -2505,7 +3307,55 @@ tarotNext.addEventListener(
   "click",
   ()=>{
 
-    runProcessingSequence();
+    if(state.lengthMode === "短編"){
+
+      runProcessingSequence();
+
+      return;
+    }
+
+    tarotScreen.classList.add("fade-out");
+
+    setTimeout(()=>{
+
+      tarotScreen.classList.remove("fade-out");
+
+      openStructureScreen();
+
+    },1000);
+  }
+);
+
+structureBack.addEventListener(
+  "click",
+  ()=>{
+
+    closeStructureScreen();
+
+    setTimeout(()=>{
+      tarotScreen.classList.add("show");
+    },1000);
+  }
+);
+
+structureNext.addEventListener(
+  "click",
+  ()=>{
+
+    closeStructureScreen();
+
+    setTimeout(()=>{
+      runProcessingSequence();
+    },1000);
+  }
+);
+
+window.addEventListener(
+  "resize",
+  ()=>{
+    if(structureScreen.classList.contains("show")){
+      drawStructureLines();
+    }
   }
 );
 
@@ -2598,6 +3448,8 @@ updateTotalLines();
 generateDescriptionPlan();
 
 generateSyntaxPlan();
+
+ensureChapterFlow();
 
 render();
 
