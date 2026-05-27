@@ -251,6 +251,65 @@ h1{
   margin-bottom:20px;
 }
 
+.form-grid{
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(2,minmax(0,1fr));
+
+  gap:16px;
+}
+
+.form-grid .section{
+
+  margin-bottom:0;
+}
+
+.full-span{
+
+  grid-column:1 / -1;
+}
+
+.content.hide{
+
+  opacity:0;
+
+  transform:
+  translateY(18px);
+
+  pointer-events:none;
+}
+
+.setup-total{
+
+  margin-top:10px;
+
+  padding:12px 14px;
+
+  border-radius:14px;
+
+  border:1px solid var(--line);
+
+  background:
+  rgba(0,0,0,0.28);
+
+  color:var(--muted);
+
+  font-size:13px;
+
+  line-height:1.6;
+}
+
+@media (max-width:520px){
+
+  .form-grid{
+
+    grid-template-columns:1fr;
+  }
+}
+
+
 label{
 
   display:block;
@@ -889,6 +948,56 @@ button:disabled{
 
 <div class="panel">
 
+<div class="form-grid">
+
+<div class="section">
+
+<label>LINE</label>
+
+<select id="line-count">
+
+<option value="16">16</option>
+<option value="20">20</option>
+<option value="24" selected>24</option>
+<option value="32">32</option>
+
+</select>
+
+</div>
+
+<div class="section">
+
+<label>VERSE</label>
+
+<select id="verse-count">
+
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3" selected>3</option>
+<option value="4">4</option>
+
+</select>
+
+</div>
+
+<div class="section full-span">
+
+<label>LENGTH MODE</label>
+
+<select id="length-mode">
+
+<option value="短編">短編</option>
+<option value="中編">中編</option>
+<option value="長編">長編</option>
+
+</select>
+
+<div class="setup-total" id="setup-total">
+  OUTPUT: 24 LINE × 3 VERSE = 72 LINES
+</div>
+
+</div>
+
 <div class="section">
 
 <label>GENRE</label>
@@ -1039,10 +1148,12 @@ button:disabled{
 
 </div>
 
+</div>
+
 <div class="section">
 
 <button id="open-tarot-button">
-  DRIVE CARD SELECT
+  NEXT / DRIVE CARD SELECT
 </button>
 
 </div>
@@ -1296,6 +1407,11 @@ const slideTimer = setInterval(()=>{
 
 const state = {
 
+  lineCount:24,
+  verseCount:3,
+  totalLines:72,
+  lengthMode:"短編",
+
   genre:"",
   drama:"",
   age:"",
@@ -1431,6 +1547,26 @@ const driveCards = [
     desc:"繰り返しを断ち切る"
   }
 ];
+
+const lineCountEl =
+document.getElementById(
+  "line-count"
+);
+
+const verseCountEl =
+document.getElementById(
+  "verse-count"
+);
+
+const lengthModeEl =
+document.getElementById(
+  "length-mode"
+);
+
+const setupTotalEl =
+document.getElementById(
+  "setup-total"
+);
 
 const genreEl =
 document.getElementById(
@@ -1663,22 +1799,52 @@ function weightedSyntaxRandom(
 
 function getSectionByLine(line){
 
-  if(line <= 5){
+  const total =
+  Math.max(
+    1,
+    state.totalLines || 16
+  );
+
+  const joEnd =
+  Math.ceil(total / 3);
+
+  const haEnd =
+  Math.ceil(total * 2 / 3);
+
+  if(line <= joEnd){
     return "jo";
   }
 
-  if(line <= 11){
+  if(line <= haEnd){
     return "ha";
   }
 
   return "kyu";
 }
 
+function updateTotalLines(){
+
+  state.lineCount =
+  Number(lineCountEl.value);
+
+  state.verseCount =
+  Number(verseCountEl.value);
+
+  state.totalLines =
+  state.lineCount * state.verseCount;
+
+  state.lengthMode =
+  lengthModeEl.value;
+
+  setupTotalEl.textContent =
+  `OUTPUT: ${state.lineCount} LINE × ${state.verseCount} VERSE = ${state.totalLines} LINES / ${state.lengthMode}`;
+}
+
 function generateDescriptionPlan(){
 
   state.descriptionPlan = [];
 
-  for(let i=1;i<=16;i++){
+  for(let i=1;i<=state.totalLines;i++){
 
     const section =
     getSectionByLine(i);
@@ -1686,6 +1852,8 @@ function generateDescriptionPlan(){
     state.descriptionPlan.push({
 
       line:i,
+
+      section,
 
       type:
       weightedDescriptionRandom(
@@ -1699,7 +1867,7 @@ function generateSyntaxPlan(){
 
   state.syntaxPlan = [];
 
-  for(let i=1;i<=16;i++){
+  for(let i=1;i<=state.totalLines;i++){
 
     const section =
     getSectionByLine(i);
@@ -1707,6 +1875,8 @@ function generateSyntaxPlan(){
     state.syntaxPlan.push({
 
       line:i,
+
+      section,
 
       type:
       weightedSyntaxRandom(
@@ -1717,6 +1887,18 @@ function generateSyntaxPlan(){
 }
 
 function buildPrompt(){
+
+  const lineCount =
+  state.lineCount || 24;
+
+  const verseCount =
+  state.verseCount || 3;
+
+  const totalLines =
+  state.totalLines || 72;
+
+  const lengthMode =
+  state.lengthMode || "未設定";
 
   const genre =
   state.genre || "未設定";
@@ -1760,7 +1942,7 @@ function buildPrompt(){
 
   let linePlanText = "";
 
-  for(let i=0;i<16;i++){
+  for(let i=0;i<totalLines;i++){
 
     const description =
 
@@ -1782,7 +1964,13 @@ function buildPrompt(){
   return `あなたは日本語の物語生成エンジンです。
 
 以下の条件に従って、
-16行の物語テキストを生成してください。
+${totalLines}行の物語テキストを生成してください。
+
+【出力規模】
+LENGTH_MODE: ${lengthMode}
+LINE: ${lineCount}
+VERSE: ${verseCount}
+TOTAL_LINES: ${totalLines}
 
 【基本設定】
 GENRE: ${genre}
@@ -1797,7 +1985,9 @@ ${selectedText}
 
 【出力ルール】
 ・必ず1行ごとに改行する
-・全16行で出力する
+・全${totalLines}行で出力する
+・${lineCount}行ごとに1VERSEとして扱う
+・全${verseCount}VERSEで構成する
 ・具体描写を優先する
 ・抽象語だけで進めない
 ・情景、感情、行動を含める
@@ -1965,6 +2155,29 @@ function renderTarot(){
     state.selectedDrives.length < 2;
 }
 
+function handleScaleChange(){
+
+  updateTotalLines();
+  generateDescriptionPlan();
+  generateSyntaxPlan();
+  render();
+}
+
+lineCountEl.addEventListener(
+  "change",
+  handleScaleChange
+);
+
+verseCountEl.addEventListener(
+  "change",
+  handleScaleChange
+);
+
+lengthModeEl.addEventListener(
+  "change",
+  handleScaleChange
+);
+
 genreEl.addEventListener(
   "change",
   ()=>{
@@ -2034,15 +2247,79 @@ shumiEl.addEventListener(
   }
 );
 
-openTarotButton.addEventListener(
-  "click",
-  ()=>{
+function runTarotDealTransition(){
+
+  content.classList.add(
+    "hide"
+  );
+
+  introMessage.textContent =
+  "まずは札を配ろう。運命は、だいたい後から辻褄を合わせるものさ。";
+
+  introMessage.classList.add(
+    "show"
+  );
+
+  const tarotDealBg =
+  isMobile
+
+    ? "./ghorse-hero-mobile.webp"
+
+    : "./ghorse-hero-pc.webp";
+
+  crossFadeToCustom(
+    tarotDealBg
+  );
+
+  setTimeout(()=>{
+
+    introMessage.classList.remove(
+      "show"
+    );
 
     tarotScreen.classList.add(
       "show"
     );
 
     renderTarot();
+
+  },2000);
+}
+
+function crossFadeToCustom(src){
+
+  setLayerImage(
+    inactiveLayer,
+    src
+  );
+
+  inactiveLayer.classList.add(
+    "show"
+  );
+
+  activeLayer.classList.remove(
+    "show"
+  );
+
+  const temp =
+  activeLayer;
+
+  activeLayer =
+  inactiveLayer;
+
+  inactiveLayer =
+  temp;
+}
+
+openTarotButton.addEventListener(
+  "click",
+  ()=>{
+
+    updateTotalLines();
+    generateDescriptionPlan();
+    generateSyntaxPlan();
+    render();
+    runTarotDealTransition();
   }
 );
 
@@ -2052,6 +2329,10 @@ tarotClose.addEventListener(
 
     tarotScreen.classList.remove(
       "show"
+    );
+
+    content.classList.remove(
+      "hide"
     );
   }
 );
@@ -2284,6 +2565,10 @@ finalCopyButton.addEventListener(
       "show"
     );
 
+    content.classList.remove(
+      "hide"
+    );
+
     content.classList.add(
       "show"
     );
@@ -2307,6 +2592,8 @@ finalCopyButton.addEventListener(
     );
   }
 );
+
+updateTotalLines();
 
 generateDescriptionPlan();
 
