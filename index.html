@@ -1573,10 +1573,272 @@ button:disabled{
   }
 }
 
+
+/* === Office menu / project manager update === */
+.office-menu-button{
+  position:fixed;
+  top:14px;
+  left:14px;
+  z-index:12000;
+  width:44px;
+  height:44px;
+  border-radius:999px;
+  border:1px solid rgba(229,196,138,0.38);
+  background:rgba(8,7,6,0.66);
+  color:#f4ead8;
+  backdrop-filter:blur(8px);
+  box-shadow:0 10px 30px rgba(0,0,0,0.45);
+  font-size:18px;
+  letter-spacing:0;
+}
+.office-menu-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:11990;
+  background:rgba(0,0,0,0.36);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .25s ease;
+}
+.office-menu-backdrop.show{
+  opacity:1;
+  pointer-events:auto;
+}
+.office-menu-panel{
+  position:fixed;
+  top:0;
+  left:0;
+  bottom:0;
+  z-index:12000;
+  width:min(84vw,340px);
+  padding:18px 14px calc(18px + env(safe-area-inset-bottom));
+  background:linear-gradient(140deg,rgba(9,8,7,.96),rgba(4,8,12,.94));
+  border-right:1px solid rgba(229,196,138,.28);
+  box-shadow:22px 0 70px rgba(0,0,0,.62);
+  transform:translateX(-105%);
+  transition:transform .32s ease;
+  overflow-y:auto;
+}
+.office-menu-panel.show{
+  transform:translateX(0);
+}
+.office-menu-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:18px;
+  color:#f4ead8;
+}
+.office-menu-head strong{
+  font-weight:400;
+  letter-spacing:.16em;
+  font-size:13px;
+}
+.office-menu-close{
+  width:auto;
+  padding:7px 12px;
+  border-radius:999px;
+  font-size:11px;
+}
+.office-menu-list{
+  display:grid;
+  gap:10px;
+}
+.office-menu-list button{
+  text-align:left;
+  border-radius:16px;
+  padding:13px 14px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(229,196,138,.18);
+  color:#f4ead8;
+  letter-spacing:.06em;
+}
+.office-modal{
+  position:fixed;
+  inset:0;
+  z-index:12100;
+  display:none;
+  place-items:center;
+  padding:18px;
+  background:rgba(0,0,0,.58);
+}
+.office-modal.show{
+  display:grid;
+}
+.office-modal-box{
+  width:min(94vw,760px);
+  max-height:90dvh;
+  overflow:auto;
+  border-radius:24px;
+  border:1px solid rgba(229,196,138,.32);
+  background:rgba(8,7,6,.86);
+  backdrop-filter:blur(14px);
+  box-shadow:0 28px 90px rgba(0,0,0,.72);
+  padding:14px;
+}
+.office-modal-hero{
+  width:100%;
+  aspect-ratio:16/7;
+  object-fit:cover;
+  display:block;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(255,255,255,.04);
+  margin-bottom:14px;
+}
+.office-modal-title{
+  margin:8px 4px 12px;
+  color:#f4ead8;
+  font-size:16px;
+  font-weight:400;
+  letter-spacing:.16em;
+}
+.office-modal-text{
+  margin:0 4px;
+  color:rgba(244,234,216,.86);
+  line-height:1.9;
+  font-size:14px;
+  white-space:pre-line;
+}
+.office-modal-actions{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-top:16px;
+}
+.office-modal-actions button{
+  width:auto;
+  min-width:84px;
+  padding:9px 14px;
+  border-radius:999px;
+  font-size:12px;
+}
+.guide-dots{
+  color:rgba(244,234,216,.68);
+  font-size:12px;
+  letter-spacing:.14em;
+}
+.project-title-row{
+  margin:16px auto 16px;
+  max-width:520px;
+}
+.project-title-row label{
+  display:block;
+  margin-bottom:8px;
+  color:rgba(244,234,216,.72);
+  font-size:11px;
+  letter-spacing:.16em;
+}
+.project-title-row input{
+  width:100%;
+}
+.project-list{
+  display:grid;
+  gap:10px;
+  margin:0 4px 14px;
+}
+.project-card{
+  width:100%;
+  text-align:left;
+  border-radius:16px;
+  border:1px solid rgba(229,196,138,.20);
+  background:rgba(255,255,255,.045);
+  color:#f4ead8;
+  padding:12px;
+}
+.project-card-title{
+  font-size:14px;
+  letter-spacing:.08em;
+  margin-bottom:6px;
+}
+.project-card-meta{
+  color:rgba(244,234,216,.64);
+  font-size:12px;
+  line-height:1.6;
+}
+.project-detail{
+  margin:0 4px;
+  padding:12px;
+  border-radius:16px;
+  border:1px solid rgba(229,196,138,.16);
+  background:rgba(0,0,0,.22);
+}
+.project-detail h3{
+  margin:0 0 10px;
+  font-weight:400;
+  font-size:14px;
+  color:#f4ead8;
+}
+.key-item-form{
+  display:none;
+  gap:10px;
+  margin-top:12px;
+}
+.key-item-form.show{
+  display:grid;
+}
+.key-item-form textarea{
+  min-height:90px;
+}
+.key-item-list{
+  display:grid;
+  gap:8px;
+  margin-top:12px;
+}
+.key-item-box{
+  border-radius:14px;
+  border:1px solid rgba(229,196,138,.18);
+  padding:10px;
+  background:rgba(255,255,255,.035);
+}
+.key-item-box strong{
+  color:#f4ead8;
+  font-weight:400;
+}
+.key-item-box p{
+  margin:6px 0 0;
+  color:rgba(244,234,216,.72);
+  line-height:1.6;
+  font-size:12px;
+}
+
 </style>
 </head>
 
 <body>
+
+<button type="button" class="office-menu-button" id="office-menu-button" aria-label="menu">☰</button>
+<div class="office-menu-backdrop" id="office-menu-backdrop"></div>
+<aside class="office-menu-panel" id="office-menu-panel">
+  <div class="office-menu-head">
+    <strong>GHORSE OFFICE</strong>
+    <button type="button" class="office-menu-close" id="office-menu-close">CLOSE</button>
+  </div>
+  <div class="office-menu-list">
+    <button type="button" data-office-action="about">この事務所について</button>
+    <button type="button" data-office-action="guide">操作概要</button>
+    <button type="button" data-office-action="projects">プロジェクト管理画面</button>
+  </div>
+</aside>
+
+<section class="office-modal" id="office-modal">
+  <div class="office-modal-box">
+    <img class="office-modal-hero" id="office-modal-image" src="about-office-banner.webp" alt="">
+    <video class="office-modal-hero" id="office-modal-video" autoplay muted loop playsinline style="display:none;"></video>
+    <h2 class="office-modal-title" id="office-modal-title"></h2>
+    <div class="office-modal-text" id="office-modal-text"></div>
+    <div id="project-modal-area"></div>
+    <div class="office-modal-actions">
+      <button type="button" id="office-modal-prev">PREV</button>
+      <span class="guide-dots" id="office-modal-dots"></span>
+      <button type="button" id="office-modal-next">NEXT</button>
+      <button type="button" id="office-modal-close">CLOSE</button>
+    </div>
+  </div>
+</section>
+
 
 <div class="hero-stage">
 
@@ -1930,6 +2192,11 @@ button:disabled{
   章数を選び、各章の軸カードと好転/悪化を大まかに指定してください。
 </div>
 
+<div class="project-title-row">
+  <label for="project-title-input">仮題</label>
+  <input id="project-title-input" type="text" placeholder="例：雨の街の探偵" />
+</div>
+
 </div>
 
 <div class="chapter-count-row" id="chapter-count-row"></div>
@@ -2159,6 +2426,7 @@ const state = {
   chapterCount:4,
   chapterFlow:[],
   activeStructureIndex:null,
+  projectTitle:"",
 
   descriptionPlan:[],
   syntaxPlan:[]
@@ -2493,6 +2761,22 @@ document.getElementById(
   "axis-drawer-close"
 );
 
+const projectTitleInput = document.getElementById("project-title-input");
+const officeMenuButton = document.getElementById("office-menu-button");
+const officeMenuPanel = document.getElementById("office-menu-panel");
+const officeMenuBackdrop = document.getElementById("office-menu-backdrop");
+const officeMenuClose = document.getElementById("office-menu-close");
+const officeModal = document.getElementById("office-modal");
+const officeModalImage = document.getElementById("office-modal-image");
+const officeModalVideo = document.getElementById("office-modal-video");
+const officeModalTitle = document.getElementById("office-modal-title");
+const officeModalText = document.getElementById("office-modal-text");
+const officeModalPrev = document.getElementById("office-modal-prev");
+const officeModalNext = document.getElementById("office-modal-next");
+const officeModalClose = document.getElementById("office-modal-close");
+const officeModalDots = document.getElementById("office-modal-dots");
+const projectModalArea = document.getElementById("project-modal-area");
+
 if(structureAxisDrawer && structureAxisDrawer.parentElement !== document.body){
   document.body.appendChild(structureAxisDrawer);
 }
@@ -2744,6 +3028,9 @@ function buildPrompt(){
   const lengthMode =
   state.lengthMode || "未設定";
 
+  const projectTitle =
+  state.projectTitle || "未設定";
+
   const genre =
   state.genre || "未設定";
 
@@ -2849,6 +3136,7 @@ VERSE: ${verseCount}
 TOTAL_LINES: ${totalLines}
 
 【基本設定】
+PROJECT_TITLE: ${projectTitle}
 GENRE: ${genre}
 DRAMA: ${drama}
 AGE: ${age}
@@ -3178,6 +3466,10 @@ function renderStructure(){
     ? "LONG / 7-14 CHAPTERS"
     : "MIDDLE / 4-6 CHAPTERS";
 
+  if(projectTitleInput){
+    projectTitleInput.value = state.projectTitle || "";
+  }
+
   renderChapterCountButtons();
 
   structureBoard.innerHTML = "";
@@ -3368,6 +3660,13 @@ lengthModeEl.addEventListener(
     render();
   }
 );
+
+if(projectTitleInput){
+  projectTitleInput.addEventListener("input",()=>{
+    state.projectTitle = projectTitleInput.value.trim();
+    render();
+  });
+}
 
 genreEl.addEventListener(
   "change",
@@ -3767,6 +4066,7 @@ structureNext.addEventListener(
   ()=>{
 
     closeAxisDrawer();
+    saveCurrentProject();
     runProcessingSequence({ crossfade:true });
   }
 );
@@ -3863,6 +4163,286 @@ finalCopyButton.addEventListener(
     );
   }
 );
+
+
+const OFFICE_PROJECT_KEY = "ghorseOfficeProjectsV1";
+let guidePageIndex = 0;
+let activeProjectId = null;
+
+const guidePages = [
+  {
+    title:"操作概要：最初の画面",
+    video:"guide-page1.mp4",
+    text:"まずは上のボタンで、LINEとVERSEを選んでね。数字を増やすほど、長めで重厚な文章になるよ。\n\nその下では、短編・中編・長編を選べる。軽く一篇だけ書きたい時もあれば、じっくり世界を作り込みたい時もあるでしょ？\n\nジャンルや雰囲気、登場人物なんかも、このページで決めていく。あんまり考え込みすぎなくても大丈夫。直感で混ぜた方が、妙に面白くなったりするからね。"
+  },
+  {
+    title:"操作概要：タロットカード",
+    video:"guide-page2.mp4",
+    text:"ここではタロットを2〜4枚選ぶ。カードをタップすると選択、もう一回押すと解除できるよ。\n\nこのカードは、“物語がどんな方向に進みやすいか”を決めるためのもの。例えば“探求”と“組織”を組み合わせれば、大きな陰謀を追う話になるかもしれないし、“逃避”と“生存”なら、追い詰められながら旅する感じになるかもしれない。\n\nまあ、あんまり難しく考えなくて大丈夫。“なんか好き”くらいの感覚で選んだ方が、案外いい話になったりするからさ。"
+  },
+  {
+    title:"操作概要：章カード",
+    video:"guide-page3.mp4",
+    text:"中編と長編を選んだ人は、ここで章の流れを作っていく。まず上で仮題を入れて、章数を決めてみて。\n\n空いてるカードをタップすると、下から“主人公”とか“世界環境”のカードが出てくる。好きなのを選んだあと、“好 / 悪”で流れの向きも決められるよ。\n\nあとで左のメニューから、章構成の確認やキーアイテムの追加もできる。思いついた単語や小物は、忘れる前に放り込んどくと便利かもね。"
+  }
+];
+
+function loadOfficeProjects(){
+  try{
+    return JSON.parse(localStorage.getItem(OFFICE_PROJECT_KEY) || "[]");
+  }catch(error){
+    return [];
+  }
+}
+
+function saveOfficeProjects(projects){
+  localStorage.setItem(OFFICE_PROJECT_KEY, JSON.stringify(projects));
+}
+
+function makeProjectSnapshot(){
+  return {
+    id:`project_${Date.now()}`,
+    title:state.projectTitle || `無題の${state.lengthMode}`,
+    lengthMode:state.lengthMode,
+    lineCount:state.lineCount,
+    verseCount:state.verseCount,
+    totalLines:state.totalLines,
+    genre:state.genre,
+    drama:state.drama,
+    age:state.age,
+    gender:state.gender,
+    job:state.job,
+    shumi:state.shumi,
+    selectedDrives:[...state.selectedDrives],
+    chapterCount:state.chapterCount,
+    chapterFlow:JSON.parse(JSON.stringify(state.chapterFlow || [])),
+    keyItems:[],
+    createdAt:new Date().toISOString(),
+    updatedAt:new Date().toISOString()
+  };
+}
+
+function saveCurrentProject(){
+  if(state.lengthMode === "短編"){
+    return;
+  }
+  const projects = loadOfficeProjects();
+  const title = state.projectTitle || `無題の${state.lengthMode}`;
+  const existingIndex = projects.findIndex(project => project.title === title);
+  const snapshot = makeProjectSnapshot();
+  if(existingIndex >= 0){
+    snapshot.id = projects[existingIndex].id;
+    snapshot.keyItems = projects[existingIndex].keyItems || [];
+    snapshot.createdAt = projects[existingIndex].createdAt || snapshot.createdAt;
+    projects[existingIndex] = snapshot;
+  }else{
+    projects.unshift(snapshot);
+  }
+  saveOfficeProjects(projects);
+}
+
+function openOfficeMenu(){
+  officeMenuPanel.classList.add("show");
+  officeMenuBackdrop.classList.add("show");
+}
+
+function closeOfficeMenu(){
+  officeMenuPanel.classList.remove("show");
+  officeMenuBackdrop.classList.remove("show");
+}
+
+function openOfficeModal(){
+  closeOfficeMenu();
+  officeModal.classList.add("show");
+}
+
+function closeOfficeModal(){
+  officeModal.classList.remove("show");
+  if(officeModalVideo){
+    officeModalVideo.pause();
+  }
+  projectModalArea.innerHTML = "";
+}
+
+function showOfficeImage(src){
+  officeModalVideo.pause();
+  officeModalVideo.removeAttribute("src");
+  officeModalVideo.load();
+  officeModalVideo.style.display = "none";
+  officeModalImage.src = src;
+  officeModalImage.style.display = "block";
+}
+
+function showOfficeVideo(src){
+  officeModalImage.style.display = "none";
+  officeModalVideo.style.display = "block";
+  officeModalVideo.src = src;
+  officeModalVideo.load();
+  officeModalVideo.play().catch(()=>{});
+}
+
+function renderAboutModal(){
+  showOfficeImage("about-office-banner.webp");
+  officeModalTitle.textContent = "この事務所について";
+  officeModalText.textContent = "私の名前はGhorse。見ての通り、まともな顔じゃない。昔は脚本の仕事をしてたんだけどね、ある交通事故でこの頭になってから、業界の連中に気味悪がられてね。\n\nおかげで今じゃ、こうして街の外れで細々とゴーストライター稼業さ。締切に追われる作家や、ネタに困ったラッパー相手に文章を書いて食ってる。\n\nそれはともかく、ここは“物語”を組み立てるための事務所だ。ジャンル、展開、空気、登場人物。そういう断片を選びながら、あんた自身の物語を形にしていく。\n\n細かい筋書きをガチガチに決める必要はない。必要なのは、物語の\"重心\"だけ。残りはAIが補完する。だからこそ、人間じゃ思いつかないような展開や、妙に生々しい流れが生まれることもある。\n\n短編なら一晩。長編なら、何日も付き合うことになるかもしれないね。まあ、せっかく来たんだ。気が済むまで、好きな物語を書いていくといい。";
+  officeModalPrev.style.display = "none";
+  officeModalNext.style.display = "none";
+  officeModalDots.textContent = "";
+  projectModalArea.innerHTML = "";
+  openOfficeModal();
+}
+
+function renderGuideModal(){
+  const page = guidePages[guidePageIndex];
+  showOfficeVideo(page.video);
+  officeModalTitle.textContent = page.title;
+  officeModalText.textContent = page.text;
+  officeModalPrev.style.display = "inline-block";
+  officeModalNext.style.display = "inline-block";
+  officeModalPrev.disabled = guidePageIndex === 0;
+  officeModalNext.disabled = guidePageIndex === guidePages.length - 1;
+  officeModalDots.textContent = `${guidePageIndex + 1} / ${guidePages.length}`;
+  projectModalArea.innerHTML = "";
+  openOfficeModal();
+}
+
+function cardLabel(id){
+  const card = structureCards.find(item => item.id === id);
+  return card ? card.jp : "未設定";
+}
+
+function driveLabel(id){
+  const card = driveCards.find(item => item.id === id);
+  return card ? card.jp : id;
+}
+
+function renderProjectsModal(){
+  const projects = loadOfficeProjects();
+  showOfficeImage("project-manager-banner.webp");
+  officeModalTitle.textContent = "プロジェクト管理画面";
+  officeModalText.textContent = projects.length
+    ? "保存した中編・長編プロジェクトをここで確認できるよ。開いたら、キーアイテムも追加できる。"
+    : "まだ保存されたプロジェクトはないみたい。中編か長編で章カードを作ると、ここに表示されるよ。";
+  officeModalPrev.style.display = "none";
+  officeModalNext.style.display = "none";
+  officeModalDots.textContent = "";
+  activeProjectId = null;
+  projectModalArea.innerHTML = `
+    <div class="project-list">
+      ${projects.map(project=>`
+        <button type="button" class="project-card" data-project-id="${project.id}">
+          <div class="project-card-title">${escapeHtml(project.title)}</div>
+          <div class="project-card-meta">${project.lengthMode} / ${project.chapterCount}章 / ${project.totalLines}行 / ${escapeHtml(project.genre || "ジャンル未設定")}</div>
+        </button>
+      `).join("")}
+    </div>
+    <div class="project-detail" id="project-detail"></div>
+  `;
+  openOfficeModal();
+  projectModalArea.querySelectorAll("[data-project-id]").forEach(button=>{
+    button.addEventListener("click",()=>{
+      activeProjectId = button.dataset.projectId;
+      renderProjectDetail(activeProjectId);
+    });
+  });
+}
+
+function renderProjectDetail(projectId){
+  const projects = loadOfficeProjects();
+  const project = projects.find(item => item.id === projectId);
+  const detail = document.getElementById("project-detail");
+  if(!project || !detail){ return; }
+  const flow = (project.chapterFlow || []).map(chapter=>{
+    const tone = chapter.tone === "improve" ? "好" : chapter.tone === "worsen" ? "悪" : "未";
+    return `第${chapter.index}章：${cardLabel(chapter.card)} / ${tone}`;
+  }).join("\n");
+  detail.innerHTML = `
+    <h3>${escapeHtml(project.title)}</h3>
+    <div class="project-card-meta">
+      ${project.lengthMode} / ${project.chapterCount}章 / ${project.lineCount} LINE × ${project.verseCount} VERSE = ${project.totalLines}行<br>
+      GENRE: ${escapeHtml(project.genre || "未設定")} / DRAMA: ${escapeHtml(project.drama || "未設定")}<br>
+      DRIVE: ${escapeHtml((project.selectedDrives || []).map(driveLabel).join(" / ") || "未設定")}
+    </div>
+    <pre>${escapeHtml(flow || "章構成未設定")}</pre>
+    <button type="button" id="open-key-item-form">キーアイテムを追加</button>
+    <div class="key-item-form" id="key-item-form">
+      <input id="key-item-emoji" type="text" placeholder="絵文字：☂️" maxlength="4">
+      <input id="key-item-name" type="text" placeholder="アイテム名：赤い傘">
+      <textarea id="key-item-desc" placeholder="説明文：雨の夜だけ現れる女が持っている。主人公の過去と関係する。"></textarea>
+      <button type="button" id="save-key-item">追加</button>
+    </div>
+    <div class="key-item-list" id="key-item-list"></div>
+  `;
+  document.getElementById("open-key-item-form").addEventListener("click",()=>{
+    document.getElementById("key-item-form").classList.toggle("show");
+  });
+  document.getElementById("save-key-item").addEventListener("click",()=>{
+    const emoji = document.getElementById("key-item-emoji").value.trim();
+    const name = document.getElementById("key-item-name").value.trim();
+    const desc = document.getElementById("key-item-desc").value.trim();
+    if(!name){ return; }
+    const all = loadOfficeProjects();
+    const target = all.find(item => item.id === projectId);
+    if(!target){ return; }
+    target.keyItems = target.keyItems || [];
+    target.keyItems.push({ id:`item_${Date.now()}`, emoji, name, desc, createdAt:new Date().toISOString() });
+    target.updatedAt = new Date().toISOString();
+    saveOfficeProjects(all);
+    renderProjectDetail(projectId);
+  });
+  renderKeyItemList(project);
+}
+
+function renderKeyItemList(project){
+  const list = document.getElementById("key-item-list");
+  if(!list){ return; }
+  const items = project.keyItems || [];
+  list.innerHTML = items.length
+    ? items.map(item=>`
+      <div class="key-item-box">
+        <strong>${escapeHtml(item.emoji || "◇")} ${escapeHtml(item.name)}</strong>
+        <p>${escapeHtml(item.desc || "説明なし")}</p>
+      </div>
+    `).join("")
+    : `<div class="project-card-meta">キーアイテムはまだないよ。</div>`;
+}
+
+function escapeHtml(value){
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+if(officeMenuButton){ officeMenuButton.addEventListener("click",openOfficeMenu); }
+if(officeMenuClose){ officeMenuClose.addEventListener("click",closeOfficeMenu); }
+if(officeMenuBackdrop){ officeMenuBackdrop.addEventListener("click",closeOfficeMenu); }
+if(officeModalClose){ officeModalClose.addEventListener("click",closeOfficeModal); }
+if(officeModal){
+  officeModal.addEventListener("click",event=>{
+    if(event.target === officeModal){ closeOfficeModal(); }
+  });
+}
+document.querySelectorAll("[data-office-action]").forEach(button=>{
+  button.addEventListener("click",()=>{
+    const action = button.dataset.officeAction;
+    if(action === "about"){ renderAboutModal(); }
+    if(action === "guide"){ guidePageIndex = 0; renderGuideModal(); }
+    if(action === "projects"){ renderProjectsModal(); }
+  });
+});
+if(officeModalPrev){
+  officeModalPrev.addEventListener("click",()=>{
+    if(guidePageIndex > 0){ guidePageIndex--; renderGuideModal(); }
+  });
+}
+if(officeModalNext){
+  officeModalNext.addEventListener("click",()=>{
+    if(guidePageIndex < guidePages.length - 1){ guidePageIndex++; renderGuideModal(); }
+  });
+}
 
 updateTotalLines();
 
