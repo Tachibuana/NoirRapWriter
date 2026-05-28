@@ -18,7 +18,7 @@
   --bg:#050505;
 
   --panel:
-  rgba(8,7,6,0.60);
+  rgba(8,7,6,0.50);
 
   --text:#f1e7d4;
 
@@ -239,8 +239,7 @@ h1{
   border:
   1px solid var(--line);
 
-  backdrop-filter:
-  blur(10px);
+  backdrop-filter:none;
 
   box-shadow:
   0 24px 80px rgba(0,0,0,0.65);
@@ -510,10 +509,9 @@ button:disabled{
   rgba(190,220,245,0.24);
 
   background:
-  rgba(4,10,16,0.76);
+  rgba(4,10,16,0.50);
 
-  backdrop-filter:
-  blur(12px);
+  backdrop-filter:none;
 
   box-shadow:
   0 24px 80px rgba(0,0,0,0.72);
@@ -534,13 +532,12 @@ button:disabled{
   linear-gradient(
     to bottom,
 
-    rgba(4,10,16,0.82),
+    rgba(4,10,16,0.50),
 
-    rgba(4,10,16,0.58)
+    rgba(4,10,16,0.38)
   );
 
-  backdrop-filter:
-  blur(8px);
+  backdrop-filter:none;
 }
 
 .tarot-title{
@@ -792,10 +789,9 @@ button:disabled{
   rgba(190,220,245,0.24);
 
   background:
-  rgba(4,10,16,0.76);
+  rgba(4,10,16,0.50);
 
-  backdrop-filter:
-  blur(12px);
+  backdrop-filter:none;
 
   box-shadow:
   0 24px 80px rgba(0,0,0,0.72);
@@ -2359,47 +2355,19 @@ document.getElementById(
 const isMobile =
 window.innerWidth <= 768;
 
-const introSlideSets = isMobile
+const slides = isMobile
 
   ? [
-      [
-        "./intro-mobile-1.webp",
-        "./intro-mobile-2.webp",
-        "./intro-mobile-3.webp"
-      ],
-      [
-        "./intro-mobile-pattern2-1.webp",
-        "./intro-mobile-pattern2-2.webp",
-        "./intro-mobile-pattern2-3.webp"
-      ],
-      [
-        "./intro-mobile-pattern3-1.webp",
-        "./intro-mobile-pattern3-2.webp",
-        "./intro-mobile-pattern3-3.webp"
-      ]
+      "./intro-mobile-1.webp",
+      "./intro-mobile-2.webp",
+      "./intro-mobile-3.webp"
     ]
 
   : [
-      [
-        "./intro-pc-1.webp",
-        "./intro-pc-2.webp",
-        "./intro-pc-3.webp"
-      ],
-      [
-        "./intro-pc-pattern2-1.webp",
-        "./intro-pc-pattern2-2.webp",
-        "./intro-pc-pattern2-3.webp"
-      ],
-      [
-        "./intro-pc-pattern3-1.webp",
-        "./intro-pc-pattern3-2.webp",
-        "./intro-pc-pattern3-3.webp"
-      ]
+      "./intro-pc-1.webp",
+      "./intro-pc-2.webp",
+      "./intro-pc-3.webp"
     ];
-
-const slides = introSlideSets[
-  Math.floor(Math.random() * introSlideSets.length)
-];
 
 const returnBackgrounds = isMobile
 
@@ -3271,7 +3239,7 @@ ${selectedText}
 【中編/長編の章構成】
 ${chapterFlowText}
 
-【プロンプトに反映するキーアイテム】
+【キーアイテム】
 ${keyItemText}
 
 【出力ルール】
@@ -4104,6 +4072,9 @@ function runProcessingSequence(options = {}){
         `はいよ。いつも通り、<br>
         アタシのことは言うんじゃないよ。`;
 
+        window.scrollTo({ top:0, left:0, behavior:"auto" });
+        if(content){ content.scrollTop = 0; }
+
         finalCopy.classList.add(
           "show"
         );
@@ -4256,6 +4227,9 @@ finalCopyButton.addEventListener(
     content.classList.remove(
       "hide"
     );
+
+    window.scrollTo({ top:0, left:0, behavior:"auto" });
+    if(content){ content.scrollTop = 0; }
 
     content.classList.add(
       "show"
