@@ -18,7 +18,7 @@
   --bg:#050505;
 
   --panel:
-  rgba(8,7,6,0.82);
+  rgba(8,7,6,0.60);
 
   --text:#f1e7d4;
 
@@ -1813,6 +1813,43 @@ button:disabled{
   font-size:11px;
   letter-spacing:.08em;
 }
+
+.project-card-wrap{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:8px;
+  align-items:stretch;
+}
+.project-delete{
+  width:auto;
+  min-width:0;
+  padding:8px 10px;
+  border-radius:14px;
+  border-color:rgba(255,96,96,.35);
+  color:#ffd6d6;
+  font-size:11px;
+  letter-spacing:.08em;
+}
+.key-item-actions{
+  display:flex;
+  gap:8px;
+  flex-shrink:0;
+}
+.key-item-reflect{
+  width:auto;
+  min-width:0;
+  padding:5px 9px;
+  border-radius:999px;
+  border-color:rgba(120,180,255,.38);
+  color:#d7e8ff;
+  font-size:11px;
+  letter-spacing:.08em;
+}
+.key-item-reflect.active{
+  border-color:rgba(120,180,255,.82);
+  box-shadow:0 0 18px rgba(120,180,255,.28);
+}
+
 .key-item-box p{
   margin:6px 0 0;
   color:rgba(244,234,216,.72);
@@ -2367,15 +2404,15 @@ const slides = introSlideSets[
 const returnBackgrounds = isMobile
 
   ? [
-      "./return-mobile-1.webp",
-      "./return-mobile-2.webp",
-      "./return-mobile-3.webp"
+      "./top-return-mobile-1.webp",
+      "./top-return-mobile-2.webp",
+      "./top-return-mobile-3.webp"
     ]
 
   : [
-      "./return-pc-1.webp",
-      "./return-pc-2.webp",
-      "./return-pc-3.webp"
+      "./top-return-pc-1.webp",
+      "./top-return-pc-2.webp",
+      "./top-return-pc-3.webp"
     ];
 
 const tarotDealBackgrounds = isMobile
@@ -2502,7 +2539,8 @@ const state = {
   projectTitle:"",
 
   descriptionPlan:[],
-  syntaxPlan:[]
+  syntaxPlan:[],
+  reflectedItems:[]
 };
 
 const driveCards = [
@@ -3197,6 +3235,16 @@ function buildPrompt(){
 
     : "未設定";
 
+  const keyItemText =
+
+  (state.reflectedItems || []).length
+
+    ? state.reflectedItems
+      .map(item => `${item.emoji || "◇"} ${item.name}: ${item.desc || "説明なし"}`)
+      .join("\n")
+
+    : "未設定";
+
   return `あなたは日本語の物語生成エンジンです。
 
 以下の条件に従って、
@@ -3222,6 +3270,9 @@ ${selectedText}
 
 【中編/長編の章構成】
 ${chapterFlowText}
+
+【プロンプトに反映するキーアイテム】
+${keyItemText}
 
 【出力ルール】
 ・必ず1行ごとに改行する
@@ -4397,10 +4448,13 @@ function renderProjectsModal(){
   projectModalArea.innerHTML = `
     <div class="project-list">
       ${projects.map(project=>`
-        <button type="button" class="project-card" data-project-id="${project.id}">
-          <div class="project-card-title">${escapeHtml(project.title)}</div>
-          <div class="project-card-meta">${project.lengthMode} / ${project.chapterCount}章 / ${project.totalLines}行 / ${escapeHtml(project.genre || "ジャンル未設定")}</div>
-        </button>
+        <div class="project-card-wrap">
+          <button type="button" class="project-card" data-project-id="${project.id}">
+            <div class="project-card-title">${escapeHtml(project.title)}</div>
+            <div class="project-card-meta">${project.lengthMode} / ${project.chapterCount}章 / ${project.totalLines}行 / ${escapeHtml(project.genre || "ジャンル未設定")}</div>
+          </button>
+          <button type="button" class="project-delete" data-delete-project-id="${project.id}">削除</button>
+        </div>
       `).join("")}
     </div>
     <div class="project-detail" id="project-detail"></div>
@@ -4410,6 +4464,12 @@ function renderProjectsModal(){
     button.addEventListener("click",()=>{
       activeProjectId = button.dataset.projectId;
       renderProjectDetail(activeProjectId);
+    });
+  });
+  projectModalArea.querySelectorAll("[data-delete-project-id]").forEach(button=>{
+    button.addEventListener("click",event=>{
+      event.stopPropagation();
+      deleteProject(button.dataset.deleteProjectId);
     });
   });
 }
@@ -4469,18 +4529,70 @@ function renderKeyItemList(project){
       <div class="key-item-box">
         <div class="key-item-head">
           <strong>${escapeHtml(item.emoji || "◇")} ${escapeHtml(item.name)}</strong>
-          <button type="button" class="key-item-delete" data-delete-item-id="${escapeHtml(item.id)}">削除</button>
+          <div class="key-item-actions">
+            <button type="button" class="key-item-reflect ${isItemReflected(item.id) ? "active" : ""}" data-reflect-item-id="${escapeHtml(item.id)}">プロンプトに反映</button>
+            <button type="button" class="key-item-delete" data-delete-item-id="${escapeHtml(item.id)}">削除</button>
+          </div>
         </div>
         <p>${escapeHtml(item.desc || "説明なし")}</p>
       </div>
     `).join("")
     : `<div class="project-card-meta">キーアイテムはまだないよ。</div>`;
 
+  list.querySelectorAll("[data-reflect-item-id]").forEach(button=>{
+    button.addEventListener("click",()=>{
+      reflectKeyItemToPrompt(project.id, button.dataset.reflectItemId);
+    });
+  });
+
   list.querySelectorAll("[data-delete-item-id]").forEach(button=>{
     button.addEventListener("click",()=>{
       deleteKeyItem(project.id, button.dataset.deleteItemId);
     });
   });
+}
+
+
+function deleteProject(projectId){
+  const projects = loadOfficeProjects();
+  const target = projects.find(project => project.id === projectId);
+  const ok = window.confirm(
+    target
+      ? `「${target.title}」を削除しますか？`
+      : "このプロジェクトを削除しますか？"
+  );
+  if(!ok){ return; }
+  const nextProjects = projects.filter(project => project.id !== projectId);
+  saveOfficeProjects(nextProjects);
+  if(activeProjectId === projectId){
+    activeProjectId = null;
+  }
+  renderProjectsModal();
+}
+
+function isItemReflected(itemId){
+  return (state.reflectedItems || []).some(item => item.id === itemId);
+}
+
+function reflectKeyItemToPrompt(projectId,itemId){
+  const projects = loadOfficeProjects();
+  const project = projects.find(item => item.id === projectId);
+  if(!project){ return; }
+  const keyItem = (project.keyItems || []).find(item => item.id === itemId);
+  if(!keyItem){ return; }
+
+  state.reflectedItems = state.reflectedItems || [];
+  if(!state.reflectedItems.some(item => item.id === keyItem.id)){
+    state.reflectedItems.push({
+      id:keyItem.id,
+      emoji:keyItem.emoji || "",
+      name:keyItem.name || "",
+      desc:keyItem.desc || ""
+    });
+  }
+
+  render();
+  renderProjectDetail(projectId);
 }
 
 function deleteKeyItem(projectId,itemId){
