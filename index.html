@@ -1793,9 +1793,25 @@ button:disabled{
   padding:10px;
   background:rgba(255,255,255,.035);
 }
+.key-item-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
 .key-item-box strong{
   color:#f4ead8;
   font-weight:400;
+}
+.key-item-delete{
+  width:auto;
+  min-width:0;
+  padding:5px 9px;
+  border-radius:999px;
+  border-color:rgba(255,96,96,.35);
+  color:#ffd6d6;
+  font-size:11px;
+  letter-spacing:.08em;
 }
 .key-item-box p{
   margin:6px 0 0;
@@ -1819,6 +1835,7 @@ button:disabled{
   <div class="office-menu-list">
     <button type="button" data-office-action="about">この事務所について</button>
     <button type="button" data-office-action="guide">操作概要</button>
+    <button type="button" data-office-action="item-guide">アイテムの使い方</button>
     <button type="button" data-office-action="projects">プロジェクト管理画面</button>
   </div>
 </aside>
@@ -2305,18 +2322,74 @@ document.getElementById(
 const isMobile =
 window.innerWidth <= 768;
 
-const slides = isMobile
+const introSlideSets = isMobile
 
   ? [
-      "./intro-mobile-1.webp",
-      "./intro-mobile-2.webp",
-      "./intro-mobile-3.webp"
+      [
+        "./intro-mobile-1.webp",
+        "./intro-mobile-2.webp",
+        "./intro-mobile-3.webp"
+      ],
+      [
+        "./intro-mobile-pattern2-1.webp",
+        "./intro-mobile-pattern2-2.webp",
+        "./intro-mobile-pattern2-3.webp"
+      ],
+      [
+        "./intro-mobile-pattern3-1.webp",
+        "./intro-mobile-pattern3-2.webp",
+        "./intro-mobile-pattern3-3.webp"
+      ]
     ]
 
   : [
-      "./intro-pc-1.webp",
-      "./intro-pc-2.webp",
-      "./intro-pc-3.webp"
+      [
+        "./intro-pc-1.webp",
+        "./intro-pc-2.webp",
+        "./intro-pc-3.webp"
+      ],
+      [
+        "./intro-pc-pattern2-1.webp",
+        "./intro-pc-pattern2-2.webp",
+        "./intro-pc-pattern2-3.webp"
+      ],
+      [
+        "./intro-pc-pattern3-1.webp",
+        "./intro-pc-pattern3-2.webp",
+        "./intro-pc-pattern3-3.webp"
+      ]
+    ];
+
+const slides = introSlideSets[
+  Math.floor(Math.random() * introSlideSets.length)
+];
+
+const returnBackgrounds = isMobile
+
+  ? [
+      "./return-mobile-1.webp",
+      "./return-mobile-2.webp",
+      "./return-mobile-3.webp"
+    ]
+
+  : [
+      "./return-pc-1.webp",
+      "./return-pc-2.webp",
+      "./return-pc-3.webp"
+    ];
+
+const tarotDealBackgrounds = isMobile
+
+  ? [
+      "./Ghorse-tarot-mobile.webp",
+      "./Ghorse-tarot-mobile-2.webp",
+      "./Ghorse-tarot-mobile-3.webp"
+    ]
+
+  : [
+      "./Ghorse-tarot-pc.webp",
+      "./Ghorse-tarot-pc-2.webp",
+      "./Ghorse-tarot-pc-3.webp"
     ];
 
 let activeLayer = layerA;
@@ -3750,15 +3823,8 @@ function runTarotDealTransition(){
     "show"
   );
 
-  const tarotDealBg =
-  isMobile
-
-    ? "./Ghorse-tarot-mobile.webp"
-
-    : "./Ghorse-tarot-pc.webp";
-
   crossFadeToCustom(
-    tarotDealBg
+    randomPick(tarotDealBackgrounds)
   );
 
   setTimeout(()=>{
@@ -4148,18 +4214,8 @@ finalCopyButton.addEventListener(
       "show"
     );
 
-    processingActive.style.backgroundImage =
-
-    `url("${
-      isMobile
-
-        ? "./scene-mobile-f.webp"
-
-        : "./scene-pc-f.webp"
-    }")`;
-
-    processingActive.classList.add(
-      "show"
+    crossFadeToCustom(
+      randomPick(returnBackgrounds)
     );
   }
 );
@@ -4306,6 +4362,17 @@ function renderGuideModal(){
   openOfficeModal();
 }
 
+function renderItemGuideModal(){
+  showOfficeVideo("guide-items.mp4");
+  officeModalTitle.textContent = "アイテムの使い方";
+  officeModalText.textContent = "キーアイテムは、物語に出したい小物や言葉をメモしておく場所だよ。赤い傘、古い切符、壊れた時計……そういう“出てきてほしいもの”を入れておける。\n\nプロジェクト管理画面で作品を開いて、“キーアイテムを追加”を押してね。絵文字、名前、説明文を書いて追加すれば、その作品のメモとして保存される。\n\n細かい展開まで決めなくても、物や言葉を置いておくだけで物語の手触りはかなり変わる。思いついたら、忘れる前に放り込んでおくといいよ。";
+  officeModalPrev.style.display = "none";
+  officeModalNext.style.display = "none";
+  officeModalDots.textContent = "";
+  projectModalArea.innerHTML = "";
+  openOfficeModal();
+}
+
 function cardLabel(id){
   const card = structureCards.find(item => item.id === id);
   return card ? card.jp : "未設定";
@@ -4400,11 +4467,30 @@ function renderKeyItemList(project){
   list.innerHTML = items.length
     ? items.map(item=>`
       <div class="key-item-box">
-        <strong>${escapeHtml(item.emoji || "◇")} ${escapeHtml(item.name)}</strong>
+        <div class="key-item-head">
+          <strong>${escapeHtml(item.emoji || "◇")} ${escapeHtml(item.name)}</strong>
+          <button type="button" class="key-item-delete" data-delete-item-id="${escapeHtml(item.id)}">削除</button>
+        </div>
         <p>${escapeHtml(item.desc || "説明なし")}</p>
       </div>
     `).join("")
     : `<div class="project-card-meta">キーアイテムはまだないよ。</div>`;
+
+  list.querySelectorAll("[data-delete-item-id]").forEach(button=>{
+    button.addEventListener("click",()=>{
+      deleteKeyItem(project.id, button.dataset.deleteItemId);
+    });
+  });
+}
+
+function deleteKeyItem(projectId,itemId){
+  const projects = loadOfficeProjects();
+  const target = projects.find(item => item.id === projectId);
+  if(!target){ return; }
+  target.keyItems = (target.keyItems || []).filter(item => item.id !== itemId);
+  target.updatedAt = new Date().toISOString();
+  saveOfficeProjects(projects);
+  renderProjectDetail(projectId);
 }
 
 function escapeHtml(value){
@@ -4430,6 +4516,7 @@ document.querySelectorAll("[data-office-action]").forEach(button=>{
     const action = button.dataset.officeAction;
     if(action === "about"){ renderAboutModal(); }
     if(action === "guide"){ guidePageIndex = 0; renderGuideModal(); }
+    if(action === "item-guide"){ renderItemGuideModal(); }
     if(action === "projects"){ renderProjectsModal(); }
   });
 });
